@@ -1,0 +1,369 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+/* ==========================================================================
+   LEGACY SAAS-FRONTEND GLOBALS (ported from src/styles/variaveisGlobais.css)
+   ========================================================================== */
+/* src/styles/variaveisGlobais.css */
+
+/* ==========================================================================
+   PADRÃO DE CORES GLOBAIS - TEMA CLARO
+   ========================================================================== */
+.tema-claro {
+  --fundo-pagina: #eef1f5;        /* Cinza suave — separa visualmente dos painéis brancos */
+  --fundo-painel: #ffffff;        /* Branco puro para cards, tabelas e modais */
+  --fundo-elevado: #f8fafc;       /* Levemente elevado (hover, headers de tabela) */
+  --texto-principal: #0f172a;     /* Quase preto (contraste AAA sobre branco) */
+  --texto-secundario: #475569;    /* Cinza-azulado com contraste AA sólido */
+  --texto-terciario: #64748b;     /* Para hints/placeholders */
+
+  --campo-fundo: #ffffff;
+  --campo-borda: #cbd5e1;         /* Borda visível de verdade */
+  --campo-borda-hover: #94a3b8;
+  --campo-borda-foco: #007f3d;
+
+  --botao-primario: #007f3d;
+  --botao-hover: #006631;
+  --botao-desativado: #cbd5e1;
+
+  --alerta-erro-fundo: rgba(211, 47, 47, 0.08);
+  --alerta-erro-texto: #b91c1c;
+
+  --sombra-painel: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --sombra-elevada: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+
+/* ==========================================================================
+   PADRÃO DE CORES GLOBAIS - TEMA ESCURO
+   ========================================================================== */
+.tema-escuro {
+  --fundo-pagina: #0f0f0f;        /* Preto profundo */
+  --fundo-painel: #121212;        /* Cinza escuro para os painéis */
+  --texto-principal: #ffffff;
+  --texto-secundario: #aaaaaa;
+  
+  --campo-fundo: #1e1e1e;
+  --campo-borda: #333333;
+  --campo-borda-foco: #00af54;   /* Verde mais brilhante para o Dark Mode */
+  
+  --botao-primario: #007f3d;
+  --botao-hover: #00af54;
+  --botao-desativado: #444444;
+  
+  --alerta-erro-fundo: rgba(211, 47, 47, 0.2);
+  --alerta-erro-texto: #f28b82;  /* Vermelho pastel estilo Google Dark */
+}
+/* ===== crudBase.css ===== */
+/* ==========================================================================
+   ESTILOS BASE PARA OS CRUDS (CADASTROS E LISTAGENS)
+   caminho sugerido: src/styles/crudBase.css
+   ========================================================================== */
+
+/* --- CABEÇALHOS DAS PÁGINAS --- */
+.crud-header {
+  margin-bottom: 24px;
+}
+
+.crud-titulo-pagina {
+  color: var(--texto-principal);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+}
+
+.crud-subtitulo-pagina {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   ESTRUTURA DE FORMULÁRIOS (CADASTROS)
+   ========================================================================== */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Linha do formulário que agrupa campos lado a lado */
+.form-linha {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap; /* Garante que quebre linha em telas muito pequenas */
+}
+
+/* Wrapper que envolve o Label e o Input */
+.campo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 200px; /* Impede que os campos fiquem esmagados */
+}
+
+.campo-wrapper label {
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Customização dos elementos de entrada do tema */
+.campo-wrapper input,
+.campo-wrapper select,
+.campo-wrapper textarea {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--campo-borda);
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+/* Estados de foco dinâmicos baseados no seu tema */
+.campo-wrapper input:focus,
+.campo-wrapper select:focus,
+.campo-wrapper textarea:focus {
+  border-color: var(--campo-borda-foco);
+  box-shadow: 0 0 0 3px rgba(0, 175, 84, 0.15); /* Sombra suave com a cor de foco */
+}
+
+/* Ajustes específicos para Selects (remover setas nativas se necessário ou estilizar) */
+.campo-wrapper select {
+  cursor: pointer;
+  appearance: select;
+}
+
+/* Ajuste para textareas não quebrarem o layout */
+.campo-wrapper textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Placeholder claro/escuro automático */
+.campo-wrapper input::placeholder,
+.campo-wrapper textarea::placeholder {
+  color: var(--texto-principal);
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   ESTRUTURA DE TABELAS (LISTAGENS)
+   ========================================================================== */
+
+/* Topo das listagens (Título e Subtítulo à esquerda, Botão Novo à direita) */
+.listagem-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Container que permite rolagem horizontal em tabelas muito grandes no mobile */
+.tabela-container {
+  overflow-x: auto;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--campo-borda);
+  background-color: var(--fundo-painel);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.tabela-SaaS {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* Cabeçalho da Tabela */
+.tabela-SaaS th {
+  background-color: var(--campo-fundo);
+  color: var(--texto-secundario);
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--campo-borda);
+  user-select: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Células da Tabela */
+.tabela-SaaS td {
+  padding: 14px 16px;
+  color: var(--texto-principal);
+  border-bottom: 1px solid var(--campo-borda);
+  white-space: nowrap; /* Evita quebra de linha feia em nomes e documentos */
+  transition: background-color 0.2s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efeito de Hover nas linhas da tabela */
+.tabela-SaaS tbody tr:hover td {
+  background-color: rgba(0, 127, 61, 0.04); /* Um leve toque do seu verde de destaque */
+}
+
+/* Remove a borda da última linha para alinhar com o container */
+.tabela-SaaS tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- BOTÕES DE AÇÃO INTERNOS DA TABELA ---
+body { background-color: var(--fundo-pagina, var(--color-background)); }

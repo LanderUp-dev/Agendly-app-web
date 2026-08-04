@@ -1,0 +1,35 @@
+/* caminho: src/views/app/Loja/ListagemLoja.css */
+.lojas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.loja-card {
+  background-color: var(--fundo-painel);
+  border: 1px solid var(--campo-borda);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.loja-card:hover {
+  border-color: var(--campo-borda-foco);
+  transform: translateY(-4px);
+}
+
+.loja-nome {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin: 0;
+}
+
+.loja-info {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+}

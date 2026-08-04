@@ -1,0 +1,157 @@
+/* --- MODAL DE CADASTRAR AGENDAMENTO --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content-expanded {
+  background-color: var(--fundo-painel);
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 550px;
+  max-width: 90vw;
+  border: 1px solid var(--campo-borda);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: var(--texto-principal);
+  animation: modalIn 0.3s ease-out;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content-expanded h3 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--campo-borda);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  color: var(--texto-principal);
+}
+
+.modal-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.modal-row {
+  display: flex;
+  gap: 15px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+
+.modal-field.full-width {
+  flex: none;
+}
+
+.modal-field label {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  font-weight: 500;
+}
+
+.modal-input {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--campo-borda);
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: var(--campo-borda-foco);
+  box-shadow: 0 0 0 3px rgba(0, 175, 84, 0.15);
+}
+
+textarea.modal-input {
+  resize: vertical;
+}
+
+.cliente-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.cliente-input-group .modal-input {
+  flex: 1;
+}
+
+.btn-add-cliente {
+  background-color: transparent;
+  color: var(--botao-primario);
+  border: 1px solid var(--botao-primario);
+  border-radius: 6px;
+  width: 42px;
+  height: 42px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-cliente:hover {
+  background-color: var(--campo-fundo);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  border-top: 1px solid var(--campo-borda);
+  padding-top: 20px;
+}
+
+.btn-cancelar {
+  background: transparent;
+  color: var(--texto-secundario);
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: var(--campo-fundo);
+}
+
+.btn-salvar {
+  background-color: var(--botao-primario);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.btn-salvar:hover {
+  background-color: var(--botao-hover);
+}

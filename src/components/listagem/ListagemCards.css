@@ -1,0 +1,60 @@
+/* Listagem em cards - padrão do sistema */
+.listagem-cards-busca {
+  margin-bottom: 30px;
+  padding: 10px 14px;
+  width: 300px;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--campo-borda);
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  transition: border-color 0.2s;
+}
+.listagem-cards-busca:focus {
+  outline: none;
+  border-color: var(--campo-borda-foco);
+}
+
+.listagem-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.listagem-card {
+  background-color: var(--fundo-painel);
+  border: 1px solid var(--campo-borda);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.listagem-card:hover {
+  border-color: var(--campo-borda-foco);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.listagem-card-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin: 0;
+}
+.listagem-card-info {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  line-height: 1.5;
+}
+.listagem-card-acao {
+  margin-top: auto;
+}
+
+.listagem-cards-vazio {
+  text-align: center;
+  color: var(--texto-secundario);
+  margin-top: 20px;
+}

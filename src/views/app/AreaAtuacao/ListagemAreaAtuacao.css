@@ -1,0 +1,19 @@
+/* caminho: src/views/app/AreaAtuacao/ListagemAreaAtuacao.css */
+
+.badge-contador {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-ativo {
+  background-color: var(--alerta-erro-fundo);
+  color: var(--campo-borda-foco);
+}
+
+.badge-vazio {
+  background-color: var(--campo-fundo);
+  color: var(--texto-secundario);
+}

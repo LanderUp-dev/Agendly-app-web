@@ -1,0 +1,151 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+.agenda-grid,
+.agenda-grid-container {
+  display: grid;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--fundo-pagina);
+  transition: background-color 0.3s ease;
+}
+
+.agenda-header-cell {
+  padding: 15px 12px;
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid var(--campo-borda);
+  border-left: 1px solid var(--campo-borda);
+  position: sticky;
+  top: 0;
+  background-color: var(--fundo-painel);
+  color: var(--texto-principal);
+  z-index: 10;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.gmt-cell,
+.gmt-label {
+  font-size: 10px;
+  color: var(--texto-secundario);
+}
+
+.agenda-time-cell,
+.agenda-time-label {
+  font-size: 11px;
+  color: var(--texto-secundario);
+  text-align: right;
+  padding-right: 8px;
+  position: relative;
+}
+
+.agenda-time-label {
+  text-align: center;
+}
+
+.agenda-interactive-cell,
+.agenda-slot-interativo {
+  border-bottom: 1px solid var(--campo-borda);
+  border-left: 1px solid var(--campo-borda);
+  min-height: 60px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.3s ease;
+  position: relative;
+  background-color: var(--fundo-painel);
+}
+
+.agenda-interactive-cell:hover,
+.agenda-slot-interativo:hover {
+  background-color: var(--campo-fundo);
+}
+
+.agenda-empty-cell {
+  border-bottom: 1px solid var(--campo-borda);
+  border-left: 1px solid var(--campo-borda);
+  background-color: var(--fundo-painel);
+}
+
+/* --- CARDS FLUTUANTES --- */
+.card-agendamento,
+.card-agendamento-flutuante,
+.appointment-card {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #ffffff;
+  z-index: 2;
+  font-size: 11px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.card-agendamento:hover,
+.card-agendamento-flutuante:hover,
+.appointment-card:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+.card-titulo {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.card-detalhe {
+  font-size: 10px;
+  opacity: 0.9;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.card-info strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Mobile: grid mais compacto, coluna de hora sticky à esquerda ===== */
+@media (max-width: 768px) {
+  .agenda-grid-container {
+    grid-template-columns: 44px repeat(var(--profs, 1), minmax(120px, 1fr)) !important;
+    overflow-x: auto;
+  }
+  .agenda-header-cell {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+  .agenda-time-label {
+    font-size: 10px;
+    padding-right: 4px;
+    position: sticky;
+    left: 0;
+    background-color: var(--fundo-painel);
+    z-index: 5;
+  }
+  .agenda-header-cell.gmt-label {
+    position: sticky;
+    left: 0;
+    z-index: 15;
+  }
+  .agenda-slot-interativo { min-height: 52px; }
+  .card-agendamento-flutuante { font-size: 10px; padding: 4px 6px; }
+  .card-info strong { font-size: 11px; }
+}

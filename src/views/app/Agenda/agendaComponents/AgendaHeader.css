@@ -1,0 +1,111 @@
+.header-container-principal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background-color: var(--fundo-painel);
+  color: var(--texto-principal);
+  border-bottom: 1px solid var(--campo-borda);
+  min-height: 64px;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.header-bloco-esquerdo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.texto-data-selecionada {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--texto-principal);
+  margin: 0;
+}
+
+.btn-hoje-atual {
+  background: transparent;
+  color: var(--texto-principal);
+  border: 1px solid var(--campo-borda);
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-hoje-atual:hover {
+  background-color: var(--campo-fundo);
+  border-color: var(--campo-borda-foco);
+}
+
+.header-bloco-direito {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 2;
+}
+
+.input-busca-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--campo-fundo);
+  padding: 0 12px;
+  border-radius: 8px;
+  height: 40px;
+  width: 250px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, background-color 0.3s ease;
+}
+
+.input-busca-wrapper:focus-within {
+  border-color: var(--campo-borda-foco);
+}
+
+.lupa-svg {
+  width: 18px;
+  fill: var(--texto-secundario);
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.input-busca-wrapper input {
+  background: transparent;
+  border: none;
+  color: var(--texto-principal);
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.input-busca-wrapper input::placeholder {
+  color: var(--texto-secundario);
+  opacity: 0.7;
+}
+
+.dropdown-tempo-google {
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  border: 1px solid var(--campo-borda);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 30px;
+  transition: border-color 0.2s, background-color 0.3s ease;
+}
+
+.dropdown-tempo-google:hover {
+  border-color: var(--campo-borda-foco);
+}
+

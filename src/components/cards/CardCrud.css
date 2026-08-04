@@ -1,0 +1,10 @@
+.card-crud-container {
+  background-color: var(--fundo-painel);
+  border: 1px solid var(--campo-borda);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}

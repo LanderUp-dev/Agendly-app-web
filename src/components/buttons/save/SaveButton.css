@@ -1,0 +1,28 @@
+.btn-global-save {
+  width: 100%; /* Ocupa 100% do espaço onde for colocado */
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--botao-primario);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-global-save:hover {
+  background-color: var(--botao-hover);
+  transform: translateY(-1px);
+}
+
+.btn-global-save:disabled {
+  background-color: var(--botao-desativado);
+  color: #888888;
+  cursor: not-allowed;
+  transform: none;
+}

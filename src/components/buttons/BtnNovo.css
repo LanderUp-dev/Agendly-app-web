@@ -1,0 +1,42 @@
+.btn-novo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--botao-primario), var(--botao-hover));
+  color: #ffffff;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 127, 61, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  white-space: nowrap;
+}
+
+.btn-novo:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 127, 61, 0.28);
+  filter: brightness(1.05);
+}
+
+.btn-novo:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 127, 61, 0.2);
+}
+
+.btn-novo-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+}

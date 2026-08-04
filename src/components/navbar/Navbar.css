@@ -1,0 +1,17 @@
+.navbar-principal-agenda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  width: 100%;
+  padding: 0 20px;
+  background-color: #202124;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box; 
+}
+
+.navbar-logo-img {
+  padding-top: 5px;
+  width: 163px;
+  height: 60px;
+}
