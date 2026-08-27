@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import CadastroCliente from "@/views/app/Cliente/CadastroCliente";
 
-export const Route = createFileRoute("/_authenticated/cadastro-cliente")({
+export const Route = createFileRoute("/cadastro-cliente")({
   head: () => ({
     meta: [
       { title: "Cadastrar Cliente" },

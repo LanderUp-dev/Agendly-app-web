@@ -147,7 +147,7 @@ export default function LoginView() {
         <div className="login-right-side">
           <div className="login-form-wrapper">
             <h2>Bem-vindo</h2>
-            <p className="subtitulo">Entre com email e senha ou use sua conta Google.</p>
+            <p className="subtitulo">Entre com email</p>
 
             {errorMessage && <div className="error-alert">{errorMessage}</div>}
 

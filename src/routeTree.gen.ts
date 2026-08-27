@@ -11,13 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AgendaRouteImport } from './routes/agenda'
+import { Route as CadastroClienteRouteImport } from './routes/cadastro-cliente'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated.agenda'
 import { Route as AuthenticatedCadastroAreaAtuacaoRouteImport } from './routes/_authenticated.cadastro-area-atuacao'
 import { Route as AuthenticatedCadastroAreaFuncionarioRouteImport } from './routes/_authenticated.cadastro-area-funcionario'
-import { Route as AuthenticatedCadastroClienteRouteImport } from './routes/_authenticated.cadastro-cliente'
 import { Route as AuthenticatedCadastroCobrancistaRouteImport } from './routes/_authenticated.cadastro-cobrancista'
 import { Route as AuthenticatedCadastroEquipeRouteImport } from './routes/_authenticated.cadastro-equipe'
 import { Route as AuthenticatedCadastroFuncionarioRouteImport } from './routes/_authenticated.cadastro-funcionario'
@@ -41,6 +41,16 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroClienteRoute = CadastroClienteRouteImport.update({
+  id: '/cadastro-cliente',
+  path: '/cadastro-cliente',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -56,11 +66,6 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
-  id: '/agenda',
-  path: '/agenda',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedCadastroAreaAtuacaoRoute =
   AuthenticatedCadastroAreaAtuacaoRouteImport.update({
     id: '/cadastro-area-atuacao',
@@ -71,12 +76,6 @@ const AuthenticatedCadastroAreaFuncionarioRoute =
   AuthenticatedCadastroAreaFuncionarioRouteImport.update({
     id: '/cadastro-area-funcionario',
     path: '/cadastro-area-funcionario',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedCadastroClienteRoute =
-  AuthenticatedCadastroClienteRouteImport.update({
-    id: '/cadastro-cliente',
-    path: '/cadastro-cliente',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedCadastroCobrancistaRoute =
@@ -160,13 +159,13 @@ const AuthenticatedListagemServicosRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/agenda': typeof AuthenticatedAgendaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
-  '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
   '/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
   '/cadastro-equipe': typeof AuthenticatedCadastroEquipeRoute
   '/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
@@ -183,13 +182,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/agenda': typeof AuthenticatedAgendaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
-  '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
   '/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
   '/cadastro-equipe': typeof AuthenticatedCadastroEquipeRoute
   '/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
@@ -208,13 +207,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/agenda': typeof AgendaRoute
+  '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/_authenticated/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
-  '/_authenticated/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
   '/_authenticated/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
   '/_authenticated/cadastro-equipe': typeof AuthenticatedCadastroEquipeRoute
   '/_authenticated/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
@@ -233,13 +232,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agenda'
+    | '/cadastro-cliente'
     | '/home'
     | '/login'
     | '/register'
-    | '/agenda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
-    | '/cadastro-cliente'
     | '/cadastro-cobrancista'
     | '/cadastro-equipe'
     | '/cadastro-funcionario'
@@ -256,13 +255,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agenda'
+    | '/cadastro-cliente'
     | '/home'
     | '/login'
     | '/register'
-    | '/agenda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
-    | '/cadastro-cliente'
     | '/cadastro-cobrancista'
     | '/cadastro-equipe'
     | '/cadastro-funcionario'
@@ -280,13 +279,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/agenda'
+    | '/cadastro-cliente'
     | '/home'
     | '/login'
     | '/register'
-    | '/_authenticated/agenda'
     | '/_authenticated/cadastro-area-atuacao'
     | '/_authenticated/cadastro-area-funcionario'
-    | '/_authenticated/cadastro-cliente'
     | '/_authenticated/cadastro-cobrancista'
     | '/_authenticated/cadastro-equipe'
     | '/_authenticated/cadastro-funcionario'
@@ -305,6 +304,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AgendaRoute: typeof AgendaRoute
+  CadastroClienteRoute: typeof CadastroClienteRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -324,6 +325,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro-cliente': {
+      id: '/cadastro-cliente'
+      path: '/cadastro-cliente'
+      fullPath: '/cadastro-cliente'
+      preLoaderRoute: typeof CadastroClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -347,13 +362,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/agenda': {
-      id: '/_authenticated/agenda'
-      path: '/agenda'
-      fullPath: '/agenda'
-      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/cadastro-area-atuacao': {
       id: '/_authenticated/cadastro-area-atuacao'
       path: '/cadastro-area-atuacao'
@@ -366,13 +374,6 @@ declare module '@tanstack/react-router' {
       path: '/cadastro-area-funcionario'
       fullPath: '/cadastro-area-funcionario'
       preLoaderRoute: typeof AuthenticatedCadastroAreaFuncionarioRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/cadastro-cliente': {
-      id: '/_authenticated/cadastro-cliente'
-      path: '/cadastro-cliente'
-      fullPath: '/cadastro-cliente'
-      preLoaderRoute: typeof AuthenticatedCadastroClienteRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/cadastro-cobrancista': {
@@ -470,10 +471,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedCadastroAreaAtuacaoRoute: typeof AuthenticatedCadastroAreaAtuacaoRoute
   AuthenticatedCadastroAreaFuncionarioRoute: typeof AuthenticatedCadastroAreaFuncionarioRoute
-  AuthenticatedCadastroClienteRoute: typeof AuthenticatedCadastroClienteRoute
   AuthenticatedCadastroCobrancistaRoute: typeof AuthenticatedCadastroCobrancistaRoute
   AuthenticatedCadastroEquipeRoute: typeof AuthenticatedCadastroEquipeRoute
   AuthenticatedCadastroFuncionarioRoute: typeof AuthenticatedCadastroFuncionarioRoute
@@ -490,11 +489,9 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedCadastroAreaAtuacaoRoute: AuthenticatedCadastroAreaAtuacaoRoute,
   AuthenticatedCadastroAreaFuncionarioRoute:
     AuthenticatedCadastroAreaFuncionarioRoute,
-  AuthenticatedCadastroClienteRoute: AuthenticatedCadastroClienteRoute,
   AuthenticatedCadastroCobrancistaRoute: AuthenticatedCadastroCobrancistaRoute,
   AuthenticatedCadastroEquipeRoute: AuthenticatedCadastroEquipeRoute,
   AuthenticatedCadastroFuncionarioRoute: AuthenticatedCadastroFuncionarioRoute,
@@ -521,6 +518,8 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AgendaRoute: AgendaRoute,
+  CadastroClienteRoute: CadastroClienteRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
