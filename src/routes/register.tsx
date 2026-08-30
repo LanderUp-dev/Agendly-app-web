@@ -5,7 +5,7 @@ export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
       { title: "Cadastro" },
-      { name: "description", content: "Cadastro - SaaS" },
+      { name: "description", content: "Cadastro - Agendly" },
     ],
   }),
   component: RegisterView,

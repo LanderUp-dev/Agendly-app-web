@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
+import api from '@/config/axios';
 import { Layout } from '@/components/layout/Layout';
 import { CardCrud } from '@/components/cards/CardCrud';
 import { SaveButton } from '@/components/buttons/save/SaveButton';
 import './RegisterView.css';
 
 const RegisterView = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     nome: '',
     sobrenome: '',
@@ -17,7 +22,7 @@ const RegisterView = () => {
     confirmarSenha: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
 
     if (name === 'nome' || name === 'sobrenome') {
@@ -40,10 +45,9 @@ const RegisterView = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Preparação dos dados para envio (limpeza de máscaras)
+
     const dadosLimpos = {
       ...formData,
       celular: formData.celular.replace(/\D/g, ''),
@@ -51,24 +55,40 @@ const RegisterView = () => {
     };
 
     if (dadosLimpos.celular.length !== 11) {
-      alert("O celular deve conter 11 dígitos.");
+      toast.warning('O celular deve conter 11 dígitos (DDD + número).');
       return;
     }
+
     const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!senhaRegex.test(formData.senha)) {
-      alert("A senha deve ter no mínimo 8 caracteres, misturando letras e números.");
+      toast.warning('A senha deve ter no mínimo 8 caracteres, misturando letras e números.');
       return;
     }
+
     if (formData.senha !== formData.confirmarSenha) {
-      alert("As senhas não coincidem!");
+      toast.warning('As senhas não coincidem!');
       return;
     }
-    console.log("Enviando dados de cadastro...", dadosLimpos);
+
+    // Remove o campo de confirmação antes de enviar para o payload do back
+    const { confirmarSenha, ...payload } = dadosLimpos;
+
+    setLoading(true);
+    try {
+      // Chamada correta apontando para /api/v1/usuarios
+      await api.post('/usuarios', payload);
+
+      toast.success('Conta criada com sucesso! Faça login para continuar.');
+      navigate({ to: '/login' });
+    } catch {
+      // Erros de validação (400, 422, 409) já disparam o toast via interceptor
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Layout title="Agendly" voltarPara="/">
-   
       <CardCrud>
         <div className="register-header">
           <h2>Criar Nova Conta</h2>
@@ -98,13 +118,13 @@ const RegisterView = () => {
             </div>
             <div className="field">
               <label>Data de Nascimento</label>
-              <input 
-                type="date" 
-                name="dataNascimento" 
-                value={formData.dataNascimento} 
-                onChange={handleChange} 
-                onClick={(e) => e.target.showPicker?.()} 
-                required 
+              <input
+                type="date"
+                name="dataNascimento"
+                value={formData.dataNascimento}
+                onChange={handleChange}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
+                required
               />
             </div>
           </div>
@@ -123,9 +143,9 @@ const RegisterView = () => {
             <label>Confirmar Senha</label>
             <input type="password" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} placeholder="Digite a senha novamente" required />
           </div>
-          
+
           <div className="form-actions">
-            <SaveButton label="FINALIZAR CADASTRO" />
+            <SaveButton label={loading ? "CADASTRANDO..." : "FINALIZAR CADASTRO"} disabled={loading} />
           </div>
         </form>
 

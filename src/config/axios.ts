@@ -8,10 +8,9 @@ export const BASE_URL =
 export const api = axios.create({
   baseURL: BASE_URL,
   timeout: 15000,
-  withCredentials: true, 
+  withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
-
 
 api.interceptors.response.use(
   (response) => response,
@@ -20,46 +19,39 @@ api.interceptors.response.use(
     const errorData = error?.response?.data;
     const codigoCenario = errorData?.code || errorData?.errorCode;
     const msgServidor = errorData?.message || errorData?.error;
-    
+    const urlRequisicao = error?.config?.url || '';
+
     let mensagem = msgServidor || 'Erro inesperado ao comunicar com o servidor.';
 
     if (error?.code === 'ERR_NETWORK') {
       mensagem = `Não foi possível conectar à API (${BASE_URL}).`;
     } else if (status === 400) {
-      if (codigoCenario === 'INVALID_SLOT') {
-        mensagem = msgServidor || 'Este horário acabou de ser reservado por outra pessoa. Por favor, escolha outro horário.';
-      } else if (codigoCenario === 'PAST_DATE') {
-        mensagem = msgServidor || 'Não é possível realizar agendamentos para datas retroativas.';
-      } else {
-        mensagem = msgServidor || 'Requisição inválida.';
-      }
+      mensagem = msgServidor || 'Dados inválidos. Verifique as informações.';
     } else if (status === 401) {
-      mensagem = msgServidor || 'Sua sessão expirou por inatividade. Faça login novamente.';
-      
-      if (typeof window !== 'undefined') {
-        // Como o token está num cookie HttpOnly, você não pode limpá-lo via JS (localStorage.removeItem).
-        // Se precisar avisar o back para invalidar, pode chamar uma rota /logout, 
-        // ou apenas redirecionar para a tela de login (o back limpa o cookie no logout).
-        if (window.location.pathname !== '/login') {
+      if (urlRequisicao.includes('/auth/login')) {
+        mensagem = msgServidor || 'E-mail ou senha incorretos.';
+      } else {
+        mensagem = msgServidor || 'Sua sessão expirou. Faça login novamente.';
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
           window.location.href = '/login';
         }
       }
     } else if (status === 403) {
-      mensagem = msgServidor || 'Você não tem permissão para acessar esta área de agendamentos.';
+      mensagem = msgServidor || 'Acesso negado.';
     } else if (status === 404) {
-      mensagem = msgServidor || 'O item ou agendamento solicitado não foi encontrado.';
+      mensagem = msgServidor || 'Recurso não encontrado.';
     } else if (status === 409) {
-      mensagem = msgServidor || 'O profissional selecionado já possui um compromisso agendado neste horário.';
+      mensagem = msgServidor || 'Conflito: registro já existente.';
     } else if (status === 422) {
-      mensagem = msgServidor || 'Por favor, verifique os campos obrigatórios preenchidos incorretamente.';
-    } else if (status === 429) {
-      mensagem = msgServidor || 'Muitas requisições em pouco tempo. Aguarde alguns instantes.';
+      mensagem = msgServidor || 'Campos preenchidos incorretamente.';
     } else if (status >= 500) {
-      mensagem = msgServidor || 'Ocorreu um erro interno no servidor. Tente novamente em alguns minutos.';
+      mensagem = msgServidor || 'Erro interno no servidor. Tente novamente mais tarde.';
     }
 
     if (typeof window !== 'undefined') {
-      toast.error(mensagem, { id: codigoCenario || (status ? `error-${status}` : 'error-network') });
+      toast.error(mensagem, {
+        id: codigoCenario || (status ? `error-${status}-${Date.now()}` : 'error-network'),
+      });
     }
 
     return Promise.reject(error);
