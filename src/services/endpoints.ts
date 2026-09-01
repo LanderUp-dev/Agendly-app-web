@@ -37,9 +37,7 @@ interface AuthResponse {
 }
 
 export const authService = {
-  loginGoogle: (idToken: string) => 
-    api.post<AuthResponse>('/auth/google', { idToken }).then((r) => r.data),
-    
+ 
   loginEmailSenha: (email: string, senha: string) =>
     api.post<AuthResponse>('/auth/login', { email, senha }).then((r) => r.data),
 };

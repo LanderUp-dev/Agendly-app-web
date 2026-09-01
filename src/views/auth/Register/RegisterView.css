@@ -1,12 +1,37 @@
 .register-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .register-header h2 {
   font-size: 1.8rem;
   color: var(--texto-principal);
   font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.register-subtitulo {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ===== Seções ===== */
+.register-secao {
+  border: 1px solid var(--campo-borda);
+  border-radius: 12px;
+  padding: 18px 18px 14px;
+  margin: 0 0 20px;
+  transition: border-color 0.3s ease;
+}
+
+.register-secao-titulo {
+  padding: 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--botao-primario);
 }
 
 .register-form .row {
@@ -15,22 +40,35 @@
   margin-bottom: 16px;
 }
 
+.register-form .row:last-child {
+  margin-bottom: 0;
+}
+
 .register-form .field {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Espaçamento para campos que não estão em uma .row */
-.register-form>.field {
+.register-secao > .field {
   margin-bottom: 16px;
+}
+
+.register-secao > .field:last-child {
+  margin-bottom: 0;
 }
 
 .register-form label {
   font-size: 0.85rem;
   margin-bottom: 6px;
   font-weight: 500;
-  color: var(--texto-principal, var(--texto-principal));
+  color: var(--texto-principal);
+}
+
+.register-hint {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+  margin-top: 4px;
 }
 
 .register-form input {
@@ -41,7 +79,7 @@
   border-radius: 8px;
   color: var(--texto-principal);
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
   box-sizing: border-box;
 }
 
@@ -55,8 +93,103 @@
   box-shadow: 0 0 0 3px rgba(0, 127, 61, 0.15);
 }
 
+/* ===== Campo de senha com botão de olho ===== */
+.register-input-senha {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-input-senha input {
+  padding-right: 44px;
+}
+
+.register-btn-olho {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.register-btn-olho:hover {
+  color: var(--texto-principal);
+  background-color: var(--campo-fundo);
+}
+
+/* ===== Checklist de requisitos da senha ===== */
+.register-checklist {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  margin: 8px 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.register-checklist li {
+  font-size: 0.75rem;
+  color: var(--texto-secundario);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.register-checklist li::before {
+  content: '○';
+  font-size: 0.7rem;
+}
+
+.register-checklist li.ok {
+  color: var(--botao-primario);
+  font-weight: 600;
+}
+
+.register-checklist li.ok::before {
+  content: '●';
+}
+
+.register-erro-inline {
+  font-size: 0.78rem;
+  color: var(--alerta-erro-texto, #b91c1c);
+  margin-top: 4px;
+}
+
+/* ===== Termos ===== */
+.register-termos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 4px 0 4px;
+}
+
+.register-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.register-checkbox-label input[type="checkbox"] {
+  margin-top: 2px;
+  width: auto;
+  accent-color: var(--botao-primario);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .form-actions {
-  margin-top: 30px;
+  margin-top: 22px;
 }
 
 .footer-text {
@@ -79,10 +212,12 @@
   opacity: 0.8;
 }
 
+/* ===== Autofill — agora acompanha o tema ativo (claro/escuro) ===== */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #000000 inset !important;
-  -webkit-text-fill-color: #ffffff !important;
-  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0px 1000px var(--campo-fundo) inset !important;
+  -webkit-text-fill-color: var(--texto-principal) !important;
+  caret-color: var(--texto-principal);
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
 }

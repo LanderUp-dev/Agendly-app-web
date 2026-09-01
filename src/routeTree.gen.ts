@@ -15,7 +15,9 @@ import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as CadastroClienteRouteImport } from './routes/cadastro-cliente'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PoliticasDePrivacidadeRouteImport } from './routes/politicas-de-privacidade'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as AuthenticatedCadastroAreaAtuacaoRouteImport } from './routes/_authenticated.cadastro-area-atuacao'
 import { Route as AuthenticatedCadastroAreaFuncionarioRouteImport } from './routes/_authenticated.cadastro-area-funcionario'
 import { Route as AuthenticatedCadastroCobrancistaRouteImport } from './routes/_authenticated.cadastro-cobrancista'
@@ -61,9 +63,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticasDePrivacidadeRoute = PoliticasDePrivacidadeRouteImport.update({
+  id: '/politicas-de-privacidade',
+  path: '/politicas-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedCadastroAreaAtuacaoRoute =
@@ -163,7 +175,9 @@ export interface FileRoutesByFullPath {
   '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/register': typeof RegisterRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
@@ -186,7 +200,9 @@ export interface FileRoutesByTo {
   '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/register': typeof RegisterRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
@@ -211,7 +227,9 @@ export interface FileRoutesById {
   '/cadastro-cliente': typeof CadastroClienteRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/register': typeof RegisterRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/_authenticated/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/_authenticated/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/_authenticated/cadastro-cobrancista': typeof AuthenticatedCadastroCobrancistaRoute
@@ -236,7 +254,9 @@ export interface FileRouteTypes {
     | '/cadastro-cliente'
     | '/home'
     | '/login'
+    | '/politicas-de-privacidade'
     | '/register'
+    | '/termos-de-uso'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cobrancista'
@@ -259,7 +279,9 @@ export interface FileRouteTypes {
     | '/cadastro-cliente'
     | '/home'
     | '/login'
+    | '/politicas-de-privacidade'
     | '/register'
+    | '/termos-de-uso'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cobrancista'
@@ -283,7 +305,9 @@ export interface FileRouteTypes {
     | '/cadastro-cliente'
     | '/home'
     | '/login'
+    | '/politicas-de-privacidade'
     | '/register'
+    | '/termos-de-uso'
     | '/_authenticated/cadastro-area-atuacao'
     | '/_authenticated/cadastro-area-funcionario'
     | '/_authenticated/cadastro-cobrancista'
@@ -308,7 +332,9 @@ export interface RootRouteChildren {
   CadastroClienteRoute: typeof CadastroClienteRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
+  PoliticasDePrivacidadeRoute: typeof PoliticasDePrivacidadeRoute
   RegisterRoute: typeof RegisterRoute
+  TermosDeUsoRoute: typeof TermosDeUsoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -355,11 +381,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politicas-de-privacidade': {
+      id: '/politicas-de-privacidade'
+      path: '/politicas-de-privacidade'
+      fullPath: '/politicas-de-privacidade'
+      preLoaderRoute: typeof PoliticasDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-uso': {
+      id: '/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof TermosDeUsoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/cadastro-area-atuacao': {
@@ -522,7 +562,9 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroClienteRoute: CadastroClienteRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
+  PoliticasDePrivacidadeRoute: PoliticasDePrivacidadeRoute,
   RegisterRoute: RegisterRoute,
+  TermosDeUsoRoute: TermosDeUsoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
