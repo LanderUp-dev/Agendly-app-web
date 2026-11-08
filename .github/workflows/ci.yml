@@ -90,7 +90,7 @@ jobs:
           tags: |
             type=sha,prefix=
             type=raw,value=latest
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           build-args: VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
