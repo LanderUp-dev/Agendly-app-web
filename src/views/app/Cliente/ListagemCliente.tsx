@@ -1,5 +1,6 @@
 // @requisito RE-12 RO-25
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import { PaginaListagem } from "@/components/ds";
 import { clientesService } from "@/services/endpoints";
 import { formatarCPF, formatarData, formatarTelefone, nomeCompleto } from "@/lib/formatadores";
@@ -48,6 +49,21 @@ export default function ListagemCliente() {
           render: (c) => formatarData(c.dtaNascimento),
         },
         { chave: "nomeLoja", titulo: "Loja", render: (c) => c.nomeLoja || "—" },
+        {
+          // @requisito RO-04
+          chave: "historico",
+          titulo: "Histórico",
+          render: (c) => (
+            <Link
+              to="/cliente-historico"
+              search={{ id: Number(c.id) }}
+              className="link"
+              data-cy={`cliente-historico-${c.id}`}
+            >
+              Histórico
+            </Link>
+          ),
+        },
       ]}
     />
   );

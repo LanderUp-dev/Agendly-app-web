@@ -14,6 +14,8 @@ describe("Fluxo de cadastros", () => {
     cy.get(".app-navbar__nav a").then(($a) => {
       expect([...$a].map((a) => a.textContent?.trim())).to.deep.eq([
         "Agenda",
+        "Caixa",
+        "Painel",
         "Lojas",
         "Áreas",
         "Funcionários",

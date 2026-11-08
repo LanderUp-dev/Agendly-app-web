@@ -1,0 +1,277 @@
+/* Caixa e painel da loja (tokens em src/styles/tokens.css) */
+
+.financeiro-indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--esp-4);
+  margin-bottom: var(--esp-4);
+}
+
+.financeiro-indicador__rotulo {
+  margin: 0 0 var(--esp-1);
+  font-size: var(--texto-sm);
+  color: var(--texto-secundario);
+}
+
+.financeiro-indicador__valor {
+  margin: 0 0 var(--esp-1);
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-titulo);
+  color: var(--texto-principal);
+  font-variant-numeric: tabular-nums;
+}
+
+.financeiro-secao {
+  margin-top: var(--esp-4);
+}
+
+.financeiro-secao__titulo {
+  margin: 0 0 var(--esp-3);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-titulo);
+}
+
+.financeiro-formas,
+.financeiro-movimentos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--texto-sm);
+}
+
+.financeiro-formas li,
+.financeiro-movimentos li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-1) 0;
+}
+
+.financeiro-movimentos li {
+  border-bottom: 1px solid var(--borda-sutil);
+  padding: var(--esp-2) 0;
+}
+
+.financeiro-movimentos li > span:nth-child(2) {
+  flex: 1;
+  color: var(--texto-secundario);
+}
+
+.financeiro-entrada,
+.financeiro-saida {
+  font-variant-numeric: tabular-nums;
+}
+
+.financeiro-saida {
+  color: var(--erro);
+}
+
+.financeiro-cancelada td {
+  color: var(--texto-terciario);
+  text-decoration: line-through;
+}
+
+.financeiro-cancelada td:last-child {
+  text-decoration: none;
+}
+
+.financeiro-link-botao {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.financeiro-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.tabela__num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Comanda (modal na agenda) ---------- */
+
+.comanda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.comanda__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.comanda__grupo legend {
+  margin-bottom: var(--esp-2);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  color: var(--texto-principal);
+}
+
+.comanda__linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.comanda__linha select {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.comanda__valor {
+  flex: 0 0 96px;
+  width: 96px;
+  text-align: right;
+}
+
+.comanda__adicionar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--texto-sm);
+}
+
+.comanda__ajustes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+
+.comanda__total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: var(--esp-3) 0;
+  border-top: 1px solid var(--borda-sutil);
+  border-bottom: 1px solid var(--borda-sutil);
+  font-size: var(--texto-lg);
+}
+
+.comanda__total strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.comanda__situacao {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.comanda__situacao--falta {
+  color: var(--erro);
+}
+
+.comanda__situacao--troco {
+  color: var(--aviso);
+}
+
+.comanda__situacao--ok {
+  color: var(--sucesso);
+}
+
+/* ---------- Painel ---------- */
+
+.painel-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-2);
+  margin-bottom: var(--esp-4);
+}
+
+.painel-filtro {
+  padding: var(--esp-1) var(--esp-3);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-pill);
+  background: var(--fundo-painel);
+  color: var(--texto-secundario);
+  font: inherit;
+  font-size: var(--texto-sm);
+  cursor: pointer;
+}
+
+.painel-filtro:hover {
+  background: var(--fundo-hover);
+}
+
+.painel-filtro--ativo {
+  border-color: var(--marca);
+  background: var(--marca-suave);
+  color: var(--marca-texto);
+  font-weight: var(--peso-medio);
+}
+
+.painel-datas {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--texto-sm);
+}
+
+.painel-grafico {
+  width: 100%;
+}
+
+.painel-tabela-dias {
+  margin-top: var(--esp-3);
+  font-size: var(--texto-sm);
+}
+
+.painel-tabela-dias summary {
+  cursor: pointer;
+  color: var(--texto-secundario);
+}
+
+.painel-colunas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: var(--esp-4);
+}
+
+.painel-colunas .financeiro-secao {
+  margin-top: var(--esp-4);
+}
+
+.painel-tabela {
+  width: 100%;
+}
+
+.painel-barra {
+  display: block;
+  height: 4px;
+  margin-top: var(--esp-1);
+  border-radius: 2px;
+  background: var(--borda-sutil);
+  overflow: hidden;
+}
+
+.painel-barra__preenchida {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--marca);
+}
+
+@media (max-width: 479px) {
+  .comanda__ajustes {
+    grid-template-columns: 1fr;
+  }
+}

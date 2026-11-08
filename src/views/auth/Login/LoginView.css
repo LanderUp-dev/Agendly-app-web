@@ -73,3 +73,45 @@
     background-color: transparent;
   }
 }
+
+/* "Esqueci minha senha" e a tela de recuperação (RecuperarSenhaView) */
+.login-esqueci {
+  align-self: center;
+  font-size: var(--texto-sm);
+}
+
+.recuperar-requisitos {
+  margin: var(--esp-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--texto-sm);
+  color: var(--texto-secundario);
+}
+
+.recuperar-requisitos li::before {
+  content: "○ ";
+}
+
+.recuperar-requisitos li[data-ok="true"] {
+  color: var(--texto-principal);
+}
+
+.recuperar-requisitos li[data-ok="true"]::before {
+  content: "✓ ";
+}
+
+.recuperar-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  font-size: var(--texto-sm);
+}
+
+.recuperar-acoes .link {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}

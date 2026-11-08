@@ -1,0 +1,44 @@
+/* Recebimentos (tokens em src/styles/tokens.css) */
+
+.recebimento-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--esp-3);
+  margin-bottom: var(--esp-4);
+}
+
+.recebimento-filtros .campo-wrapper {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.recebimento-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--esp-3);
+  white-space: nowrap;
+}
+
+.recebimento-linha-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+
+.recebimento-check {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.recebimento-vencido {
+  color: var(--erro);
+}
+
+@media (max-width: 479px) {
+  .recebimento-linha-dupla {
+    grid-template-columns: 1fr;
+  }
+}

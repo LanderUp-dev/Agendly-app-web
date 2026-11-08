@@ -7,7 +7,7 @@
  *  4. gera cypress/reports/html e docs/relatorio-testes.md
  * Sai com o código do Cypress (falhas aparecem no relatório, não são escondidas).
  *
- * Variáveis: CYPRESS_BASE_URL (padrão http://localhost:8080), CYPRESS_USER_EMAIL,
+ * Variáveis: CYPRESS_BASE_URL (padrão http://localhost:5173, o Vite), CYPRESS_USER_EMAIL,
  * CYPRESS_USER_PASSWORD, E2E_SUBIR_LAB (padrão 1).
  */
 import { spawnSync } from "node:child_process";
@@ -18,7 +18,7 @@ const raiz = path.resolve(
   path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")),
   "..",
 );
-const baseUrl = process.env.CYPRESS_BASE_URL || "http://localhost:8080";
+const baseUrl = process.env.CYPRESS_BASE_URL || "http://localhost:5173";
 const npx = process.platform === "win32" ? "npx.cmd" : "npx";
 
 const rodar = (cmd, args, opcoes = {}) => {

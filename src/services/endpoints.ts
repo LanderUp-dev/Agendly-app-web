@@ -160,4 +160,12 @@ export const areasFuncionarioService = {
 export const authService = {
   loginEmailSenha: (email: string, senha: string) =>
     api.post<AuthResponse>("/auth/login", { email, senha }).then((r) => r.data),
+  /** Sempre 200 (não revela se o e-mail tem conta). */
+  solicitarRecuperacao: (email: string) =>
+    api.post<void>("/auth/user/resetPassword", { email }).then(() => undefined),
+  /** 400 com mensagem em texto: código inválido/expirado, tentativas ou senha fraca. */
+  redefinirSenha: (email: string, codigo: string, novaSenha: string) =>
+    api
+      .post<void>("/auth/user/confirmResetPassword", { email, codigo, novaSenha })
+      .then(() => undefined),
 };

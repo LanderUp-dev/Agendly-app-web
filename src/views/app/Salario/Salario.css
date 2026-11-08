@@ -1,0 +1,57 @@
+/* @requisito RO-01 RO-03 */
+.salario-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  justify-content: flex-end;
+}
+
+.salario-extrato {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.salario-totais {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--esp-2);
+  margin: 0;
+}
+
+.salario-totais > div {
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md, 0.5rem);
+  padding: var(--esp-2) var(--esp-3);
+}
+
+.salario-totais dt {
+  font-size: var(--texto-sm);
+  color: var(--texto-secundario);
+}
+
+.salario-totais dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.salario-pergunta {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.salario-pergunta legend {
+  font-weight: var(--peso-titulo);
+  margin-bottom: var(--esp-2);
+}
+
+.salario-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}

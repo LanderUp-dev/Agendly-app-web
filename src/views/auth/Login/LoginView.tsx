@@ -1,4 +1,4 @@
-// @requisito RO-34 RO-41
+// @requisito RO-34 RO-40 RO-41
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -103,6 +103,9 @@ function FormEmailSenha({ onErro, erroId }: FormEmailSenhaProps) {
       >
         Entrar
       </Button>
+      <Link to="/recuperar-senha" className="link login-esqueci" data-cy="link-esqueci-senha">
+        Esqueci minha senha
+      </Link>
     </form>
   );
 }

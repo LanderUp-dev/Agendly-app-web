@@ -1,4 +1,4 @@
-# Lab Docker — Frontend (Agendly-app-web-main)
+# Lab Docker — Frontend (Agendly-app-web)
 
 Este compose sobe o **servidor Node do TanStack Start** e o **Nginx**, que é a única
 porta publicada no host. Front e API ficam no mesmo domínio, então não há CORS.
@@ -24,7 +24,7 @@ O backend precisa estar de pé antes, porque é o compose dele que cria a rede `
 
 ```bash
 cd ../Agendly-api && docker compose up -d --build     # se ainda não subiu
-cd ../Agendly-app-web-main
+cd ../Agendly-app-web
 cp .env.example .env
 docker compose up -d --build
 docker compose ps
@@ -58,7 +58,8 @@ npm run test:e2e        # sobe os dois composes, espera, roda e gera o relatóri
 | `npm run cy:report` | Junta os JSON → `cypress/reports/html/index.html` e `docs/relatorio-testes.md` |
 | `npm run test:e2e` | Sobe o lab (`E2E_SUBIR_LAB=0` para pular), espera, roda e gera o relatório |
 
-Variáveis: `CYPRESS_BASE_URL` (padrão `http://localhost:8080`), `CYPRESS_USER_EMAIL`, `CYPRESS_USER_PASSWORD`.
+Variáveis: `CYPRESS_BASE_URL` (padrão `http://localhost:5173`, o `npm run dev`; para testar pelo Nginx do lab use `http://localhost:8080`), `CYPRESS_USER_EMAIL`, `CYPRESS_USER_PASSWORD`,
+`CYPRESS_MAILPIT_URL` (padrão `http://localhost:8025`; a spec `13-recuperar-senha` lê o código na caixa do Mailpit).
 Para um banco só de testes, suba o compose do backend com `POSTGRES_DB=agendly_teste` em outro diretório/projeto
 (`docker compose -p agendly-teste ...`) e aponte `CYPRESS_BASE_URL` para o Nginx dele.
 

@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PoliticasDePrivacidadeRouteImport } from './routes/politicas-de-privacidade'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
@@ -26,6 +27,10 @@ import { Route as AuthenticatedCadastroEquipeRouteImport } from './routes/_authe
 import { Route as AuthenticatedCadastroFuncionarioRouteImport } from './routes/_authenticated.cadastro-funcionario'
 import { Route as AuthenticatedCadastroLojaRouteImport } from './routes/_authenticated.cadastro-loja'
 import { Route as AuthenticatedCadastroServicoRouteImport } from './routes/_authenticated.cadastro-servico'
+import { Route as AuthenticatedCaixaRouteImport } from './routes/_authenticated.caixa'
+import { Route as AuthenticatedClienteHistoricoRouteImport } from './routes/_authenticated.cliente-historico'
+import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated.despesas'
+import { Route as AuthenticatedFidelidadeRouteImport } from './routes/_authenticated.fidelidade'
 import { Route as AuthenticatedHorariosLojaRouteImport } from './routes/_authenticated.horarios-loja'
 import { Route as AuthenticatedListagemAreasAtuacaoRouteImport } from './routes/_authenticated.listagem-areas-atuacao'
 import { Route as AuthenticatedListagemAreasFuncionarioRouteImport } from './routes/_authenticated.listagem-areas-funcionario'
@@ -35,7 +40,10 @@ import { Route as AuthenticatedListagemEquipesRouteImport } from './routes/_auth
 import { Route as AuthenticatedListagemFuncionariosRouteImport } from './routes/_authenticated.listagem-funcionarios'
 import { Route as AuthenticatedListagemLojasRouteImport } from './routes/_authenticated.listagem-lojas'
 import { Route as AuthenticatedListagemServicosRouteImport } from './routes/_authenticated.listagem-servicos'
+import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated.painel'
 import { Route as AuthenticatedPlanoRouteImport } from './routes/_authenticated.plano'
+import { Route as AuthenticatedRecebimentosRouteImport } from './routes/_authenticated.recebimentos'
+import { Route as AuthenticatedSalariosRouteImport } from './routes/_authenticated.salarios'
 import { Route as AuthenticatedSelecionarLojaRouteImport } from './routes/_authenticated.selecionar-loja'
 
 const IndexRoute = IndexRouteImport.update({
@@ -60,6 +68,11 @@ const LoginRoute = LoginRouteImport.update({
 const PoliticasDePrivacidadeRoute = PoliticasDePrivacidadeRouteImport.update({
   id: '/politicas-de-privacidade',
   path: '/politicas-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -130,6 +143,27 @@ const AuthenticatedCadastroServicoRoute =
     path: '/cadastro-servico',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedCaixaRoute = AuthenticatedCaixaRouteImport.update({
+  id: '/caixa',
+  path: '/caixa',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedClienteHistoricoRoute =
+  AuthenticatedClienteHistoricoRouteImport.update({
+    id: '/cliente-historico',
+    path: '/cliente-historico',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
+  id: '/despesas',
+  path: '/despesas',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFidelidadeRoute = AuthenticatedFidelidadeRouteImport.update({
+  id: '/fidelidade',
+  path: '/fidelidade',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedHorariosLojaRoute =
   AuthenticatedHorariosLojaRouteImport.update({
     id: '/horarios-loja',
@@ -184,9 +218,25 @@ const AuthenticatedListagemServicosRoute =
     path: '/listagem-servicos',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedPlanoRoute = AuthenticatedPlanoRouteImport.update({
   id: '/plano',
   path: '/plano',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedRecebimentosRoute =
+  AuthenticatedRecebimentosRouteImport.update({
+    id: '/recebimentos',
+    path: '/recebimentos',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSalariosRoute = AuthenticatedSalariosRouteImport.update({
+  id: '/salarios',
+  path: '/salarios',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSelecionarLojaRoute =
@@ -201,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -213,6 +264,10 @@ export interface FileRoutesByFullPath {
   '/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
   '/cadastro-loja': typeof AuthenticatedCadastroLojaRoute
   '/cadastro-servico': typeof AuthenticatedCadastroServicoRoute
+  '/caixa': typeof AuthenticatedCaixaRoute
+  '/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
+  '/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/horarios-loja': typeof AuthenticatedHorariosLojaRoute
   '/listagem-areas-atuacao': typeof AuthenticatedListagemAreasAtuacaoRoute
   '/listagem-areas-funcionario': typeof AuthenticatedListagemAreasFuncionarioRoute
@@ -222,7 +277,10 @@ export interface FileRoutesByFullPath {
   '/listagem-funcionarios': typeof AuthenticatedListagemFuncionariosRoute
   '/listagem-lojas': typeof AuthenticatedListagemLojasRoute
   '/listagem-servicos': typeof AuthenticatedListagemServicosRoute
+  '/painel': typeof AuthenticatedPainelRoute
   '/plano': typeof AuthenticatedPlanoRoute
+  '/recebimentos': typeof AuthenticatedRecebimentosRoute
+  '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
 }
 export interface FileRoutesByTo {
@@ -230,6 +288,7 @@ export interface FileRoutesByTo {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -242,6 +301,10 @@ export interface FileRoutesByTo {
   '/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
   '/cadastro-loja': typeof AuthenticatedCadastroLojaRoute
   '/cadastro-servico': typeof AuthenticatedCadastroServicoRoute
+  '/caixa': typeof AuthenticatedCaixaRoute
+  '/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
+  '/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/horarios-loja': typeof AuthenticatedHorariosLojaRoute
   '/listagem-areas-atuacao': typeof AuthenticatedListagemAreasAtuacaoRoute
   '/listagem-areas-funcionario': typeof AuthenticatedListagemAreasFuncionarioRoute
@@ -251,7 +314,10 @@ export interface FileRoutesByTo {
   '/listagem-funcionarios': typeof AuthenticatedListagemFuncionariosRoute
   '/listagem-lojas': typeof AuthenticatedListagemLojasRoute
   '/listagem-servicos': typeof AuthenticatedListagemServicosRoute
+  '/painel': typeof AuthenticatedPainelRoute
   '/plano': typeof AuthenticatedPlanoRoute
+  '/recebimentos': typeof AuthenticatedRecebimentosRoute
+  '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
 }
 export interface FileRoutesById {
@@ -261,6 +327,7 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -273,6 +340,10 @@ export interface FileRoutesById {
   '/_authenticated/cadastro-funcionario': typeof AuthenticatedCadastroFuncionarioRoute
   '/_authenticated/cadastro-loja': typeof AuthenticatedCadastroLojaRoute
   '/_authenticated/cadastro-servico': typeof AuthenticatedCadastroServicoRoute
+  '/_authenticated/caixa': typeof AuthenticatedCaixaRoute
+  '/_authenticated/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
+  '/_authenticated/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/_authenticated/horarios-loja': typeof AuthenticatedHorariosLojaRoute
   '/_authenticated/listagem-areas-atuacao': typeof AuthenticatedListagemAreasAtuacaoRoute
   '/_authenticated/listagem-areas-funcionario': typeof AuthenticatedListagemAreasFuncionarioRoute
@@ -282,7 +353,10 @@ export interface FileRoutesById {
   '/_authenticated/listagem-funcionarios': typeof AuthenticatedListagemFuncionariosRoute
   '/_authenticated/listagem-lojas': typeof AuthenticatedListagemLojasRoute
   '/_authenticated/listagem-servicos': typeof AuthenticatedListagemServicosRoute
+  '/_authenticated/painel': typeof AuthenticatedPainelRoute
   '/_authenticated/plano': typeof AuthenticatedPlanoRoute
+  '/_authenticated/recebimentos': typeof AuthenticatedRecebimentosRoute
+  '/_authenticated/salarios': typeof AuthenticatedSalariosRoute
   '/_authenticated/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
 }
 export interface FileRouteTypes {
@@ -292,6 +366,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/politicas-de-privacidade'
+    | '/recuperar-senha'
     | '/register'
     | '/termos-de-uso'
     | '/admin'
@@ -304,6 +379,10 @@ export interface FileRouteTypes {
     | '/cadastro-funcionario'
     | '/cadastro-loja'
     | '/cadastro-servico'
+    | '/caixa'
+    | '/cliente-historico'
+    | '/despesas'
+    | '/fidelidade'
     | '/horarios-loja'
     | '/listagem-areas-atuacao'
     | '/listagem-areas-funcionario'
@@ -313,7 +392,10 @@ export interface FileRouteTypes {
     | '/listagem-funcionarios'
     | '/listagem-lojas'
     | '/listagem-servicos'
+    | '/painel'
     | '/plano'
+    | '/recebimentos'
+    | '/salarios'
     | '/selecionar-loja'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -321,6 +403,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/politicas-de-privacidade'
+    | '/recuperar-senha'
     | '/register'
     | '/termos-de-uso'
     | '/admin'
@@ -333,6 +416,10 @@ export interface FileRouteTypes {
     | '/cadastro-funcionario'
     | '/cadastro-loja'
     | '/cadastro-servico'
+    | '/caixa'
+    | '/cliente-historico'
+    | '/despesas'
+    | '/fidelidade'
     | '/horarios-loja'
     | '/listagem-areas-atuacao'
     | '/listagem-areas-funcionario'
@@ -342,7 +429,10 @@ export interface FileRouteTypes {
     | '/listagem-funcionarios'
     | '/listagem-lojas'
     | '/listagem-servicos'
+    | '/painel'
     | '/plano'
+    | '/recebimentos'
+    | '/salarios'
     | '/selecionar-loja'
   id:
     | '__root__'
@@ -351,6 +441,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/politicas-de-privacidade'
+    | '/recuperar-senha'
     | '/register'
     | '/termos-de-uso'
     | '/_authenticated/admin'
@@ -363,6 +454,10 @@ export interface FileRouteTypes {
     | '/_authenticated/cadastro-funcionario'
     | '/_authenticated/cadastro-loja'
     | '/_authenticated/cadastro-servico'
+    | '/_authenticated/caixa'
+    | '/_authenticated/cliente-historico'
+    | '/_authenticated/despesas'
+    | '/_authenticated/fidelidade'
     | '/_authenticated/horarios-loja'
     | '/_authenticated/listagem-areas-atuacao'
     | '/_authenticated/listagem-areas-funcionario'
@@ -372,7 +467,10 @@ export interface FileRouteTypes {
     | '/_authenticated/listagem-funcionarios'
     | '/_authenticated/listagem-lojas'
     | '/_authenticated/listagem-servicos'
+    | '/_authenticated/painel'
     | '/_authenticated/plano'
+    | '/_authenticated/recebimentos'
+    | '/_authenticated/salarios'
     | '/_authenticated/selecionar-loja'
   fileRoutesById: FileRoutesById
 }
@@ -382,6 +480,7 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   PoliticasDePrivacidadeRoute: typeof PoliticasDePrivacidadeRoute
+  RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   RegisterRoute: typeof RegisterRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
 }
@@ -421,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/politicas-de-privacidade'
       fullPath: '/politicas-de-privacidade'
       preLoaderRoute: typeof PoliticasDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -507,6 +613,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCadastroServicoRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/caixa': {
+      id: '/_authenticated/caixa'
+      path: '/caixa'
+      fullPath: '/caixa'
+      preLoaderRoute: typeof AuthenticatedCaixaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/cliente-historico': {
+      id: '/_authenticated/cliente-historico'
+      path: '/cliente-historico'
+      fullPath: '/cliente-historico'
+      preLoaderRoute: typeof AuthenticatedClienteHistoricoRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/despesas': {
+      id: '/_authenticated/despesas'
+      path: '/despesas'
+      fullPath: '/despesas'
+      preLoaderRoute: typeof AuthenticatedDespesasRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/fidelidade': {
+      id: '/_authenticated/fidelidade'
+      path: '/fidelidade'
+      fullPath: '/fidelidade'
+      preLoaderRoute: typeof AuthenticatedFidelidadeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/horarios-loja': {
       id: '/_authenticated/horarios-loja'
       path: '/horarios-loja'
@@ -570,11 +704,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedListagemServicosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/painel': {
+      id: '/_authenticated/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof AuthenticatedPainelRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/plano': {
       id: '/_authenticated/plano'
       path: '/plano'
       fullPath: '/plano'
       preLoaderRoute: typeof AuthenticatedPlanoRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/recebimentos': {
+      id: '/_authenticated/recebimentos'
+      path: '/recebimentos'
+      fullPath: '/recebimentos'
+      preLoaderRoute: typeof AuthenticatedRecebimentosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/salarios': {
+      id: '/_authenticated/salarios'
+      path: '/salarios'
+      fullPath: '/salarios'
+      preLoaderRoute: typeof AuthenticatedSalariosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/selecionar-loja': {
@@ -598,6 +753,10 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCadastroFuncionarioRoute: typeof AuthenticatedCadastroFuncionarioRoute
   AuthenticatedCadastroLojaRoute: typeof AuthenticatedCadastroLojaRoute
   AuthenticatedCadastroServicoRoute: typeof AuthenticatedCadastroServicoRoute
+  AuthenticatedCaixaRoute: typeof AuthenticatedCaixaRoute
+  AuthenticatedClienteHistoricoRoute: typeof AuthenticatedClienteHistoricoRoute
+  AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
+  AuthenticatedFidelidadeRoute: typeof AuthenticatedFidelidadeRoute
   AuthenticatedHorariosLojaRoute: typeof AuthenticatedHorariosLojaRoute
   AuthenticatedListagemAreasAtuacaoRoute: typeof AuthenticatedListagemAreasAtuacaoRoute
   AuthenticatedListagemAreasFuncionarioRoute: typeof AuthenticatedListagemAreasFuncionarioRoute
@@ -607,7 +766,10 @@ interface AuthenticatedRouteChildren {
   AuthenticatedListagemFuncionariosRoute: typeof AuthenticatedListagemFuncionariosRoute
   AuthenticatedListagemLojasRoute: typeof AuthenticatedListagemLojasRoute
   AuthenticatedListagemServicosRoute: typeof AuthenticatedListagemServicosRoute
+  AuthenticatedPainelRoute: typeof AuthenticatedPainelRoute
   AuthenticatedPlanoRoute: typeof AuthenticatedPlanoRoute
+  AuthenticatedRecebimentosRoute: typeof AuthenticatedRecebimentosRoute
+  AuthenticatedSalariosRoute: typeof AuthenticatedSalariosRoute
   AuthenticatedSelecionarLojaRoute: typeof AuthenticatedSelecionarLojaRoute
 }
 
@@ -623,6 +785,10 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCadastroFuncionarioRoute: AuthenticatedCadastroFuncionarioRoute,
   AuthenticatedCadastroLojaRoute: AuthenticatedCadastroLojaRoute,
   AuthenticatedCadastroServicoRoute: AuthenticatedCadastroServicoRoute,
+  AuthenticatedCaixaRoute: AuthenticatedCaixaRoute,
+  AuthenticatedClienteHistoricoRoute: AuthenticatedClienteHistoricoRoute,
+  AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
+  AuthenticatedFidelidadeRoute: AuthenticatedFidelidadeRoute,
   AuthenticatedHorariosLojaRoute: AuthenticatedHorariosLojaRoute,
   AuthenticatedListagemAreasAtuacaoRoute:
     AuthenticatedListagemAreasAtuacaoRoute,
@@ -636,7 +802,10 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedListagemFuncionariosRoute,
   AuthenticatedListagemLojasRoute: AuthenticatedListagemLojasRoute,
   AuthenticatedListagemServicosRoute: AuthenticatedListagemServicosRoute,
+  AuthenticatedPainelRoute: AuthenticatedPainelRoute,
   AuthenticatedPlanoRoute: AuthenticatedPlanoRoute,
+  AuthenticatedRecebimentosRoute: AuthenticatedRecebimentosRoute,
+  AuthenticatedSalariosRoute: AuthenticatedSalariosRoute,
   AuthenticatedSelecionarLojaRoute: AuthenticatedSelecionarLojaRoute,
 }
 
@@ -650,6 +819,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   PoliticasDePrivacidadeRoute: PoliticasDePrivacidadeRoute,
+  RecuperarSenhaRoute: RecuperarSenhaRoute,
   RegisterRoute: RegisterRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
 }

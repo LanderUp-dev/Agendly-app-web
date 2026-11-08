@@ -3,13 +3,13 @@ import fs from "node:fs";
 
 /**
  * Testes E2E do Agendly.
- * - baseUrl: CYPRESS_BASE_URL (padrão: Nginx do lab em http://localhost:8080).
+ * - baseUrl: CYPRESS_BASE_URL (padrão: Vite em http://localhost:5173; para o Nginx do lab use http://localhost:8080).
  * - Credenciais: CYPRESS_USER_EMAIL / CYPRESS_USER_PASSWORD (ou cypress.env.json, fora do Git).
  * - Rode SEMPRE contra o lab com banco de teste, nunca contra dados reais.
  */
 export default defineConfig({
   e2e: {
-    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:8080",
+    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:5173",
     specPattern: "cypress/e2e/**/*.cy.ts",
     supportFile: "cypress/support/e2e.ts",
     viewportWidth: 1280,

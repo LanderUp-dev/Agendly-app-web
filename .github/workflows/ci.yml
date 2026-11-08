@@ -1,4 +1,4 @@
-# CI/CD do frontend (Agendly-app-web-main)
+# CI/CD do frontend (Agendly-app-web)
 #   verificar  -> npm ci, TypeScript, testes unitários (vitest) e build de produção
 #   lint       -> ESLint + Prettier (bloqueia; avisos não bloqueiam)
 #   auditoria  -> npm audit (dependências com vulnerabilidade alta ou crítica)

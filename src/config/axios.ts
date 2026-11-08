@@ -158,6 +158,9 @@ api.interceptors.response.use(
       toast.error(mensagem, { id: "loja-sem-acesso" });
       irPara("/plano");
       return Promise.reject(error);
+    } else if (status === 400 && url.includes("/auth/user/")) {
+      // Recuperação de senha: a própria tela mostra a mensagem junto ao formulário.
+      return Promise.reject(error);
     } else if (status === 400) {
       mensagem = msgServidor || "Dados inválidos. Verifique as informações.";
     } else if (status === 404) {

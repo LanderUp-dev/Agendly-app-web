@@ -1,6 +1,6 @@
-// @requisito RO-37 RE-13
+// @requisito RO-37 RE-13 RO-12
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Receipt } from "lucide-react";
 import { toast } from "sonner";
 import { Badge, Button, Modal } from "@/components/ds";
 import { obterLojaAtiva } from "@/lib/auth";
@@ -21,6 +21,8 @@ interface Props {
   onFechar: () => void;
   /** Depois de mudar o status (a agenda recarrega). */
   onAlterado: () => void;
+  /** Abre a comanda para receber o pagamento (módulo financeiro). */
+  onFecharAtendimento?: (a: AgendamentoAgenda) => void;
 }
 
 /**
@@ -28,9 +30,15 @@ interface Props {
  * WhatsApp da loja com a mensagem pronta; quando o cliente responder, a recepção marca
  * "Confirmado" aqui.
  */
-export default function DetalheAgendamentoModal({ agendamento, onFechar, onAlterado }: Props) {
+export default function DetalheAgendamentoModal({
+  agendamento,
+  onFechar,
+  onAlterado,
+  onFecharAtendimento,
+}: Props) {
   const [salvando, setSalvando] = useState<string | null>(null);
   const podeEditar = temPermissao("AGENDAMENTO_EDITAR");
+  const podeCobrar = temPermissao("COMANDA_EDITAR") && !!onFecharAtendimento;
   const a = agendamento;
   const status = a?.status ?? "AGENDADO";
 
@@ -94,6 +102,20 @@ export default function DetalheAgendamentoModal({ agendamento, onFechar, onAlter
           </dl>
 
           <div className="detalhe-agendamento__acoes">
+            {podeCobrar &&
+              status !== "CANCELADO" &&
+              status !== "CONCLUIDO" &&
+              status !== "NAO_COMPARECEU" && (
+                <Button onClick={() => onFecharAtendimento?.(a)} data-cy="fechar-atendimento">
+                  <Receipt size={18} strokeWidth={1.75} aria-hidden="true" />
+                  Fechar atendimento e receber
+                </Button>
+              )}
+            {status === "CONCLUIDO" && (
+              <p className="texto-ajuda" data-cy="atendimento-pago">
+                Atendimento fechado e pago. Para desfazer, cancele a comanda na tela do Caixa.
+              </p>
+            )}
             {link ? (
               <a
                 href={link}

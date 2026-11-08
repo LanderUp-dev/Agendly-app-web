@@ -10,6 +10,8 @@ import AgendaHeader from "./agendaComponents/AgendaHeader";
 import AgendaGrid, { AgendaGridSkeleton } from "./agendaComponents/AgendaGrid";
 import AgendamentoModal from "./agendaComponents/AgendamentoModal";
 import DetalheAgendamentoModal from "./agendaComponents/DetalheAgendamentoModal";
+import ComandaModal from "./agendaComponents/ComandaModal";
+import "../Financeiro/Financeiro.css";
 import type { AgendamentoAgenda } from "@/services/endpoints";
 import PrimeirosPassos from "./agendaComponents/PrimeirosPassos";
 
@@ -18,6 +20,7 @@ import { funcionariosService, agendamentosService } from "@/services/endpoints";
 const AgendaView = () => {
   const [modalAberto, setModalAberto] = useState(false);
   const [detalhe, setDetalhe] = useState<AgendamentoAgenda | null>(null);
+  const [cobrando, setCobrando] = useState<AgendamentoAgenda | null>(null);
   const [painelAberto, setPainelAberto] = useState(false);
   const [dadosAgendamento, setDadosAgendamento] = useState({ profissional: "", hora: "" });
   const [intervaloTempo, setIntervaloTempo] = useState("60");
@@ -187,6 +190,16 @@ const AgendaView = () => {
         agendamento={detalhe}
         onFechar={() => setDetalhe(null)}
         onAlterado={() => agendamentos.recarregar()}
+        onFecharAtendimento={(a) => {
+          setDetalhe(null);
+          setCobrando(a);
+        }}
+      />
+
+      <ComandaModal
+        agendamento={cobrando}
+        onFechar={() => setCobrando(null)}
+        onFechado={() => agendamentos.recarregar()}
       />
 
       <AgendamentoModal

@@ -1,4 +1,4 @@
-// @requisito RS-02
+// @requisito RS-02 RO-42
 import { obterLojaAtiva } from "@/lib/auth";
 
 /**
@@ -24,7 +24,15 @@ export type Permissao =
   | "EQUIPE_VER"
   | "EQUIPE_EDITAR"
   | "LOJA_EDITAR"
-  | "ASSINATURA_GERENCIAR";
+  | "ASSINATURA_GERENCIAR"
+  | "COMANDA_EDITAR"
+  | "CAIXA_GERENCIAR"
+  | "FINANCEIRO_VER"
+  | "DESPESA_VER"
+  | "DESPESA_EDITAR"
+  | "RECEBIMENTO_VER"
+  | "RECEBIMENTO_EDITAR"
+  | "SALARIO_GERENCIAR";
 
 /** Tela -> permissão exigida. Telas fora daqui não exigem permissão (ex.: lojas, escolher loja). */
 export const PERMISSAO_DA_ROTA: Record<string, Permissao> = {
@@ -43,6 +51,13 @@ export const PERMISSAO_DA_ROTA: Record<string, Permissao> = {
   "/cadastro-cobrancista": "COBRANCISTA_EDITAR",
   "/listagem-equipes": "EQUIPE_VER",
   "/cadastro-equipe": "EQUIPE_EDITAR",
+  "/caixa": "CAIXA_GERENCIAR",
+  "/painel": "FINANCEIRO_VER",
+  "/despesas": "DESPESA_VER",
+  "/recebimentos": "RECEBIMENTO_VER",
+  "/salarios": "SALARIO_GERENCIAR",
+  "/fidelidade": "LOJA_EDITAR",
+  "/cliente-historico": "CLIENTE_VER",
 };
 
 /**
