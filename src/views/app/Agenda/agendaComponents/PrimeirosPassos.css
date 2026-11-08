@@ -1,0 +1,88 @@
+.primeiros-passos {
+  margin: var(--esp-4) var(--esp-4) 0;
+  padding: var(--esp-4) var(--esp-5);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-lg);
+  background-color: var(--fundo-pagina);
+}
+
+.primeiros-passos__topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.primeiros-passos__titulo {
+  margin: 0;
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+}
+
+.primeiros-passos__progresso {
+  margin: var(--esp-1) 0 0;
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+}
+
+.primeiros-passos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--esp-3);
+  margin: var(--esp-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.primeiros-passos__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-2);
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+}
+
+.primeiros-passos__item.is-atual {
+  color: var(--texto-principal);
+}
+
+.primeiros-passos__marca {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--campo-borda);
+  border-radius: var(--raio-pill);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-forte);
+  font-variant-numeric: tabular-nums;
+}
+
+.primeiros-passos__item.is-feito .primeiros-passos__marca {
+  border-color: var(--marca);
+  background-color: var(--marca);
+  color: var(--sobre-marca);
+}
+
+.primeiros-passos__item.is-feito .primeiros-passos__texto > span:first-child {
+  text-decoration: line-through;
+}
+
+.primeiros-passos__item.is-atual .primeiros-passos__marca {
+  border-color: var(--marca-texto);
+  color: var(--marca-texto);
+}
+
+.primeiros-passos__texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  padding-top: 0.125rem;
+}
+
+.primeiros-passos__motivo {
+  color: var(--texto-secundario);
+  font-size: var(--texto-xs);
+}

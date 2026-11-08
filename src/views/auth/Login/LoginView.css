@@ -1,0 +1,75 @@
+/* Login — card centralizado sobre o fundo da página (tokens em src/styles). */
+.login-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--esp-8) var(--margem-pagina);
+  background-color: var(--fundo-pagina);
+  box-sizing: border-box;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: var(--esp-10) var(--esp-8);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-lg);
+  background-color: var(--fundo-painel);
+  box-sizing: border-box;
+}
+
+/* Respiro do logo = altura do símbolo (28 px) */
+.login-logo {
+  margin-bottom: var(--esp-8);
+}
+
+.login-titulo {
+  margin: 0 0 var(--esp-2);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+  line-height: var(--altura-linha-titulo);
+  color: var(--texto-principal);
+}
+
+.login-subtitulo {
+  margin: 0 0 var(--esp-6);
+  font-size: var(--texto-sm);
+  color: var(--texto-secundario);
+}
+
+.login-alerta {
+  margin-bottom: var(--esp-5);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-5);
+}
+
+.login-form .btn {
+  margin-top: var(--esp-1);
+}
+
+.login-rodape {
+  margin: var(--esp-6) 0 0;
+  padding-top: var(--esp-5);
+  border-top: 1px solid var(--borda-sutil);
+  font-size: var(--texto-sm);
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 479px) {
+  .login-pagina {
+    align-items: flex-start;
+    padding-top: var(--esp-6);
+  }
+
+  .login-card {
+    padding: var(--esp-6) var(--esp-5);
+    border: none;
+    background-color: transparent;
+  }
+}

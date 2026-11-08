@@ -1,0 +1,47 @@
+# Lab Agendly — FRONTEND: servidor Node (TanStack Start) + Nginx.
+# O Nginx é a ÚNICA porta publicada no host:
+#   /api/ -> backend:8080 (compose do Agendly-api, rede "agendly-rede")
+#   /     -> frontend:3000
+# Suba o compose do Agendly-api ANTES (ele cria a rede). Veja LAB.md.
+
+name: agendly-web
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        # Front e API no mesmo domínio via Nginx: caminho relativo, sem CORS.
+        VITE_API_BASE_URL: /api/v1
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+    networks: [agendly]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      frontend:
+        condition: service_healthy
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [agendly]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  agendly:
+    name: agendly-rede
+    external: true # criada pelo compose do Agendly-api

@@ -1,0 +1,128 @@
+/* Cadastro de conta — mesma estrutura do Login (LoginView.css) com card mais largo. */
+.register-card {
+  max-width: 560px;
+}
+
+.register-logo {
+  display: inline-flex;
+  margin-bottom: var(--esp-8);
+  border-radius: var(--raio-sm);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-5);
+}
+
+.register-secao {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Fieldsets separados só por espaço (borda no fieldset atravessaria a legenda) */
+.register-secao + .register-secao {
+  margin-top: var(--esp-2);
+}
+
+.register-secao-titulo {
+  margin-bottom: var(--esp-4);
+  padding: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  color: var(--texto-principal);
+}
+
+/* ------------------------------------------- Senha com botão de olho */
+.register-input-senha {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-input-senha input {
+  padding-right: 3rem;
+}
+
+.register-btn-olho {
+  position: absolute;
+  right: var(--esp-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-sm);
+  background: none;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.register-btn-olho:hover {
+  background-color: var(--fundo-hover);
+  color: var(--texto-principal);
+}
+
+/* --------------------------------------------- Requisitos da senha */
+.register-checklist {
+  grid-column: span 12;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2) var(--esp-4);
+  margin: calc(var(--esp-2) * -1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.register-checklist li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  font-size: var(--texto-xs);
+  color: var(--texto-secundario);
+}
+
+.register-checklist li.ok {
+  color: var(--sucesso);
+  font-weight: var(--peso-medio);
+}
+
+/* ---------------------------------------------------------- Termos */
+.register-termos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding-top: var(--esp-5);
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.register-termos:focus {
+  outline: none;
+}
+
+.register-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  font-size: var(--texto-sm);
+  line-height: 1.45;
+  color: var(--texto-principal);
+  cursor: pointer;
+}
+
+.register-checkbox-label input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0.1rem 0 0;
+  accent-color: var(--marca);
+  cursor: pointer;
+}
+
+.register-aviso-termos {
+  margin: 0;
+}

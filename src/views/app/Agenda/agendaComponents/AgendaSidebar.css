@@ -1,0 +1,108 @@
+.agenda-lateral {
+  display: flex;
+  flex-direction: column;
+  width: 18rem;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--borda-sutil);
+  background-color: var(--fundo-painel);
+}
+
+.agenda-lateral__secao {
+  padding: var(--esp-5) var(--esp-5);
+}
+
+.agenda-lateral__secao + .agenda-lateral__secao {
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.agenda-lateral__titulo {
+  margin: 0 0 var(--esp-3);
+  color: var(--texto-principal);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
+.agenda-lateral__vazio {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+}
+
+.agenda-lateral__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+}
+
+.agenda-lateral__opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  min-height: 2.25rem;
+  padding: 0 var(--esp-2);
+  border-radius: var(--raio-md);
+  color: var(--texto-principal);
+  font-size: var(--texto-sm);
+  cursor: pointer;
+}
+
+.agenda-lateral__opcao:hover {
+  background-color: var(--fundo-hover);
+}
+
+.agenda-lateral__opcao input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--marca);
+}
+
+.agenda-legenda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--texto-sm);
+  color: var(--texto-principal);
+}
+
+.agenda-legenda li {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.agenda-legenda__cor {
+  width: 1rem;
+  height: 1rem;
+  border-left: 3px solid;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* Tablet/mobile: a lateral vira painel que desliza sobre a grade */
+@media (max-width: 1023px) {
+  .agenda-lateral {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: var(--z-dropdown);
+    width: min(20rem, 88vw);
+    box-shadow: var(--elevacao-2);
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition:
+      transform var(--duracao-lenta) var(--curva),
+      visibility 0s linear var(--duracao-lenta);
+  }
+
+  .agenda-lateral--aberta {
+    transform: none;
+    visibility: visible;
+    transition: transform var(--duracao-lenta) var(--curva);
+  }
+}

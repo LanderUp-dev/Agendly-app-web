@@ -1,0 +1,432 @@
+/* ==========================================================================
+   AGENDLY — BASE E COMPONENTES DO DESIGN SYSTEM
+   Usa somente os tokens de tokens.css.
+   ========================================================================== */
+
+/* ------------------------------------------------------------- Base -- */
+body {
+  margin: 0;
+  font-family: var(--fonte-base);
+  line-height: var(--altura-linha);
+  background-color: var(--fundo-pagina);
+  color: var(--texto-principal);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visível e consistente para teclado (WCAG 2.4.7) */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Autofill do navegador acompanhando o tema (claro e escuro) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--texto-principal);
+  caret-color: var(--texto-principal);
+  box-shadow: 0 0 0 1000px var(--campo-fundo) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------- Cabeçalhos -- */
+.crud-header {
+  margin-bottom: var(--esp-6);
+}
+
+.crud-titulo-pagina {
+  color: var(--texto-principal);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-titulo);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--esp-1);
+}
+
+.crud-subtitulo-pagina {
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  margin: 0;
+}
+
+/* ------------------------------------------------------- Formulário -- */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-5);
+  width: 100%;
+}
+
+.form-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-4) var(--esp-5);
+  width: 100%;
+}
+
+.campo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  flex: 1;
+  min-width: min(100%, 200px);
+}
+
+.campo-wrapper > label,
+.campo-label {
+  color: var(--texto-principal);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+/* Marca visual de obrigatório (leitores de tela já anunciam o `required`) */
+.campo-wrapper:has(:required) > label::after,
+.campo-label.obrigatorio::after {
+  content: " *";
+  color: var(--erro);
+}
+
+.campo,
+.campo-wrapper input,
+.campo-wrapper select,
+.campo-wrapper textarea {
+  width: 100%;
+  min-height: var(--altura-controle);
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--campo-borda);
+  border-radius: var(--raio-md);
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  font: inherit;
+  font-size: var(--texto-md); /* 16px evita zoom automático no iOS */
+  box-sizing: border-box;
+  transition:
+    border-color var(--transicao-rapida),
+    box-shadow var(--transicao-rapida),
+    background-color var(--transicao);
+}
+
+.campo:hover,
+.campo-wrapper :is(input, select, textarea):hover {
+  border-color: var(--campo-borda-hover);
+}
+
+.campo:focus,
+.campo-wrapper :is(input, select, textarea):focus {
+  outline: none;
+  border-color: var(--campo-borda-foco);
+  box-shadow: 0 0 0 3px var(--foco-sombra);
+}
+
+.campo:focus-visible,
+.campo-wrapper :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 1px;
+}
+
+.campo::placeholder,
+.campo-wrapper :is(input, textarea)::placeholder {
+  color: var(--texto-terciario);
+  opacity: 1;
+}
+
+.campo:disabled,
+.campo-wrapper :is(input, select, textarea):disabled {
+  background-color: var(--campo-desabilitado);
+  color: var(--texto-terciario);
+  cursor: not-allowed;
+}
+
+.campo-wrapper select {
+  cursor: pointer;
+}
+
+.campo-wrapper textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+/* Estado de erro: aria-invalid (programático) ou validação nativa após interação */
+.campo[aria-invalid="true"],
+.campo-wrapper :is(input, select, textarea)[aria-invalid="true"],
+.campo-wrapper :is(input, select, textarea):user-invalid {
+  border-color: var(--erro-borda);
+}
+
+.campo[aria-invalid="true"]:focus,
+.campo-wrapper :is(input, select, textarea)[aria-invalid="true"]:focus,
+.campo-wrapper :is(input, select, textarea):user-invalid:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--erro-borda) 25%, transparent);
+}
+
+.campo-ajuda {
+  color: var(--texto-secundario);
+  font-size: var(--texto-xs);
+}
+
+.campo-erro {
+  color: var(--erro);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+}
+
+.form-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-3);
+  margin-top: var(--esp-2);
+}
+
+/* ----------------------------------------------------------- Botões -- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: var(--altura-controle);
+  padding: var(--esp-2) var(--esp-5);
+  border: 1px solid transparent;
+  border-radius: var(--raio-md);
+  font: inherit;
+  font-size: var(--texto-md);
+  font-weight: var(--peso-forte);
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--transicao-rapida),
+    border-color var(--transicao-rapida),
+    color var(--transicao-rapida);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-bloco {
+  width: 100%;
+}
+
+.btn-primario {
+  background-color: var(--marca);
+  color: var(--sobre-marca);
+}
+
+.btn-primario:hover:not(:disabled) {
+  background-color: var(--marca-hover);
+}
+
+.btn-secundario {
+  background-color: var(--fundo-painel);
+  border-color: var(--campo-borda);
+  color: var(--texto-principal);
+}
+
+.btn-secundario:hover:not(:disabled) {
+  background-color: var(--fundo-hover);
+  border-color: var(--campo-borda-hover);
+}
+
+.btn-perigo {
+  background-color: var(--fundo-painel);
+  border-color: var(--erro-borda);
+  color: var(--erro);
+}
+
+.btn-perigo:hover:not(:disabled) {
+  background-color: var(--erro-fundo);
+}
+
+.btn-fantasma {
+  background-color: transparent;
+  color: var(--texto-secundario);
+}
+
+.btn-fantasma:hover:not(:disabled) {
+  background-color: var(--fundo-hover);
+  color: var(--texto-principal);
+}
+
+.btn-icone {
+  min-width: var(--altura-controle);
+  padding: var(--esp-2);
+}
+
+.btn:disabled {
+  background-color: var(--botao-desativado);
+  border-color: transparent;
+  color: var(--botao-desativado-texto);
+  cursor: not-allowed;
+}
+
+/* Carregando: mantém a largura e mostra um spinner antes do texto */
+.btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+.btn[aria-busy="true"]::before {
+  flex-shrink: 0;
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ds-girar 0.7s linear infinite;
+}
+
+@keyframes ds-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ----------------------------------------------------------- Alertas -- */
+.alerta {
+  display: flex;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid transparent;
+  border-radius: var(--raio-md);
+  font-size: var(--texto-sm);
+  line-height: 1.45;
+}
+
+.alerta-erro {
+  background-color: var(--erro-fundo);
+  border-color: var(--erro-borda);
+  color: var(--erro);
+}
+
+.alerta-info {
+  background-color: var(--info-fundo);
+  border-color: color-mix(in srgb, var(--info) 45%, transparent);
+  color: var(--texto-principal);
+}
+
+.alerta-aviso {
+  background-color: var(--aviso-fundo);
+  border-color: color-mix(in srgb, var(--aviso) 45%, transparent);
+  color: var(--texto-principal);
+}
+
+/* ------------------------------------------------------------- Links -- */
+.link {
+  color: var(--marca-texto);
+  font-weight: var(--peso-forte);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.link:active {
+  opacity: 0.7;
+}
+
+/* ---------------------------------------------- Listagens (tabelas) -- */
+.listagem-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--esp-4);
+  margin-bottom: var(--esp-6);
+}
+
+.tabela-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-painel);
+}
+
+.tabela-SaaS {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--texto-sm);
+}
+
+.tabela-SaaS th {
+  padding: var(--esp-3) var(--esp-4);
+  background-color: var(--fundo-elevado);
+  color: var(--texto-secundario);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-forte);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+.tabela-SaaS td {
+  padding: var(--esp-3) var(--esp-4);
+  color: var(--texto-principal);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+.tabela-SaaS tbody tr:hover td {
+  background-color: var(--fundo-hover);
+}
+
+.tabela-SaaS tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.btn-acao-tabela {
+  min-height: 2.25rem;
+  padding: var(--esp-1) var(--esp-3);
+  border: 1px solid var(--campo-borda);
+  border-radius: var(--raio-sm);
+  background-color: transparent;
+  color: var(--texto-principal);
+  font: inherit;
+  font-size: var(--texto-sm);
+  cursor: pointer;
+}
+
+.btn-acao-tabela:hover {
+  border-color: var(--erro-borda);
+  color: var(--erro);
+}
+
+/* Botão com aparência de link (ações dentro de texto) */
+.link-botao {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--marca-texto);
+  font: inherit;
+  font-weight: var(--peso-forte);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}

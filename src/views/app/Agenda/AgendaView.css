@@ -1,0 +1,57 @@
+/* Agenda: navbar + (lateral | barra + grade), ocupando a altura da janela. */
+.agenda-pagina {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--fundo-pagina);
+  color: var(--texto-principal);
+}
+
+.agenda-corpo {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.agenda-principal {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.agenda-principal:focus {
+  outline: none;
+}
+
+.agenda-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background-color: var(--fundo-painel);
+}
+
+.agenda-area > [data-cy="carregando"] {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.agenda-veu {
+  position: absolute;
+  inset: 0;
+  z-index: calc(var(--z-dropdown) - 1);
+  background-color: var(--overlay);
+}
+
+@media (min-width: 1024px) {
+  .agenda-veu {
+    display: none;
+  }
+}

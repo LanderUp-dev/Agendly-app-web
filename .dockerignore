@@ -1,0 +1,16 @@
+node_modules
+dist
+.output
+.nitro
+.tanstack
+.git
+.env
+.env.*
+!.env.example
+*.log
+nginx
+docker-compose.yml
+LAB.md
+cypress
+docs
+scripts

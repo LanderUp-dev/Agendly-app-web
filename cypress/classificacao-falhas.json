@@ -1,0 +1,36 @@
+{
+  "Cadastros › Equipe › vincula usuário à loja": {
+    "classe": "Dependência de backend",
+    "causa": "EquipeController usa @RequiredArgsConstructor com campos NÃO final: EquipeService, UsuarioService, LojaService e CargoService ficam nulos. O converter dá NullPointerException, capturada e devolvida como 400 sem mensagem. Correção no backend: declarar os campos como `private final`.",
+    "passos": "Logar → /cadastro-equipe → escolher usuário e loja → Vincular. O front envia { idUsuario, idLoja } numéricos (conferido); o backend responde 400."
+  },
+  "Listagens › Equipes › carrega com dados reais da API": {
+    "classe": "Dependência de backend",
+    "causa": "GET /api/v1/equipes responde 500 pelo mesmo motivo (service nulo no EquipeController). A tela mostra corretamente o estado de erro com \"Tentar novamente\"; o teste falha porque espera 200.",
+    "passos": "Logar → /listagem-equipes. A API responde 500."
+  },
+  "Segurança › PENDENTE (backend): POST /usuarios não deveria devolver o hash da senha": {
+    "classe": "Dependência de backend (segurança)",
+    "causa": "UsuarioController.post devolve a entidade Usuario em vez de UsuarioDTO, incluindo o hash BCrypt do campo `senha`. Correção no backend: responder com UsuarioDTO.create(usuario) (o DTO já marca senha como WRITE_ONLY).",
+    "passos": "POST /api/v1/usuarios com dados válidos → a resposta 201 contém `senha: $2a$10$...`."
+  },
+  "__relatorio": {
+    "observacoes": [
+      "Execução local SEM Docker (o Docker Desktop não inicia nesta máquina): frontend em Vite dev (proxy /api) + backend Spring real (mesmo jar, perfil prod, config de config/) com H2 em memória no lugar do Postgres. O H2 entra só no classpath da execução (loader.path), sem mudar o pom.",
+      "No lab (Ubuntu + Docker) rode `npm run test:e2e` com CYPRESS_BASE_URL apontando para o Nginx e um banco só de testes.",
+      "Execução 1 (antes das correções): 26 falhas. Três causas: (a) bug de frontend — Login e Cadastro de conta são SSR e um clique antes da hidratação fazia envio nativo do formulário, sem chamar a API (corrigido: botões desabilitados até hidratar); (b) comandos do Cypress descartados pelo bundler porque o package.json tem \"sideEffects\": false (corrigido no suporte dos testes); (c) 403 com token de assinatura inválida não encerrava a sessão (corrigido no interceptor do axios).",
+      "Teste de erro 500 ajustado: no modo dev o React (StrictMode) chama o efeito duas vezes, então o mock passou a falhar até o clique em \"Tentar novamente\".",
+      "Confirmado que o ClienteDTO.sobreNome é copiado para Cliente.sobrenome (o risco apontado na análise não se confirmou).",
+      "Limpeza: não há exclusão em lote no backend. Os dados criados usam sufixo único e e-mails @e2e.test; no lab, apague o volume do banco de testes (docker compose -p agendly-teste down -v)."
+    ],
+    "recomendacoes": [
+      "Backend — tornar `final` os campos do EquipeController (destrava cadastro e listagem de equipes e o login com contexto de loja).",
+      "Backend — POST/PUT /usuarios devem responder UsuarioDTO, sem o hash da senha. O mesmo vale para GET /equipes, que devolve a entidade.",
+      "Backend — criar controller de AreaFuncionario e de Cargo; hoje o vínculo Área x Funcionário e o cargo na equipe não têm como ser gravados (testes marcados como pendentes).",
+      "Backend — devolver erros de validação/duplicidade como mensagem própria (hoje vem SQL cru em 400) e configurar AuthenticationEntryPoint (401 em vez de 403 para sessão inválida).",
+      "Backend — corrigir os testes unitários que não compilam (EquipeDTOTest, EquipeServiceTest) para voltar a rodar `mvn test` no CI.",
+      "Frontend — integrar o modal de agendamento à API (POST /agendamentos) e, depois, o arrastar-e-soltar (PUT); hoje a tela informa que não salva.",
+      "Lab — rodar esta suíte no Docker com Postgres de teste e anexar o relatório gerado."
+    ]
+  }
+}

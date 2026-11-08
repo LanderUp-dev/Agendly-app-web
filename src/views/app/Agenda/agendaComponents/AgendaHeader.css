@@ -1,0 +1,109 @@
+.agenda-barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3) var(--esp-4);
+  padding: var(--esp-3) var(--esp-4);
+  border-bottom: 1px solid var(--borda-sutil);
+  background-color: var(--fundo-painel);
+}
+
+.agenda-barra__data {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  min-width: 0;
+}
+
+.agenda-barra__setas {
+  display: flex;
+}
+
+.agenda-barra__titulo {
+  margin: 0 0 0 var(--esp-2);
+  overflow: hidden;
+  color: var(--texto-principal);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-titulo);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.agenda-barra__titulo::first-letter {
+  text-transform: uppercase;
+}
+
+.agenda-barra__acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+/* Botão de filtros só aparece quando a lateral está recolhida */
+@media (min-width: 1024px) {
+  .agenda-barra__filtros {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------ Controle segmentado */
+.segmentado {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--campo-borda);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-painel);
+}
+
+.segmentado__opcao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 var(--esp-3);
+  border-radius: calc(var(--raio-md) - 2px);
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.segmentado__opcao:hover {
+  color: var(--texto-principal);
+}
+
+.segmentado__opcao.ativo {
+  background-color: var(--marca-suave);
+  color: var(--marca-texto);
+  font-weight: var(--peso-forte);
+}
+
+.segmentado__opcao:has(input:focus-visible) {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 1px;
+}
+
+@media (max-width: 767px) {
+  .agenda-barra {
+    padding: var(--esp-2) var(--esp-3);
+  }
+
+  .agenda-barra__titulo {
+    font-size: var(--texto-md);
+  }
+
+  .agenda-barra__filtros span {
+    display: none;
+  }
+
+  .agenda-barra__filtros {
+    min-width: var(--altura-controle);
+    padding: var(--esp-2);
+  }
+
+  .agenda-barra__acoes {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

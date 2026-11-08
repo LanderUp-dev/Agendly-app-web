@@ -1,0 +1,161 @@
+/* Modal de agendamento — botões usam .btn (src/styles/base.css). */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--esp-4);
+  background-color: var(--overlay);
+}
+
+.modal-content-expanded {
+  width: 560px;
+  max-width: 100%;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: var(--esp-6) var(--esp-8);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-xl);
+  background-color: var(--fundo-painel);
+  box-shadow: var(--sombra-elevada);
+  color: var(--texto-principal);
+  animation: modal-entrar 0.2s ease-out;
+  box-sizing: border-box;
+}
+
+@keyframes modal-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-titulo {
+  margin: 0 0 var(--esp-5);
+  padding-bottom: var(--esp-4);
+  border-bottom: 1px solid var(--borda-sutil);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-titulo);
+  color: var(--texto-principal);
+}
+
+.modal-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+  margin-bottom: var(--esp-6);
+}
+
+.modal-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-4);
+}
+
+.modal-field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--esp-2);
+  min-width: min(100%, 180px);
+}
+
+.modal-field.full-width {
+  flex: none;
+}
+
+.modal-field label {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  color: var(--texto-principal);
+}
+
+.modal-input {
+  width: 100%;
+  min-height: var(--altura-controle);
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--campo-borda);
+  border-radius: var(--raio-md);
+  background-color: var(--campo-fundo);
+  color: var(--texto-principal);
+  font: inherit;
+  font-size: var(--texto-md);
+  box-sizing: border-box;
+}
+
+.modal-input::placeholder {
+  color: var(--texto-terciario);
+}
+
+.modal-input:hover {
+  border-color: var(--campo-borda-hover);
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: var(--campo-borda-foco);
+  box-shadow: 0 0 0 3px var(--foco-sombra);
+}
+
+.modal-input:focus-visible {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 1px;
+}
+
+textarea.modal-input {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.cliente-input-group {
+  display: flex;
+  gap: var(--esp-2);
+}
+
+.cliente-input-group .modal-input {
+  flex: 1;
+}
+
+.btn-add-cliente {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--altura-controle);
+  height: var(--altura-controle);
+  border: 1px solid var(--marca-texto);
+  border-radius: var(--raio-md);
+  background-color: transparent;
+  color: var(--marca-texto);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.btn-add-cliente:hover {
+  background-color: var(--marca-suave);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--esp-3);
+  padding-top: var(--esp-5);
+  border-top: 1px solid var(--borda-sutil);
+}
+
+@media (max-width: 520px) {
+  .modal-content-expanded {
+    padding: var(--esp-5);
+  }
+
+  .modal-actions .btn {
+    flex: 1;
+  }
+}
