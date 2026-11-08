@@ -1,5 +1,6 @@
 // @requisito RS-03 RS-01
 import { credenciais } from "../support/commands";
+import { gerarCPF, gerarCelular } from "../support/dados";
 
 /** JWT com formato e validade certos, mas assinatura falsa. */
 const tokenForjado = (extra: Record<string, unknown> = {}) => {
@@ -85,8 +86,8 @@ describe("Segurança", () => {
         nome: "Hash",
         sobrenome: "Teste",
         email,
-        celular: "32999990000",
-        cpf: "52998224725",
+        celular: gerarCelular(), // RNR-01: CPF e celular não podem repetir entre execuções
+        cpf: gerarCPF(),
         dtaNascimento: "1990-01-01",
         senha: "Senha1234",
       },

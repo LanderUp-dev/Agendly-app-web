@@ -167,8 +167,16 @@ api.interceptors.response.use(
       mensagem = msgServidor || "Registro não encontrado.";
     } else if (status === 409) {
       mensagem = msgServidor || "Este registro já existe.";
+    } else if (status === 429) {
+      // Limite de tentativas (login, cadastro, recuperação): o backend diz quanto esperar.
+      mensagem = msgServidor || "Muitas tentativas. Aguarde alguns minutos e tente de novo.";
     } else if (status && status >= 500) {
-      mensagem = "Erro interno no servidor. Tente novamente mais tarde.";
+      // O backend (TratamentoErros) manda só "Erro interno... código XXXX": mostrar o código
+      // ajuda o suporte a achar o erro no log. Qualquer outro texto de 5xx é ignorado.
+      mensagem =
+        msgServidor && msgServidor.startsWith("Erro interno")
+          ? msgServidor
+          : "Erro interno no servidor. Tente novamente mais tarde.";
     } else {
       mensagem = msgServidor || "Erro inesperado ao comunicar com o servidor.";
     }

@@ -134,9 +134,8 @@ describe("Cadastro de conta", () => {
     preencher({ ...c, cpf: gerarCPF() });
     cy.get("[data-cy=cadastro-enviar]").click();
     cy.wait("@cadastro").its("response.statusCode").should("eq", 400);
-    cy.contains("[data-sonner-toast]", "Já existe um cadastro com estes dados").should(
-      "be.visible",
-    );
+    // RNR-01: o backend responde com a regra (não mais com o erro do banco).
+    cy.contains("[data-sonner-toast]", "Este e-mail já está cadastrado").should("be.visible");
     cy.get("body").should("not.contain", "insert into").and("not.contain", "constraint");
     cy.location("pathname").should("eq", "/register");
   });

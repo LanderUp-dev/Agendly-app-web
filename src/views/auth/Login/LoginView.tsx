@@ -1,4 +1,4 @@
-// @requisito RO-34 RO-40 RO-41
+// @requisito RO-34 RO-40 RO-41 RS-08
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -49,6 +49,14 @@ function FormEmailSenha({ onErro, erroId }: FormEmailSenhaProps) {
         onErro("E-mail ou senha incorretos.");
       } else if (status === 400) {
         onErro("Informe um e-mail válido e a senha.");
+      } else if (status === 429) {
+        // Texto fixo do backend ("Muitas tentativas... Tente de novo em N minutos.")
+        const texto = isAxiosError(err) ? err.response?.data : undefined;
+        onErro(
+          typeof texto === "string" && texto.startsWith("Muitas tentativas")
+            ? texto
+            : "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+        );
       } else {
         onErro("Não foi possível entrar agora. Tente novamente.");
       }
