@@ -5,7 +5,9 @@
   color: var(--texto-principal);
   padding: 40px 20px 80px;
   box-sizing: border-box;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .legal-container {

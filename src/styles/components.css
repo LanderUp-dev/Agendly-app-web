@@ -6,38 +6,24 @@
    ========================================================================== */
 
 /* ------------------------------------------------------------------ Logo */
+/* Só o nome, em texto (sem símbolo): a serifa da marca, na cor do contexto. */
 .logo {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  color: var(--texto-principal);
+  color: inherit;
+  font-family: var(--fonte-marca);
+  font-size: var(--logo-altura);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
-  line-height: 0;
-}
-
-.logo svg {
-  display: block;
-  height: var(--logo-altura);
-  min-height: var(--logo-minimo);
-  width: auto; /* proporção sempre pelo viewBox: nunca esticado */
 }
 
 .logo--claro {
   color: var(--sobre-marca);
-}
-
-.logo__simbolo {
-  display: none;
-}
-
-/* Regra de troca: abaixo de 360 px só o símbolo (o nome ficaria < 20 px de respiro) */
-@media (max-width: 359px) {
-  .logo--auto .logo__horizontal {
-    display: none;
-  }
-  .logo--auto .logo__simbolo {
-    display: inline-flex;
-  }
 }
 
 /* --------------------------------------------------------------- Navbar */
@@ -46,8 +32,45 @@
   top: 0;
   z-index: var(--z-navbar);
   height: var(--navbar-altura);
-  border-bottom: 1px solid var(--borda-sutil);
-  background-color: var(--fundo-painel);
+  border-bottom: 1px solid var(--floresta-borda);
+  background-color: var(--floresta);
+  color: var(--sobre-floresta);
+}
+
+/* Navbar em faixa verde (como a home): controles claros sobre o verde,
+   painéis que abrem dela voltam às cores normais do tema. */
+.app-navbar .btn-fantasma {
+  color: var(--sobre-floresta-suave);
+}
+
+.app-navbar .btn-fantasma:hover {
+  background-color: var(--floresta-elevada);
+  color: var(--sobre-floresta);
+}
+
+.app-navbar .app-navbar__sair {
+  border-color: var(--floresta-borda);
+  background-color: transparent;
+  color: var(--sobre-floresta);
+}
+
+.app-navbar .app-navbar__sair:hover {
+  border-color: var(--sobre-floresta-suave);
+  background-color: var(--floresta-elevada);
+}
+
+.app-navbar :focus-visible {
+  outline-color: var(--floresta-destaque);
+}
+
+.app-navbar .menu__painel,
+.app-navbar .sino__painel {
+  color: var(--texto-principal);
+}
+
+.app-navbar .menu__painel :focus-visible,
+.app-navbar .sino__painel :focus-visible {
+  outline-color: var(--foco-anel);
 }
 
 .app-navbar__interno {
@@ -78,21 +101,22 @@
   height: 2.25rem;
   padding: 0 var(--esp-3);
   border-radius: var(--raio-md);
-  color: var(--texto-secundario);
+  color: var(--sobre-floresta-suave);
   font-size: var(--texto-sm);
   font-weight: var(--peso-medio);
   text-decoration: none;
 }
 
 .app-navbar__link:hover {
-  background-color: var(--fundo-hover);
-  color: var(--texto-principal);
+  background-color: var(--floresta-elevada);
+  color: var(--sobre-floresta);
 }
 
 .app-navbar__link[data-status="active"],
 .app-navbar__link[aria-current="page"] {
-  background-color: var(--marca-suave);
-  color: var(--marca-texto);
+  background-color: var(--floresta-elevada);
+  color: var(--sobre-floresta);
+  box-shadow: inset 0 -2px 0 var(--floresta-destaque);
 }
 
 .app-navbar__acoes {
@@ -102,18 +126,8 @@
   margin-left: auto;
 }
 
-.app-navbar__usuario {
-  color: var(--texto-secundario);
-  font-size: var(--texto-sm);
-  white-space: nowrap;
-  max-width: 14ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @media (max-width: 767px) {
-  .app-navbar__nav,
-  .app-navbar__usuario {
+  .app-navbar__nav {
     display: none;
   }
 }
@@ -139,10 +153,18 @@
   gap: var(--esp-6);
 }
 
-.col-12 { grid-column: span 12; }
-.col-8 { grid-column: span 8; }
-.col-6 { grid-column: span 6; }
-.col-4 { grid-column: span 4; }
+.col-12 {
+  grid-column: span 12;
+}
+.col-8 {
+  grid-column: span 8;
+}
+.col-6 {
+  grid-column: span 6;
+}
+.col-4 {
+  grid-column: span 4;
+}
 
 @media (max-width: 1023px) {
   .col-8,
@@ -245,9 +267,18 @@
   white-space: nowrap;
 }
 
-.badge--marca { background-color: var(--marca-suave); color: var(--marca-texto); }
-.badge--erro { background-color: var(--erro-fundo); color: var(--erro); }
-.badge--aviso { background-color: var(--aviso-fundo); color: var(--aviso); }
+.badge--marca {
+  background-color: var(--marca-suave);
+  color: var(--marca-texto);
+}
+.badge--erro {
+  background-color: var(--erro-fundo);
+  color: var(--erro);
+}
+.badge--aviso {
+  background-color: var(--aviso-fundo);
+  color: var(--aviso);
+}
 
 /* ------------------------------------------------- EmptyState / ErrorState */
 .estado {
@@ -319,8 +350,12 @@
 }
 
 @keyframes skeleton-brilho {
-  from { background-position: 100% 0; }
-  to { background-position: -100% 0; }
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
 }
 
 /* Sem shimmer para quem prefere menos movimento */
@@ -343,10 +378,15 @@
   flex-shrink: 0;
 }
 
-.spinner--sm { width: 1rem; height: 1rem; }
+.spinner--sm {
+  width: 1rem;
+  height: 1rem;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner { animation-duration: 1.6s !important; }
+  .spinner {
+    animation-duration: 1.6s !important;
+  }
 }
 
 /* Mensagem de carregamento (> 2 s) e aviso de lentidão (> 10 s) */
@@ -385,8 +425,12 @@
 }
 
 @keyframes progresso-avancar {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(250%); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -451,8 +495,12 @@
 }
 
 @keyframes aparecer {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* -------------------------------------------------------- Formulário em card */
@@ -466,12 +514,25 @@
   gap: var(--esp-5) var(--esp-4);
 }
 
-.form-grade > .campo-wrapper { grid-column: span 12; min-width: 0; }
-.form-grade > .campo-wrapper.c-6 { grid-column: span 6; }
-.form-grade > .campo-wrapper.c-4 { grid-column: span 4; }
-.form-grade > .campo-wrapper.c-3 { grid-column: span 3; }
-.form-grade > .campo-wrapper.c-8 { grid-column: span 8; }
-.form-grade > .campo-wrapper.c-2 { grid-column: span 2; }
+.form-grade > .campo-wrapper {
+  grid-column: span 12;
+  min-width: 0;
+}
+.form-grade > .campo-wrapper.c-6 {
+  grid-column: span 6;
+}
+.form-grade > .campo-wrapper.c-4 {
+  grid-column: span 4;
+}
+.form-grade > .campo-wrapper.c-3 {
+  grid-column: span 3;
+}
+.form-grade > .campo-wrapper.c-8 {
+  grid-column: span 8;
+}
+.form-grade > .campo-wrapper.c-2 {
+  grid-column: span 2;
+}
 
 @media (max-width: 767px) {
   .form-grade > .campo-wrapper.c-6,
@@ -654,11 +715,64 @@
   font-weight: var(--peso-forte);
 }
 
-@media (min-width: 1024px) {
-  /* No desktop (nav principal visível) o menu não repete os links dela.
-     Classe explícita: a posição dos itens muda com as permissões do cargo. */
-  .menu__item--principal {
-    display: none;
+/* Menu em grupos (Atendimento, Financeiro, Cadastros, Equipe, Configurações):
+   colunas lado a lado no desktop, uma coluna rolável no celular. */
+.menu__painel--grupos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(11rem, 1fr));
+  gap: var(--esp-2) var(--esp-4);
+  width: min(44rem, calc(100vw - 2 * var(--margem-pagina)));
+  max-height: calc(100dvh - var(--navbar-altura) - var(--esp-6));
+  padding: var(--esp-3);
+  overflow-y: auto;
+}
+
+.menu__secao {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.menu__secao--config {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  column-gap: var(--esp-4);
+  padding-top: var(--esp-3);
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.menu__secao--config .menu__grupo {
+  grid-column: 1 / -1;
+}
+
+.menu__item-detalhe {
+  min-width: 0;
+  margin-left: auto;
+  padding-left: var(--esp-2);
+  overflow: hidden;
+  color: var(--texto-terciario);
+  font-size: var(--texto-xs);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Celular: o botão ☰ fica no meio da barra, então o painel se prende às margens da tela
+   (preso ao botão, ele sairia pela esquerda). */
+@media (max-width: 767px) {
+  .menu__painel--grupos {
+    position: fixed;
+    top: calc(var(--navbar-altura) + var(--esp-2));
+    right: var(--margem-pagina);
+    left: var(--margem-pagina);
+    width: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .menu__painel--grupos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -673,9 +787,23 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+/* A nav principal tem 4 links (o dia a dia); o resto fica no menu ☰. Abaixo de 900 px
+   eles também vão só para o menu, para não empurrar a loja e o Sair. */
+@media (min-width: 768px) and (max-width: 899px) {
   .app-navbar__nav {
     display: none;
+  }
+}
+
+/* Sair só com ícone até 1535 px (o title e o aria-label dizem "Sair"). */
+@media (max-width: 1535px) {
+  .app-navbar__sair-texto {
+    display: none;
+  }
+
+  .app-navbar__sair {
+    min-width: var(--altura-controle);
+    padding: var(--esp-2);
   }
 }
 
@@ -715,10 +843,18 @@
   font-size: var(--texto-sm);
 }
 
-[data-sonner-toast].toast[data-type="error"] [data-icon] { color: var(--erro); }
-[data-sonner-toast].toast[data-type="success"] [data-icon] { color: var(--sucesso); }
-[data-sonner-toast].toast[data-type="warning"] [data-icon] { color: var(--aviso); }
-[data-sonner-toast].toast[data-type="info"] [data-icon] { color: var(--info); }
+[data-sonner-toast].toast[data-type="error"] [data-icon] {
+  color: var(--erro);
+}
+[data-sonner-toast].toast[data-type="success"] [data-icon] {
+  color: var(--sucesso);
+}
+[data-sonner-toast].toast[data-type="warning"] [data-icon] {
+  color: var(--aviso);
+}
+[data-sonner-toast].toast[data-type="info"] [data-icon] {
+  color: var(--info);
+}
 
 /* Célula com duas linhas (ex.: e-mail + telefone) */
 .celula-dupla {
@@ -770,9 +906,81 @@
   gap: var(--esp-3);
 }
 
-@media (max-width: 479px) {
-  .paginacao__atual {
+.paginacao__numeros {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paginacao__numero {
+  min-width: var(--altura-controle);
+  height: var(--altura-controle);
+  padding: 0 var(--esp-2);
+  border: 1px solid transparent;
+  border-radius: var(--raio-md);
+  background: none;
+  color: var(--texto-secundario);
+  font: inherit;
+  font-size: var(--texto-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.paginacao__numero:hover:not(:disabled) {
+  background-color: var(--fundo-hover);
+  color: var(--texto-principal);
+}
+
+.paginacao__numero.ativo {
+  border-color: var(--marca);
+  background-color: var(--marca-suave);
+  color: var(--marca-texto);
+  font-weight: var(--peso-forte);
+}
+
+.paginacao__numero:focus-visible {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 1px;
+}
+
+.paginacao__numero:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.paginacao__salto {
+  padding: 0 var(--esp-1);
+  color: var(--texto-terciario);
+}
+
+/* "Página x de y" só aparece quando os números não cabem (celular). */
+.paginacao__atual {
+  display: none;
+}
+
+.paginacao__por-pagina {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+}
+
+.paginacao__por-pagina .campo {
+  width: auto;
+  min-width: 4.5rem;
+}
+
+@media (max-width: 639px) {
+  .paginacao__numeros {
     display: none;
+  }
+
+  .paginacao__atual {
+    display: inline;
   }
 }
 
@@ -830,38 +1038,60 @@
   font-size: var(--texto-sm);
 }
 
-/* Loja ativa na navbar */
-.app-navbar__loja {
+/* Loja ativa + usuário na navbar: duas linhas no mesmo bloco, cada uma com reticências. */
+.app-navbar__conta {
   display: inline-flex;
   align-items: center;
-  gap: var(--esp-1);
-  max-width: 18ch;
-  color: var(--texto-principal);
-  font-size: var(--texto-sm);
-  font-weight: var(--peso-medio);
-  white-space: nowrap;
+  gap: var(--esp-2);
+  min-width: 0;
+  max-width: 22ch;
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-md);
+  color: var(--sobre-floresta);
   text-decoration: none;
 }
 
-.app-navbar__loja span {
+.app-navbar__conta:hover {
+  background-color: var(--floresta-elevada);
+}
+
+.app-navbar__conta:focus-visible {
+  outline: 2px solid var(--floresta-destaque);
+  outline-offset: 2px;
+}
+
+.app-navbar__conta-icone {
+  flex-shrink: 0;
+  color: var(--sobre-floresta-suave);
+}
+
+.app-navbar__conta-textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.app-navbar__conta-loja,
+.app-navbar__conta-usuario {
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.app-navbar__loja:hover {
-  color: var(--marca-texto);
+.app-navbar__conta-loja {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
 }
 
-/* A loja ativa divide espaço com os links: abaixo de 1280 px some o nome do
-   usuário e a loja vira só ícone (o nome dela fica no title e no menu). */
-@media (max-width: 1279px) {
-  .app-navbar__usuario {
-    display: none;
-  }
+.app-navbar__conta-usuario {
+  color: var(--sobre-floresta-suave);
+  font-size: var(--texto-xs, 0.75rem);
 }
 
-@media (max-width: 1279px) {
-  .app-navbar__loja span {
+/* Celular: só o ícone da loja (o nome dela está no title e no menu). */
+@media (max-width: 767px) {
+  .app-navbar__conta-textos {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -999,5 +1229,33 @@
 }
 
 .horarios-dia__fechado {
+  font-size: var(--texto-sm);
+}
+
+/* ------------------------------------------ Acesso de administrador */
+.app-navbar__admin {
+  color: var(--floresta-destaque);
+  font-weight: var(--peso-forte);
+}
+
+.selecionar-admin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3) var(--esp-6);
+  margin-bottom: var(--esp-6);
+  border-left: 3px solid var(--marca);
+}
+
+.selecionar-admin__titulo {
+  margin: 0 0 var(--esp-1);
+  font-weight: var(--peso-forte);
+}
+
+.selecionar-admin__texto {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--texto-secundario);
   font-size: var(--texto-sm);
 }

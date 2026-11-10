@@ -46,7 +46,12 @@ export default function ListagemLoja() {
           render: (l) => (
             <span className="celula-dupla">
               <span>{l.email || "—"}</span>
-              <span>{formatarTelefone(l.celular)}</span>
+              <span>
+                {[l.celular, l.telefone]
+                  .filter(Boolean)
+                  .map((t) => formatarTelefone(t))
+                  .join(" · ") || "—"}
+              </span>
             </span>
           ),
         },

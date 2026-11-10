@@ -32,7 +32,8 @@ export type Permissao =
   | "DESPESA_EDITAR"
   | "RECEBIMENTO_VER"
   | "RECEBIMENTO_EDITAR"
-  | "SALARIO_GERENCIAR";
+  | "SALARIO_GERENCIAR"
+  | "CARGO_GERENCIAR";
 
 /** Tela -> permissão exigida. Telas fora daqui não exigem permissão (ex.: lojas, escolher loja). */
 export const PERMISSAO_DA_ROTA: Record<string, Permissao> = {
@@ -57,6 +58,7 @@ export const PERMISSAO_DA_ROTA: Record<string, Permissao> = {
   "/recebimentos": "RECEBIMENTO_VER",
   "/salarios": "SALARIO_GERENCIAR",
   "/fidelidade": "LOJA_EDITAR",
+  "/cargos": "CARGO_GERENCIAR",
   "/cliente-historico": "CLIENTE_VER",
 };
 

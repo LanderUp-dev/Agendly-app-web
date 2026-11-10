@@ -12,6 +12,7 @@ import {
   ErrorState,
   Modal,
   PageHeader,
+  Paginacao,
 } from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
 import { lerValor, reais } from "@/lib/dinheiro";
@@ -398,27 +399,15 @@ export default function SalariosView() {
                     </tbody>
                   </table>
                 </div>
-                {historico.totalPaginas > 1 && (
-                  <div className="salario-paginacao">
-                    <Button
-                      variante="secundario"
-                      disabled={historico.pagina === 0 || carregandoExtrato}
-                      onClick={() => carregarExtrato(extrato.idFuncionario, historico.pagina - 1)}
-                    >
-                      Anteriores
-                    </Button>
-                    <span>
-                      Página {historico.pagina + 1} de {historico.totalPaginas}
-                    </span>
-                    <Button
-                      variante="secundario"
-                      disabled={historico.pagina + 1 >= historico.totalPaginas || carregandoExtrato}
-                      onClick={() => carregarExtrato(extrato.idFuncionario, historico.pagina + 1)}
-                    >
-                      Mais antigos
-                    </Button>
-                  </div>
-                )}
+                <Paginacao
+                  rotulo="Pagamentos de salário"
+                  pagina={historico.pagina + 1}
+                  totalPaginas={historico.totalPaginas}
+                  totalItens={historico.total}
+                  porPagina={historico.tamanho}
+                  onMudar={(p) => carregarExtrato(extrato.idFuncionario, p - 1)}
+                  desabilitado={carregandoExtrato}
+                />
               </>
             )}
           </div>

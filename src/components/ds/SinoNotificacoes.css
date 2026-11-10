@@ -1,0 +1,216 @@
+/* @requisito RO-43 */
+/* Sininho de avisos (SinoNotificacoes.tsx). Só tokens do design system. */
+.sino {
+  position: relative;
+}
+
+.sino__botao {
+  position: relative;
+}
+
+.sino__contagem {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 var(--esp-1);
+  border-radius: var(--raio-pill);
+  /* Marca + branco: contraste AA nos dois temas (o --erro do tema escuro é claro demais). */
+  background-color: var(--marca);
+  color: var(--sobre-marca);
+  box-shadow: 0 0 0 2px var(--fundo-painel);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-forte);
+  line-height: 1.125rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.sino__painel {
+  position: absolute;
+  top: calc(100% + var(--esp-2));
+  right: 0;
+  z-index: var(--z-dropdown);
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  max-height: min(70vh, 520px);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-lg);
+  background-color: var(--fundo-painel);
+  box-shadow: var(--elevacao-2);
+  animation: aparecer var(--duracao) var(--curva);
+}
+
+.sino__painel:focus-visible {
+  outline: 2px solid var(--foco-anel);
+  outline-offset: 2px;
+}
+
+.sino__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-2);
+  padding: var(--esp-3) var(--esp-4);
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+.sino__titulo {
+  margin: 0;
+  font-size: var(--texto-md);
+  font-weight: var(--peso-titulo);
+  color: var(--texto-principal);
+}
+
+.sino__acao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  min-height: 2rem;
+  padding: var(--esp-1) var(--esp-2);
+  border: 0;
+  border-radius: var(--raio-md);
+  background: none;
+  color: var(--marca-texto);
+  font: inherit;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  cursor: pointer;
+  transition: background-color var(--transicao-rapida);
+}
+
+.sino__acao:hover:not(:disabled) {
+  background-color: var(--fundo-hover);
+}
+
+.sino__acao:disabled {
+  color: var(--texto-terciario);
+  cursor: default;
+}
+
+.sino__corpo {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sino__estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-2);
+  margin: 0;
+  padding: var(--esp-6) var(--esp-4);
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  text-align: center;
+}
+
+.sino__estado--erro {
+  color: var(--erro);
+}
+
+.sino__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sino__lista > li + li {
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.sino__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-2);
+  width: 100%;
+  padding: var(--esp-3) var(--esp-4);
+  border: 0;
+  background: none;
+  color: var(--texto-principal);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transicao-rapida);
+}
+
+.sino__item:hover {
+  background-color: var(--fundo-hover);
+}
+
+.sino__item--nao-lido {
+  background-color: var(--marca-suave);
+}
+
+.sino__ponto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.4rem;
+  border-radius: var(--raio-pill);
+  background-color: var(--marca);
+}
+
+.sino__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sino__item-titulo {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+.sino__item--nao-lido .sino__item-titulo {
+  font-weight: var(--peso-forte);
+}
+
+.sino__item-mensagem {
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  overflow-wrap: anywhere;
+}
+
+.sino__item-quando {
+  color: var(--texto-terciario);
+  font-size: var(--texto-xs);
+}
+
+.sino__rodape {
+  padding: var(--esp-2) var(--esp-4);
+  border-top: 1px solid var(--borda-sutil);
+  text-align: center;
+}
+
+.sino__ver-todas {
+  display: inline-block;
+  padding: var(--esp-1) var(--esp-2);
+  color: var(--marca-texto);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+}
+
+/* Celular: o painel ocupa a largura da tela, logo abaixo da barra. */
+@media (max-width: 479px) {
+  .sino__painel {
+    position: fixed;
+    top: calc(var(--navbar-altura) + var(--esp-1));
+    right: var(--esp-2);
+    left: var(--esp-2);
+    width: auto;
+    max-height: calc(100dvh - var(--navbar-altura) - var(--esp-4));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sino__painel {
+    animation: none;
+  }
+}

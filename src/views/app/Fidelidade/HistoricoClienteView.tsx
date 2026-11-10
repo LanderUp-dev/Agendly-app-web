@@ -9,6 +9,7 @@ import {
   EmptyState,
   ErrorState,
   PageHeader,
+  Paginacao,
 } from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
 import { reais } from "@/lib/dinheiro";
@@ -153,29 +154,15 @@ export default function HistoricoClienteView({ id }: { id: number }) {
                     </tbody>
                   </table>
                 </div>
-                {h.comandas.totalPages > 1 && (
-                  <nav className="fidelidade-paginacao" aria-label="Páginas do histórico">
-                    <Button
-                      variante="secundario"
-                      disabled={pagina === 0 || historico.carregando}
-                      onClick={() => setPagina((p) => Math.max(0, p - 1))}
-                      data-cy="historico-anterior"
-                    >
-                      Anterior
-                    </Button>
-                    <span data-cy="historico-pagina">
-                      Página {h.comandas.page + 1} de {h.comandas.totalPages}
-                    </span>
-                    <Button
-                      variante="secundario"
-                      disabled={pagina + 1 >= h.comandas.totalPages || historico.carregando}
-                      onClick={() => setPagina((p) => p + 1)}
-                      data-cy="historico-proxima"
-                    >
-                      Próxima
-                    </Button>
-                  </nav>
-                )}
+                <Paginacao
+                  rotulo="Histórico do cliente"
+                  pagina={h.comandas.page + 1}
+                  totalPaginas={h.comandas.totalPages}
+                  totalItens={h.comandas.totalElements}
+                  porPagina={h.comandas.size}
+                  onMudar={(p) => setPagina(p - 1)}
+                  desabilitado={historico.carregando}
+                />
               </>
             )}
           </Card>

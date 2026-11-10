@@ -10,12 +10,14 @@
 :root {
   /* ---------------------------------------------------------- Tipografia */
   --fonte-base: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --texto-xs: 0.75rem;   /* 12 */
-  --texto-sm: 0.875rem;  /* 14 */
-  --texto-md: 1rem;      /* 16 */
-  --texto-lg: 1.25rem;   /* 20 */
-  --texto-xl: 1.5rem;    /* 24 */
-  --texto-2xl: 2rem;     /* 32 */
+  /* Marca e títulos de destaque (direção "Navalha", Hallmark): serifa de letreiro */
+  --fonte-marca: "Gloock", Georgia, "Times New Roman", serif;
+  --texto-xs: 0.75rem; /* 12 */
+  --texto-sm: 0.875rem; /* 14 */
+  --texto-md: 1rem; /* 16 */
+  --texto-lg: 1.25rem; /* 20 */
+  --texto-xl: 1.5rem; /* 24 */
+  --texto-2xl: 2rem; /* 32 */
   --peso-normal: 400;
   --peso-medio: 500;
   --peso-forte: 600;
@@ -24,22 +26,22 @@
   --altura-linha-titulo: 1.25;
 
   /* -------------------------------------------- Espaçamento (base 4 px) */
-  --esp-1: 0.25rem;  /* 4 */
-  --esp-2: 0.5rem;   /* 8 */
-  --esp-3: 0.75rem;  /* 12 */
-  --esp-4: 1rem;     /* 16 */
-  --esp-5: 1.25rem;  /* 20 */
-  --esp-6: 1.5rem;   /* 24 */
-  --esp-8: 2rem;     /* 32 */
-  --esp-10: 2.5rem;  /* 40 */
-  --esp-12: 3rem;    /* 48 */
-  --esp-16: 4rem;    /* 64 */
+  --esp-1: 0.25rem; /* 4 */
+  --esp-2: 0.5rem; /* 8 */
+  --esp-3: 0.75rem; /* 12 */
+  --esp-4: 1rem; /* 16 */
+  --esp-5: 1.25rem; /* 20 */
+  --esp-6: 1.5rem; /* 24 */
+  --esp-8: 2rem; /* 32 */
+  --esp-10: 2.5rem; /* 40 */
+  --esp-12: 3rem; /* 48 */
+  --esp-16: 4rem; /* 64 */
 
   /* ---------------------------------------------------------- Raio */
-  --raio-sm: 6px;    /* badges, itens pequenos */
-  --raio-md: 8px;    /* campos e botões */
-  --raio-lg: 12px;   /* cards e modal */
-  --raio-xl: 12px;   /* alias legado */
+  --raio-sm: 6px; /* badges, itens pequenos */
+  --raio-md: 8px; /* campos e botões */
+  --raio-lg: 12px; /* cards e modal */
+  --raio-xl: 12px; /* alias legado */
   --raio-pill: 999px; /* só badges de status */
 
   /* ---------------------------------------------------------- Movimento */
@@ -65,6 +67,14 @@
   --altura-controle: 2.75rem; /* 44 px: alvo de toque */
   --logo-altura: 28px;
   --logo-minimo: 20px;
+
+  /* ------------------------------------------- Floresta (navbar, igual à home) */
+  --floresta: oklch(27% 0.05 158);
+  --floresta-elevada: oklch(32% 0.052 158);
+  --floresta-borda: oklch(42% 0.04 158);
+  --sobre-floresta: oklch(96% 0.014 95);
+  --sobre-floresta-suave: oklch(84% 0.03 140);
+  --floresta-destaque: oklch(80% 0.15 152);
 }
 
 @media (max-width: 1023px) {
@@ -87,7 +97,7 @@
   color-scheme: light;
 
   /* Marca: 1 cor */
-  --marca: #007f3d;            /* 5,1:1 com branco */
+  --marca: #007f3d; /* 5,1:1 com branco */
   --marca-hover: #006631;
   --marca-texto: #007f3d;
   --marca-suave: #eef7f1;
@@ -106,7 +116,7 @@
 
   /* Campos */
   --campo-fundo: #ffffff;
-  --campo-borda: #7c8798;      /* 3,6:1 */
+  --campo-borda: #7c8798; /* 3,6:1 */
   --campo-borda-hover: #5d6679;
   --campo-borda-foco: var(--marca);
   --campo-desabilitado: #f2f4f7;
@@ -139,12 +149,24 @@
   --skeleton-brilho: #f5f6f8;
 
   /* Cores de agendamento (fundo suave + texto escuro, AA) */
-  --ag-verde-fundo: #d1fadf;   --ag-verde-texto: #05603a;   --ag-verde-borda: #12b76a;
-  --ag-azul-fundo: #d1e9ff;    --ag-azul-texto: #194185;    --ag-azul-borda: #2e90fa;
-  --ag-ambar-fundo: #fef0c7;   --ag-ambar-texto: #7a2e0e;   --ag-ambar-borda: #f79009;
-  --ag-roxo-fundo: #ebe9fe;    --ag-roxo-texto: #3e1c96;    --ag-roxo-borda: #7a5af8;
-  --ag-rosa-fundo: #fce7f6;    --ag-rosa-texto: #851651;    --ag-rosa-borda: #ee46bc;
-  --ag-cinza-fundo: #eaecf0;   --ag-cinza-texto: #344054;   --ag-cinza-borda: #98a2b3;
+  --ag-verde-fundo: #d1fadf;
+  --ag-verde-texto: #05603a;
+  --ag-verde-borda: #12b76a;
+  --ag-azul-fundo: #d1e9ff;
+  --ag-azul-texto: #194185;
+  --ag-azul-borda: #2e90fa;
+  --ag-ambar-fundo: #fef0c7;
+  --ag-ambar-texto: #7a2e0e;
+  --ag-ambar-borda: #f79009;
+  --ag-roxo-fundo: #ebe9fe;
+  --ag-roxo-texto: #3e1c96;
+  --ag-roxo-borda: #7a5af8;
+  --ag-rosa-fundo: #fce7f6;
+  --ag-rosa-texto: #851651;
+  --ag-rosa-borda: #ee46bc;
+  --ag-cinza-fundo: #eaecf0;
+  --ag-cinza-texto: #344054;
+  --ag-cinza-borda: #98a2b3;
 
   /* Aliases legados (CSS antigo ainda usa) */
   --sombra-painel: var(--elevacao-1);
@@ -204,12 +226,24 @@
   --skeleton-base: #1f242f;
   --skeleton-brilho: #2b303b;
 
-  --ag-verde-fundo: #053321;   --ag-verde-texto: #a6f4c5;   --ag-verde-borda: #32d583;
-  --ag-azul-fundo: #102a56;    --ag-azul-texto: #b2ddff;    --ag-azul-borda: #53b1fd;
-  --ag-ambar-fundo: #4e1d09;   --ag-ambar-texto: #fedf89;   --ag-ambar-borda: #fdb022;
-  --ag-roxo-fundo: #27115f;    --ag-roxo-texto: #d9d6fe;    --ag-roxo-borda: #9b8afb;
-  --ag-rosa-fundo: #4e0d30;    --ag-rosa-texto: #fcceee;    --ag-rosa-borda: #f670c7;
-  --ag-cinza-fundo: #1f242f;   --ag-cinza-texto: #cecfd2;   --ag-cinza-borda: #85888e;
+  --ag-verde-fundo: #053321;
+  --ag-verde-texto: #a6f4c5;
+  --ag-verde-borda: #32d583;
+  --ag-azul-fundo: #102a56;
+  --ag-azul-texto: #b2ddff;
+  --ag-azul-borda: #53b1fd;
+  --ag-ambar-fundo: #4e1d09;
+  --ag-ambar-texto: #fedf89;
+  --ag-ambar-borda: #fdb022;
+  --ag-roxo-fundo: #27115f;
+  --ag-roxo-texto: #d9d6fe;
+  --ag-roxo-borda: #9b8afb;
+  --ag-rosa-fundo: #4e0d30;
+  --ag-rosa-texto: #fcceee;
+  --ag-rosa-borda: #f670c7;
+  --ag-cinza-fundo: #1f242f;
+  --ag-cinza-texto: #cecfd2;
+  --ag-cinza-borda: #85888e;
 
   --sombra-painel: var(--elevacao-1);
   --sombra-elevada: var(--elevacao-2);

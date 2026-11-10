@@ -9,6 +9,7 @@ export { PageHeader, Card, Badge } from "./Layout";
 export { Modal } from "./Modal";
 export { DataTable } from "./DataTable";
 export type { Coluna } from "./DataTable";
+export { Paginacao, usePaginacaoLocal, OPCOES_POR_PAGINA } from "./Paginacao";
 export { AppNavbar } from "./AppNavbar";
 export { NAV_PRINCIPAL, NAV_MAIS } from "./navegacao";
 export { ProgressoRota } from "./ProgressoRota";

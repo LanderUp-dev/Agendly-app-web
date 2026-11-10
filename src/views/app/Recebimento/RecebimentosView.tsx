@@ -12,6 +12,8 @@ import {
   ErrorState,
   Modal,
   PageHeader,
+  Paginacao,
+  usePaginacaoLocal,
 } from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
 import { lerValor, paraCampo, reais } from "@/lib/dinheiro";
@@ -254,6 +256,11 @@ export default function RecebimentosView() {
   };
 
   const { resumo, itens } = lista.dados;
+  const { visiveis: itensDaPagina, props: paginacao } = usePaginacaoLocal(
+    itens,
+    "recebimentos",
+    `${mes}|${status}`,
+  );
 
   return (
     <Layout>
@@ -369,7 +376,7 @@ export default function RecebimentosView() {
                 </tr>
               </thead>
               <tbody>
-                {itens.map((r) => (
+                {itensDaPagina.map((r) => (
                   <tr key={r.id} data-cy="recebimento-linha">
                     <td>{dataBR(r.vencimento)}</td>
                     <td>{r.nomeCliente}</td>
@@ -443,6 +450,7 @@ export default function RecebimentosView() {
                 ))}
               </tbody>
             </table>
+            <Paginacao rotulo="Recebimentos" {...paginacao} />
           </div>
         </Card>
       )}

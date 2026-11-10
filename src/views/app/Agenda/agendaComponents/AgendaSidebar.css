@@ -106,3 +106,8 @@
     transition: transform var(--duracao-lenta) var(--curva);
   }
 }
+
+/* Filtro por área de atuação (RO-33) */
+.agenda-lateral__rotulo {
+  display: block;
+}

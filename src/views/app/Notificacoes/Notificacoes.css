@@ -1,0 +1,113 @@
+/* @requisito RO-43 */
+/* Página de avisos (NotificacoesView.tsx). Só tokens do design system. */
+.notificacoes__filtro {
+  display: inline-flex;
+  gap: var(--esp-1);
+  margin-bottom: var(--esp-4);
+  padding: var(--esp-1);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-elevado);
+}
+
+.notificacoes__filtro-opcao {
+  min-height: 2.25rem;
+  padding: var(--esp-1) var(--esp-4);
+  border: 0;
+  border-radius: var(--raio-sm);
+  background: none;
+  color: var(--texto-secundario);
+  font: inherit;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  cursor: pointer;
+  transition:
+    background-color var(--transicao-rapida),
+    color var(--transicao-rapida);
+}
+
+.notificacoes__filtro-opcao[aria-pressed="true"] {
+  background-color: var(--fundo-painel);
+  color: var(--texto-principal);
+  box-shadow: var(--elevacao-1);
+}
+
+.notificacoes__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notificacoes__lista > li + li {
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.notificacoes__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  width: 100%;
+  padding: var(--esp-4);
+  border: 0;
+  background: none;
+  color: var(--texto-principal);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transicao-rapida);
+}
+
+.notificacoes__item:hover {
+  background-color: var(--fundo-hover);
+}
+
+.notificacoes__item--nao-lido {
+  background-color: var(--marca-suave);
+}
+
+.notificacoes__ponto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.45rem;
+  border-radius: var(--raio-pill);
+  background-color: var(--marca);
+}
+
+.notificacoes__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.notificacoes__titulo {
+  font-weight: var(--peso-medio);
+}
+
+.notificacoes__item--nao-lido .notificacoes__titulo {
+  font-weight: var(--peso-forte);
+}
+
+.notificacoes__mensagem {
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  overflow-wrap: anywhere;
+}
+
+.notificacoes__quando {
+  color: var(--texto-terciario);
+  font-size: var(--texto-xs);
+}
+
+.notificacoes__erro {
+  margin: var(--esp-3) 0 0;
+  color: var(--erro);
+  font-size: var(--texto-sm);
+}
+
+.notificacoes__mais {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--esp-4);
+}

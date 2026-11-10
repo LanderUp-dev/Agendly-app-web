@@ -1,5 +1,5 @@
 // @requisito RO-34
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Store } from "lucide-react";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ import {
 import { useCarregar } from "@/hooks/useCarregar";
 import { obterLojaAtiva } from "@/lib/auth";
 import { entrarNaLoja, listarMinhasEquipes } from "@/lib/contexto";
+import { adminService } from "@/services/acesso";
 import type { EquipeResumo } from "@/types/auth";
 
 /**
@@ -27,6 +28,14 @@ export default function SelecionarLoja() {
   const equipes = useCarregar<EquipeResumo[]>(() => listarMinhasEquipes(), []);
   const ativa = obterLojaAtiva();
   const [entrando, setEntrando] = useState<string | null>(null);
+  const [ehAdmin, setEhAdmin] = useState(false);
+
+  useEffect(() => {
+    adminService
+      .souAdmin()
+      .then(setEhAdmin)
+      .catch(() => setEhAdmin(false));
+  }, []);
 
   const escolher = async (equipe: EquipeResumo) => {
     if (entrando) return;
@@ -52,6 +61,21 @@ export default function SelecionarLoja() {
           </ButtonLink>
         }
       />
+
+      {ehAdmin && (
+        <Card className="selecionar-admin" data-cy="atalho-admin">
+          <div>
+            <p className="selecionar-admin__titulo">Administração da plataforma</p>
+            <p className="selecionar-admin__texto">
+              Você é administrador do Agendly: veja todas as lojas e libere cortesias sem precisar
+              entrar em uma loja.
+            </p>
+          </div>
+          <ButtonLink to="/admin" variante="secundario">
+            Abrir administração
+          </ButtonLink>
+        </Card>
+      )}
 
       {equipes.carregando && <Carregando ativo contexto="Carregando suas lojas..." />}
 

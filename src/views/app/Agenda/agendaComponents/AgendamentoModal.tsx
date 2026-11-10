@@ -94,11 +94,13 @@ const AgendamentoModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aberto]);
 
-  // A agenda informa o profissional pelo nome (coluna clicada): converte para o id.
+  // A agenda informa o profissional da coluna clicada pela chave (o id); nomes ficam como
+  // alternativa para quem ainda chama pelo nome.
   useEffect(() => {
     if (!aberto || form.profissional || !dadosAgendamento.profissional) return;
     const p = profissionais.dados.find(
       (f) =>
+        String(f.id) === dadosAgendamento.profissional ||
         f.nome === dadosAgendamento.profissional ||
         nomeCompleto(f) === dadosAgendamento.profissional,
     );

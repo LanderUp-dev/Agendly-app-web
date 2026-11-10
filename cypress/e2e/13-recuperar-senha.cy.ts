@@ -12,7 +12,7 @@ const SENHA_ANTIGA = "SenhaAntiga1";
 const SENHA_NOVA = "SenhaNova2026";
 
 /** Último código de 6 dígitos enviado para o e-mail (espera até chegar). */
-function codigoDoEmail(email: string, tentativas = 20): Cypress.Chainable<string> {
+function codigoDoEmail(email: string, tentativas = 60): Cypress.Chainable<string> {
   return cy
     .request(`${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:"${email}"`)}&limit=1`)
     .then((r) => {

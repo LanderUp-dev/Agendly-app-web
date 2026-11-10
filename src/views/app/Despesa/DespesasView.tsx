@@ -12,6 +12,8 @@ import {
   ErrorState,
   Modal,
   PageHeader,
+  Paginacao,
+  usePaginacaoLocal,
 } from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
 import { lerValor, paraCampo, reais } from "@/lib/dinheiro";
@@ -244,6 +246,11 @@ export default function DespesasView() {
   };
 
   const { despesas, resumo } = lista.dados;
+  const { visiveis: despesasDaPagina, props: paginacao } = usePaginacaoLocal(
+    despesas,
+    "despesas",
+    `${mes}|${status}`,
+  );
   const saldoDinheiro = caixa?.saldoDinheiro ?? 0;
   const faltaDinheiro =
     saiDoCaixa && forma === "DINHEIRO" && pagando !== null && pagando.valor > saldoDinheiro;
@@ -347,7 +354,7 @@ export default function DespesasView() {
               </tr>
             </thead>
             <tbody>
-              {despesas.map((d) => (
+              {despesasDaPagina.map((d) => (
                 <tr key={d.id} data-cy="despesa-linha">
                   <td>{dataBR(d.vencimento)}</td>
                   <td>
@@ -419,6 +426,7 @@ export default function DespesasView() {
               ))}
             </tbody>
           </table>
+          <Paginacao rotulo="Despesas" {...paginacao} />
         </div>
       )}
 

@@ -12,6 +12,10 @@ export default defineConfig(({ mode, command }) => {
   const apiTarget = env.VITE_API_PROXY_TARGET || "http://localhost:8080";
 
   return {
+    // Dois servidores de dev na mesma pasta (ex.: um para o Cypress) não podem dividir o cache
+    // de dependências: um re-otimiza e o outro passa a responder "504 Outdated Optimize Dep".
+    // VITE_CACHE_DIR=node_modules/.vite-e2e dá um cache próprio. Sem a variável, o padrão do Vite.
+    cacheDir: env.VITE_CACHE_DIR || undefined,
     plugins: [
       tsConfigPaths({ projects: ["./tsconfig.json"] }),
       tailwindcss(),

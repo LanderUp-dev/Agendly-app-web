@@ -1,29 +1,18 @@
 // @requisito RE-14
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  BarChart3,
-  CalendarDays,
-  Check,
-  ChevronDown,
-  Clock,
-  Menu,
-  MessageCircle,
-  Store,
-  Users,
-  X,
-} from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/ds";
 import "./HomeView.css";
 
 /**
- * Home (landing page) do Agendly.
+ * Home (landing page) do Agendly. Direção "Navalha" (Hallmark, redesign full).
  *
  * Regras desta página (ver docs/design-system.md):
  * - Só promete o que o sistema faz hoje. O que ainda não existe aparece como "Em breve".
- * - Sem números, depoimentos ou contadores sem fonte.
- * - Tokens e componentes do design system (Logo, .btn, cores, raio, foco).
- * - Conteúdo visível sem animação: o movimento é só um enfeite (prefers-reduced-motion).
+ * - Sem números, depoimentos ou contadores sem fonte. Nomes e valores dos exemplos são
+ *   ilustrativos e estão marcados como exemplo.
+ * - Conteúdo visível sem JavaScript e sem animação.
  */
 
 const FAQ_ITEMS = [
@@ -32,9 +21,19 @@ const FAQ_ITEMS = [
     resposta: "Não. O Agendly funciona no navegador, no computador ou no celular.",
   },
   {
-    pergunta: "O envio de lembretes pelo WhatsApp já funciona?",
+    pergunta: "Tem teste grátis?",
     resposta:
-      "Ainda não. A confirmação e os lembretes automáticos pelo WhatsApp estão em desenvolvimento. Hoje o Agendly organiza a agenda, os clientes, os serviços e a equipe.",
+      "Sim. Toda loja nova tem 14 dias para testar tudo, e criar a conta não pede cartão de crédito.",
+  },
+  {
+    pergunta: "Como funciona a confirmação pelo WhatsApp?",
+    resposta:
+      "No agendamento, um clique abre o WhatsApp da sua loja com a mensagem de confirmação pronta. Você envia do seu próprio número e marca o horário como confirmado ou cancelado. Os lembretes automáticos, sem você precisar enviar, estão em desenvolvimento.",
+  },
+  {
+    pergunta: "O Agendly controla o caixa e as comissões?",
+    resposta:
+      "Sim. Você abre e fecha o caixa, recebe cada atendimento em Pix, dinheiro, débito ou crédito, e o Agendly calcula o troco, o faturamento e quanto cada profissional tem a receber.",
   },
   {
     pergunta: "Posso cancelar quando quiser?",
@@ -43,44 +42,97 @@ const FAQ_ITEMS = [
 ];
 
 const NAV_LINKS = [
+  { href: "#como-funciona", rotulo: "Como funciona" },
   { href: "#recursos", rotulo: "Recursos" },
-  { href: "#em-breve", rotulo: "Em breve" },
   { href: "#precos", rotulo: "Preços" },
   { href: "#duvidas", rotulo: "Dúvidas" },
 ];
 
+const RECURSOS_PLANO = [
+  "Agenda online e horários livres",
+  "Caixa e comanda com Pix, dinheiro e cartão",
+  "Painel financeiro",
+  "Confirmação pelo WhatsApp da loja",
+  "Clientes, histórico e fidelidade",
+];
+
+const CADERNO_X_AGENDLY = [
+  [
+    "Horário marcado em dobro para o mesmo profissional",
+    "Agenda do dia por profissional, sem horário marcado em dobro",
+  ],
+  [
+    "Cliente que esquece o horário e não avisa",
+    "Confirmação do horário pelo WhatsApp da loja em um clique",
+  ],
+  ["Caixa que não fecha no fim do dia", "Caixa com abertura, sangria e fechamento conferido"],
+  [
+    "Comissão calculada na mão, no fim do mês",
+    "Comissão e salário de cada profissional calculados",
+  ],
+  ["Dados de clientes espalhados em conversas", "Clientes com histórico e contagem de visitas"],
+];
+
+type Evento = {
+  col: number;
+  ini: number;
+  fim: number;
+  cliente: string;
+  servico: string;
+  status?: string;
+  tom: "pago" | "ok" | "espera" | "neutro";
+};
+
+const PROFISSIONAIS = ["Rafa", "Bruno", "Léo"];
+const HORAS = ["09:00", "10:00", "11:00", "12:00"];
+// ini/fim em meias horas a partir das 9h (0 = 9h00, 2 = 10h00…)
+const EVENTOS: Evento[] = [
+  {
+    col: 0,
+    ini: 0,
+    fim: 3,
+    cliente: "Diego Alves",
+    servico: "Corte e barba",
+    status: "Pago no Pix",
+    tom: "pago",
+  },
+  { col: 0, ini: 5, fim: 7, cliente: "Paulo Reis", servico: "Pigmentação", tom: "neutro" },
+  {
+    col: 1,
+    ini: 2,
+    fim: 4,
+    cliente: "Marcos Lima",
+    servico: "Barba",
+    status: "Confirmado",
+    tom: "ok",
+  },
+  {
+    col: 2,
+    ini: 0,
+    fim: 2,
+    cliente: "Caio Nunes",
+    servico: "Corte",
+    status: "Sem resposta",
+    tom: "espera",
+  },
+  {
+    col: 2,
+    ini: 4,
+    fim: 6,
+    cliente: "Tiago Rocha",
+    servico: "Corte",
+    status: "Confirmado",
+    tom: "ok",
+  },
+];
+
 function EmBreve() {
-  return <span className="hv-selo hv-selo--breve">Em breve</span>;
+  return <span className="hv-selo-breve">Em breve</span>;
 }
 
 export default function HomeView() {
-  const rootRef = useRef<HTMLDivElement>(null);
   const [menuAberto, setMenuAberto] = useState(false);
   const [faqAberto, setFaqAberto] = useState<number | null>(null);
-
-  // Revelar ao rolar: só um enfeite. O conteúdo já é visível sem JS e com
-  // movimento reduzido (a classe .hv-anima só entra quando é seguro animar).
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduzir || !("IntersectionObserver" in window)) return;
-
-    root.classList.add("hv-anima");
-    const io = new IntersectionObserver(
-      (entradas) => {
-        entradas.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("hv-visivel");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12 },
-    );
-    root.querySelectorAll(".hv-revela").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
 
   // Esc fecha o menu mobile
   useEffect(() => {
@@ -91,15 +143,15 @@ export default function HomeView() {
   }, [menuAberto]);
 
   return (
-    <div className="home-view" ref={rootRef}>
+    <div className="home-view">
       <a href="#conteudo-home" className="pular-para-conteudo">
         Pular para o conteúdo
       </a>
 
-      <header className="hv-cabecalho">
+      <header className="hv-cabecalho hv-floresta">
         <div className="hv-container hv-nav">
           <Link to="/home" aria-label="Agendly — início" className="hv-logo">
-            <Logo variante="auto" titulo="" />
+            <Logo variante="auto" claro titulo="" />
           </Link>
 
           <nav className="hv-nav-links" aria-label="Seções da página">
@@ -111,15 +163,15 @@ export default function HomeView() {
           </nav>
 
           <div className="hv-nav-acoes">
-            <Link to="/login" className="btn btn-fantasma hv-entrar">
+            <Link to="/login" className="hv-btn hv-btn--fantasma hv-entrar">
               Entrar
             </Link>
-            <Link to="/register" className="btn btn-primario" data-cy="home-criar-conta">
+            <Link to="/register" className="hv-btn hv-btn--primario" data-cy="home-criar-conta">
               Criar conta
             </Link>
             <button
               type="button"
-              className="btn btn-fantasma btn-icone hv-menu-botao"
+              className="hv-btn hv-btn--fantasma hv-btn--icone hv-menu-botao"
               aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
               aria-expanded={menuAberto}
               aria-controls="hv-menu-mobile"
@@ -155,144 +207,127 @@ export default function HomeView() {
       </header>
 
       <main id="conteudo-home" tabIndex={-1}>
-        {/* HERO */}
-        <section className="hv-hero">
+        {/* HERO: a agenda de um sábado é a assinatura da página */}
+        <section className="hv-hero hv-floresta">
           <div className="hv-container hv-hero-grade">
-            <div className="hv-revela">
-              <h1 className="hv-titulo">Chega de agenda de papel e de horário perdido.</h1>
+            <div className="hv-hero-texto">
+              <h1>A agenda e o caixa da barbearia.</h1>
               <p className="hv-lead">
-                O Agendly organiza a agenda do dia por profissional em salões, barbearias e
-                estúdios, e reúne clientes, serviços e equipe em um só lugar, no computador ou no
-                celular.
+                Agenda por profissional, confirmação no WhatsApp e comissão calculada no fechamento.
               </p>
               <div className="hv-ctas">
                 <Link
                   to="/register"
-                  className="btn btn-primario hv-btn-grande"
+                  className="hv-btn hv-btn--primario hv-btn--grande"
                   data-cy="home-cta-principal"
                 >
                   Criar conta grátis
                 </Link>
-                <a href="#como-funciona" className="btn btn-secundario hv-btn-grande">
+                <a href="#como-funciona" className="hv-btn hv-btn--secundario hv-btn--grande">
                   Ver como funciona
                 </a>
               </div>
-              <p className="hv-nota">Criar a conta não pede cartão de crédito.</p>
+              <p className="hv-nota">
+                14 dias grátis. Criar a conta não pede cartão de crédito. Para barbearias, salões e
+                estúdios.
+              </p>
             </div>
 
-            {/* Exemplo visual da agenda (decorativo, com descrição para leitor de tela) */}
-            <div
-              className="hv-revela hv-mock-agenda"
-              role="img"
-              aria-label="Exemplo da agenda do dia: colunas por profissional com os agendamentos de cada um"
-            >
-              <div className="hv-mock-topo" aria-hidden="true">
-                <span className="hv-mock-data">Sábado, 7 de novembro</span>
-                <span className="hv-mock-seg">1 h</span>
+            <figure className="hv-quadro">
+              <div className="hv-quadro-topo">
+                <span>Sábado, 14 de novembro</span>
+                <span className="hv-quadro-exemplo">Exemplo</span>
               </div>
-              <div className="hv-mock-grade" aria-hidden="true">
-                <span className="hv-mock-prof" style={{ gridColumn: 2, gridRow: 1 }}>
-                  Ana
-                </span>
-                <span className="hv-mock-prof" style={{ gridColumn: 3, gridRow: 1 }}>
-                  Bruno
-                </span>
-                {["09:00", "10:00", "11:00", "12:00"].map((h, i) => (
-                  <MockLinha key={h} hora={h} linha={i + 2} />
+              <div
+                className="hv-quadro-grade"
+                role="img"
+                aria-label="Exemplo da agenda do dia: uma coluna por profissional com os horários de cada um, alguns confirmados pelo WhatsApp e um já pago no Pix"
+              >
+                {PROFISSIONAIS.map((p, i) => (
+                  <span
+                    key={p}
+                    className="hv-quadro-prof"
+                    style={{ gridColumn: i + 2, gridRow: 1 }}
+                    aria-hidden="true"
+                  >
+                    {p}
+                  </span>
                 ))}
-                <span
-                  className="hv-mock-ev hv-tom-verde"
-                  style={{ gridColumn: 2, gridRow: "2 / span 2" }}
-                >
-                  <b>Mariana Souza</b>
-                  <span>Corte, 9h às 10h30</span>
-                </span>
-                <span className="hv-mock-ev hv-tom-azul" style={{ gridColumn: 3, gridRow: 3 }}>
-                  <b>Diego Alves</b>
-                  <span>Barba, 10h às 11h</span>
-                </span>
-                <span className="hv-mock-ev hv-tom-ambar" style={{ gridColumn: 2, gridRow: 5 }}>
-                  <b>Lia Prado</b>
-                  <span>Escova, 12h às 13h</span>
-                </span>
+                {HORAS.map((h, i) => (
+                  <span
+                    key={h}
+                    className="hv-quadro-hora"
+                    style={{ gridColumn: 1, gridRow: `${i * 2 + 2} / span 2` }}
+                    aria-hidden="true"
+                  >
+                    {h}
+                  </span>
+                ))}
+                {EVENTOS.map((e) => (
+                  <span
+                    key={`${e.col}-${e.ini}`}
+                    className={`hv-evento hv-evento--${e.tom}`}
+                    style={{ gridColumn: e.col + 2, gridRow: `${e.ini + 2} / ${e.fim + 2}` }}
+                    aria-hidden="true"
+                  >
+                    <b>{e.cliente}</b>
+                    <span>{e.servico}</span>
+                    {e.status && <em>{e.status}</em>}
+                  </span>
+                ))}
               </div>
-            </div>
+            </figure>
           </div>
         </section>
 
-        {/* PROBLEMA X SOLUÇÃO */}
-        <section className="hv-secao hv-secao--alt" id="recursos">
-          <div className="hv-container">
-            <div className="hv-cabeca hv-revela">
-              <h2>Sua agenda organizada, sem caderno e sem planilha.</h2>
-            </div>
-            <div className="hv-comparar hv-revela">
-              <div className="hv-coluna">
-                <h3>Sem o Agendly</h3>
-                <ul>
-                  {[
-                    "Caderno de papel que só uma pessoa entende",
-                    "Horário marcado em dobro para o mesmo profissional",
-                    "Dados de clientes espalhados em conversas",
-                    "Cada unidade com o seu controle",
-                  ].map((t) => (
-                    <li key={t}>
-                      <span className="hv-ico hv-ico--nao" aria-hidden="true">
-                        <X size={14} strokeWidth={2.25} />
-                      </span>
-                      <span className="sr-only">Problema: </span>
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="hv-coluna hv-coluna--sim">
-                <h3>Com o Agendly</h3>
-                <ul>
-                  {[
-                    "Agenda do dia por profissional, em 15, 30 ou 60 minutos",
-                    "Cadastro de clientes, serviços e preços",
-                    "Equipe e funcionários vinculados a cada loja",
-                    "Mais de uma loja na mesma conta",
-                  ].map((t) => (
-                    <li key={t}>
-                      <span className="hv-ico hv-ico--sim" aria-hidden="true">
-                        <Check size={14} strokeWidth={2.25} />
-                      </span>
-                      <span className="sr-only">Com o Agendly: </span>
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+        {/* CADERNO X AGENDLY */}
+        <section className="hv-secao hv-papel" id="sem-e-com">
+          <div className="hv-container hv-livro">
+            <h2>Do caderno para a tela.</h2>
+            <table className="hv-livro-tabela">
+              <caption className="sr-only">
+                Problemas do caderno de papel e como o Agendly resolve cada um
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Sem o Agendly</th>
+                  <th scope="col">Com o Agendly</th>
+                </tr>
+              </thead>
+              <tbody>
+                {CADERNO_X_AGENDLY.map(([sem, com]) => (
+                  <tr key={sem}>
+                    <td className="hv-livro-sem">{sem}</td>
+                    <td>{com}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
 
         {/* COMO FUNCIONA */}
-        <section className="hv-secao" id="como-funciona">
-          <div className="hv-container">
-            <div className="hv-cabeca hv-revela">
-              <h2>Do cadastro à agenda em 3 passos.</h2>
-            </div>
-            <ol className="hv-passos hv-revela">
+        <section className="hv-secao hv-papel hv-secao--colada" id="como-funciona">
+          <div className="hv-container hv-passos-grade">
+            <h2>Do cadastro à agenda em 3 passos.</h2>
+            <ol className="hv-passos">
               <li>
-                <span className="hv-passo-icone" aria-hidden="true">
-                  <Store size={20} strokeWidth={1.75} />
+                <span className="hv-passo-num" aria-hidden="true">
+                  1
                 </span>
                 <h3>Crie a conta e a loja</h3>
                 <p>Cadastre sua unidade com endereço e contato.</p>
               </li>
               <li>
-                <span className="hv-passo-icone" aria-hidden="true">
-                  <Users size={20} strokeWidth={1.75} />
+                <span className="hv-passo-num" aria-hidden="true">
+                  2
                 </span>
                 <h3>Cadastre serviços e equipe</h3>
                 <p>Serviços com preço e comissão, profissionais e áreas de atuação.</p>
               </li>
               <li>
-                <span className="hv-passo-icone" aria-hidden="true">
-                  <CalendarDays size={20} strokeWidth={1.75} />
+                <span className="hv-passo-num" aria-hidden="true">
+                  3
                 </span>
                 <h3>Organize o dia</h3>
                 <p>Veja a agenda por profissional e encontre horários livres com um clique.</p>
@@ -301,44 +336,72 @@ export default function HomeView() {
           </div>
         </section>
 
-        {/* EM BREVE */}
-        <section className="hv-secao hv-secao--alt" id="em-breve">
+        {/* RECURSOS: a comanda, a mensagem e o painel mostrados, não descritos */}
+        <section className="hv-secao hv-floresta" id="recursos">
           <div className="hv-container">
-            <div className="hv-cabeca hv-revela">
-              <h2>O que estamos construindo.</h2>
-              <p className="hv-cabeca-texto">
-                Estes recursos ainda não estão disponíveis. Mostramos aqui para você saber o que vem
-                por aí.
-              </p>
+            <div className="hv-recursos-cabeca">
+              <h2>Da agenda ao caixa, tudo no mesmo lugar.</h2>
+              <p>Todos os recursos abaixo já estão disponíveis nos dois planos.</p>
             </div>
-            <div className="hv-breve-grade hv-revela">
-              <article className="hv-breve-card">
-                <div className="hv-breve-topo">
-                  <span className="hv-passo-icone" aria-hidden="true">
-                    <MessageCircle size={20} strokeWidth={1.75} />
-                  </span>
-                  <EmBreve />
+
+            <div className="hv-recursos-palco">
+              <article className="hv-recurso hv-recurso--comanda">
+                <div className="hv-comanda" role="group" aria-label="Exemplo de comanda fechada">
+                  <p className="hv-comanda-titulo">Comanda de Diego Alves</p>
+                  <table className="hv-comanda-itens">
+                    <tbody>
+                      <tr>
+                        <th scope="row">Corte, com Rafa</th>
+                        <td>R$ 45,00</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Barba, com Rafa</th>
+                        <td>R$ 30,00</td>
+                      </tr>
+                      <tr className="hv-comanda-total">
+                        <th scope="row">Total</th>
+                        <td>R$ 75,00</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Pix</th>
+                        <td>R$ 50,00</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Dinheiro</th>
+                        <td>R$ 30,00</td>
+                      </tr>
+                      <tr className="hv-comanda-troco">
+                        <th scope="row">Troco</th>
+                        <td>R$ 5,00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p className="hv-comanda-nota">Exemplo ilustrativo</p>
                 </div>
-                <h3>Lembretes e confirmação pelo WhatsApp</h3>
-                <p>Lembrete antes do horário e confirmação de presença pelo próprio cliente.</p>
-                <div className="hv-comanda" aria-label="Exemplo de mensagem de confirmação">
-                  <p className="hv-comanda-msg">
-                    Oi, Camila! Você tem <b>escova</b> amanhã às 15h no Studio Bella. Confirma?
-                  </p>
-                  <p className="hv-comanda-meta">
-                    <Clock size={14} strokeWidth={1.75} aria-hidden="true" /> Exemplo ilustrativo
+                <div className="hv-recurso-texto">
+                  <h3>Caixa e comanda</h3>
+                  <p>
+                    Receba em Pix, dinheiro, débito ou crédito, até dividido. O troco é calculado, e
+                    o caixa tem abertura, sangria e fechamento conferido.
                   </p>
                 </div>
               </article>
-              <article className="hv-breve-card">
-                <div className="hv-breve-topo">
-                  <span className="hv-passo-icone" aria-hidden="true">
-                    <BarChart3 size={20} strokeWidth={1.75} />
-                  </span>
-                  <EmBreve />
+
+              <article className="hv-recurso">
+                <div className="hv-whats" aria-label="Exemplo de mensagem de confirmação">
+                  <p>
+                    Oi, Marcos! Você tem <b>barba</b> amanhã às 10h na Barbearia do Rafa. Confirma?
+                  </p>
+                  <span>Exemplo ilustrativo</span>
                 </div>
-                <h3>Painel financeiro</h3>
-                <p>Faturamento do mês, comissão por profissional e horários de maior movimento.</p>
+                <h3>Confirmação pelo WhatsApp da loja</h3>
+                <p>
+                  Um clique abre o WhatsApp da loja com a mensagem pronta. Você marca o horário como
+                  confirmado ou cancelado.
+                </p>
+              </article>
+
+              <article className="hv-recurso">
                 <div
                   className="hv-barras"
                   role="img"
@@ -348,85 +411,87 @@ export default function HomeView() {
                     <i key={i} style={{ height: `${h}%` }} />
                   ))}
                 </div>
+                <h3>Painel financeiro</h3>
+                <p>
+                  Faturamento, ticket médio e taxa de faltas, por profissional, serviço e forma de
+                  pagamento.
+                </p>
               </article>
             </div>
+
+            <ul className="hv-recursos-lista">
+              <li>
+                <h3>Agenda por profissional</h3>
+                <p>Em 15, 30 ou 60 minutos, respeitando o funcionamento da loja.</p>
+              </li>
+              <li>
+                <h3>Comissões, salários e contas</h3>
+                <p>
+                  Quanto cada profissional tem a receber, com adiantamento, despesas e recebimentos.
+                </p>
+              </li>
+              <li>
+                <h3>Clientes e fidelidade</h3>
+                <p>Histórico, contagem de visitas e mais de uma loja na mesma conta.</p>
+              </li>
+            </ul>
+
+            <p className="hv-recursos-breve">
+              <EmBreve /> Lembretes automáticos pelo WhatsApp: o cliente recebe o lembrete e
+              confirma sozinho.
+            </p>
           </div>
         </section>
 
         {/* PREÇOS */}
-        <section className="hv-secao" id="precos">
+        <section className="hv-secao hv-papel" id="precos">
           <div className="hv-container">
-            <div className="hv-cabeca hv-cabeca--centro hv-revela">
-              <h2>Planos simples, sem fidelidade.</h2>
-            </div>
-            <div className="hv-planos hv-revela">
+            <h2>Planos simples, sem fidelidade.</h2>
+            <div className="hv-planos">
               <article className="hv-plano">
                 <h3>Solo</h3>
                 <p className="hv-plano-desc">Para profissionais autônomos</p>
                 <p className="hv-preco">
                   R$ 59<span>/mês</span>
                 </p>
-                <ul>
-                  <li>
-                    <Check size={16} strokeWidth={2} aria-hidden="true" />1 profissional
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={2} aria-hidden="true" />
-                    Agenda online
-                  </li>
-                  <li className="hv-plano-breve">
-                    <Clock size={16} strokeWidth={1.75} aria-hidden="true" />
-                    Lembretes por WhatsApp <EmBreve />
-                  </li>
-                </ul>
-                <Link to="/register" className="btn btn-secundario btn-bloco">
+                <p className="hv-plano-limite">1 profissional</p>
+                <Link to="/register" className="hv-btn hv-btn--secundario">
                   Começar agora
                 </Link>
               </article>
-              <article className="hv-plano hv-plano--destaque">
-                <span className="hv-selo hv-selo--marca">Mais escolhido</span>
+              <article className="hv-plano">
                 <h3>Equipe</h3>
                 <p className="hv-plano-desc">Para salões e barbearias</p>
                 <p className="hv-preco">
                   R$ 149<span>/mês</span>
                 </p>
-                <ul>
-                  <li>
-                    <Check size={16} strokeWidth={2} aria-hidden="true" />
-                    Até 6 profissionais
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={2} aria-hidden="true" />
-                    Agenda por profissional
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={2} aria-hidden="true" />
-                    Comissão por serviço
-                  </li>
-                  <li className="hv-plano-breve">
-                    <Clock size={16} strokeWidth={1.75} aria-hidden="true" />
-                    Confirmação no WhatsApp <EmBreve />
-                  </li>
-                  <li className="hv-plano-breve">
-                    <Clock size={16} strokeWidth={1.75} aria-hidden="true" />
-                    Painel financeiro <EmBreve />
-                  </li>
-                </ul>
-                <Link to="/register" className="btn btn-primario btn-bloco">
+                <p className="hv-plano-limite">
+                  Até 6 profissionais, com comissão e salário por profissional
+                </p>
+                <Link to="/register" className="hv-btn hv-btn--primario">
                   Começar agora
                 </Link>
               </article>
+              <div className="hv-planos-inclui">
+                <h3>Nos dois planos</h3>
+                <ul>
+                  {RECURSOS_PLANO.map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                  <li className="hv-plano-breve">
+                    Lembretes automáticos <EmBreve />
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
 
         {/* FAQ */}
-        <section className="hv-secao hv-secao--alt" id="duvidas">
-          <div className="hv-container hv-container--estreito">
-            <div className="hv-cabeca hv-revela">
-              <h2>Perguntas frequentes</h2>
-            </div>
-            <div className="hv-faq hv-revela">
+        <section className="hv-secao hv-papel hv-secao--colada" id="duvidas">
+          <div className="hv-container hv-faq-grade">
+            <h2>Perguntas frequentes</h2>
+            <div className="hv-faq">
               {FAQ_ITEMS.map((item, i) => {
                 const aberto = faqAberto === i;
                 return (
@@ -461,48 +526,34 @@ export default function HomeView() {
         </section>
 
         {/* CTA FINAL */}
-        <section className="hv-secao">
-          <div className="hv-container">
-            <div className="hv-cta-final hv-revela">
-              <h2>Comece a organizar sua agenda hoje.</h2>
-              <p>Criar a conta é grátis e não pede cartão de crédito.</p>
-              <Link to="/register" className="btn btn-primario hv-btn-grande">
+        <section className="hv-secao hv-floresta hv-final">
+          <div className="hv-container hv-final-grade">
+            <h2>Comece a organizar sua loja hoje.</h2>
+            <div>
+              <p>14 dias grátis para testar tudo. Criar a conta não pede cartão de crédito.</p>
+              <Link to="/register" className="hv-btn hv-btn--primario hv-btn--grande">
                 Criar conta grátis
               </Link>
-              <p className="hv-cta-final-nota">
-                Já tem conta?{" "}
-                <Link to="/login" className="link">
-                  Entrar
-                </Link>
+              <p className="hv-final-nota">
+                Já tem conta? <Link to="/login">Entrar</Link>
               </p>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="hv-rodape">
+      <footer className="hv-rodape hv-floresta">
         <div className="hv-container hv-rodape-grade">
-          <span>© 2026 Agendly</span>
+          <Logo variante="horizontal" claro titulo="Agendly" />
           <nav className="hv-rodape-links" aria-label="Rodapé">
             <Link to="/login">Entrar</Link>
             <Link to="/register">Criar conta</Link>
             <Link to="/politicas-de-privacidade">Privacidade</Link>
             <Link to="/termos-de-uso">Termos de uso</Link>
           </nav>
+          <span className="hv-rodape-copy">© 2026 Agendly</span>
         </div>
       </footer>
     </div>
-  );
-}
-
-function MockLinha({ hora, linha }: { hora: string; linha: number }) {
-  return (
-    <>
-      <span className="hv-mock-hora" style={{ gridColumn: 1, gridRow: linha }}>
-        {hora}
-      </span>
-      <span className="hv-mock-celula" style={{ gridColumn: 2, gridRow: linha }} />
-      <span className="hv-mock-celula" style={{ gridColumn: 3, gridRow: linha }} />
-    </>
   );
 }

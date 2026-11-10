@@ -8,19 +8,25 @@ const loja = { id: 7, nome: "Loja E2E", cnpj: "11222333000181" };
 describe("Fluxo de cadastros", () => {
   beforeEach(() => cy.login());
 
-  it("menu segue a ordem de dependência", () => {
+  it("barra com o dia a dia e menu de cadastros na ordem de dependência", () => {
     cy.intercept("GET", "/api/v1/**", { body: [] });
     cy.visit("/listagem-lojas");
     cy.get(".app-navbar__nav a").then(($a) => {
       expect([...$a].map((a) => a.textContent?.trim())).to.deep.eq([
         "Agenda",
         "Caixa",
+        "Clientes",
         "Painel",
+      ]);
+    });
+    cy.get("[data-cy=menu-navegacao]").click();
+    cy.get('[role=group][aria-label="Cadastros"] [role=menuitem]').then(($a) => {
+      expect([...$a].map((a) => a.textContent?.trim())).to.deep.eq([
         "Lojas",
         "Áreas",
         "Funcionários",
+        "Especialidades",
         "Serviços",
-        "Clientes",
       ]);
     });
   });

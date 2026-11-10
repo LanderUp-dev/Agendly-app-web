@@ -82,7 +82,10 @@ export interface AgendamentoAgenda {
   data: string;
   horaInicio: string;
   horaFim: string;
+  /** Nome do profissional (só para mostrar). */
   profissional: string;
+  /** Identidade do profissional na agenda (o id). Dois profissionais podem ter o mesmo nome. */
+  chaveProfissional: string;
   cliente: string;
   servico: string;
   cor: string;
@@ -108,6 +111,8 @@ export const agendamentoParaAgenda = (a: any): AgendamentoAgenda => ({
   horaInicio: horaCurta(a?.horarioInicio),
   horaFim: horaCurta(a?.horarioFim),
   profissional: a?.nomeFuncionario ?? "",
+  chaveProfissional:
+    a?.idFuncionario != null ? String(a.idFuncionario) : (a?.nomeFuncionario ?? ""),
   cliente: a?.nomeCliente ?? "",
   servico: a?.nomeServico ?? "",
   cor: a?.cor || COR_PADRAO_AGENDAMENTO,

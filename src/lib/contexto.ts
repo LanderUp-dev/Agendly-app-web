@@ -11,6 +11,7 @@
 import api from "@/config/axios";
 import { obterUsuario, salvarContexto, type LojaAtiva } from "@/lib/auth";
 import type { EquipeResumo } from "@/types/auth";
+import { adminService } from "@/services/acesso";
 
 export const ROTA_SELECIONAR_LOJA = "/selecionar-loja";
 
@@ -56,7 +57,12 @@ export async function destinoAposLogin(
   equipes: EquipeResumo[] | null | undefined,
 ): Promise<string> {
   const lista = Array.isArray(equipes) ? equipes.filter((e) => e?.id) : [];
-  if (lista.length === 0) return "/cadastro-loja";
+  if (lista.length === 0) {
+    // Administrador da plataforma (ADMIN_EMAILS) sem loja própria vai direto para a
+    // administração, em vez de cair no "cadastre sua loja".
+    const admin = await adminService.souAdmin().catch(() => false);
+    return admin ? "/admin" : "/cadastro-loja";
+  }
   if (lista.length > 1) return ROTA_SELECIONAR_LOJA;
   try {
     await entrarNaLoja(lista[0].id);

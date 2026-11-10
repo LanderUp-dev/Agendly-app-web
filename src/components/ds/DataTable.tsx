@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 import { Carregando, EmptyState, ErrorState, Skeleton } from "./Feedback";
+import { Paginacao, usePaginacaoLocal } from "./Paginacao";
 import type { ErroCarregamento } from "@/hooks/useCarregar";
 
 export interface Coluna<T> {
@@ -30,8 +31,6 @@ interface DataTableProps<T> {
 }
 
 const LINHAS_SKELETON = 5;
-/** A API devolve a lista inteira; a paginação é só de exibição. */
-const POR_PAGINA = 20;
 
 /**
  * Tabela densa com busca, skeleton nas mesmas dimensões, estado vazio e
@@ -60,13 +59,9 @@ export function DataTable<T>({
     );
   }, [itens, termo, filtrar]);
 
-  const [pagina, setPagina] = useState(1);
-  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
-  // Nova busca ou lista recarregada volta para a primeira página.
-  useEffect(() => setPagina(1), [termo, itens]);
-  const paginaAtual = Math.min(pagina, totalPaginas);
-  const inicio = (paginaAtual - 1) * POR_PAGINA;
-  const visiveis = filtrados.slice(inicio, inicio + POR_PAGINA);
+  // A API devolve a lista inteira; a paginação é de exibição e lembra a página na sessão
+  // (abrir um item e voltar mantém a página). Nova busca volta para a primeira.
+  const { visiveis, props: paginacao } = usePaginacaoLocal(filtrados, rotulo, termo);
 
   const cabecalho = (
     <thead>
@@ -151,38 +146,7 @@ export function DataTable<T>({
             ))}
           </tbody>
         </table>
-        {totalPaginas > 1 && (
-          <nav className="paginacao" aria-label={`Páginas de ${rotulo}`} data-cy="paginacao">
-            <span className="paginacao__info" aria-live="polite">
-              {inicio + 1}–{inicio + visiveis.length} de {filtrados.length}
-            </span>
-            <div className="paginacao__botoes">
-              <button
-                type="button"
-                className="btn btn-secundario"
-                onClick={() => setPagina(paginaAtual - 1)}
-                disabled={paginaAtual === 1}
-                data-cy="pagina-anterior"
-              >
-                <ChevronLeft size={18} strokeWidth={1.75} aria-hidden="true" />
-                Anterior
-              </button>
-              <span className="paginacao__atual">
-                Página {paginaAtual} de {totalPaginas}
-              </span>
-              <button
-                type="button"
-                className="btn btn-secundario"
-                onClick={() => setPagina(paginaAtual + 1)}
-                disabled={paginaAtual === totalPaginas}
-                data-cy="pagina-proxima"
-              >
-                Próxima
-                <ChevronRight size={18} strokeWidth={1.75} aria-hidden="true" />
-              </button>
-            </div>
-          </nav>
-        )}
+        <Paginacao rotulo={rotulo} {...paginacao} />
       </div>
     );
   }

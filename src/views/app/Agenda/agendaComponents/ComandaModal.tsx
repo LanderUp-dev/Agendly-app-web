@@ -1,4 +1,4 @@
-// @requisito RE-07 RO-12 RO-13 RO-14 RR-17 RR-21 RO-15
+// @requisito RE-07 RO-12 RO-13 RO-14 RR-17 RR-21 RO-15 RNR-11
 /* eslint-disable @typescript-eslint/no-explicit-any -- serviços e funcionários vêm sem tipo do backend */
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
@@ -43,6 +43,24 @@ let proximaChave = 1;
 const novaChave = () => proximaChave++;
 
 const nome = (p: any) => [p?.nome, p?.sobrenome].filter(Boolean).join(" ");
+
+/** Ids das áreas de atuação do profissional (GET /funcionarios traz `area: [{id, nome}]`). */
+const areasDe = (f: any): Set<string> =>
+  new Set(
+    (Array.isArray(f?.area) ? f.area : [])
+      .map((a: any) => (a?.id != null ? String(a.id) : ""))
+      .filter(Boolean),
+  );
+
+/**
+ * RNR-11: o profissional só faz serviços das áreas dele. Como no backend, não restringe
+ * quando o serviço não tem área ou o profissional ainda não tem área cadastrada.
+ */
+const atende = (f: any, s: any): boolean => {
+  if (!f || !s || s.idArea == null) return true;
+  const areas = areasDe(f);
+  return areas.size === 0 || areas.has(String(s.idArea));
+};
 
 /**
  * Fecha o atendimento: serviços feitos (já vem o do agendamento), desconto/acréscimo e as
@@ -111,14 +129,49 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
     return { tipo: "ok" as const, texto: "Valor recebido confere com o total" };
   }, [falta]);
 
+  const servicoPorId = (id: string) => servicos.find((x) => String(x.id) === id);
+  const profissionalPorId = (id: string) => funcionarios.find((x) => String(x.id) === id);
+
+  /** Serviços que o profissional da linha atende (o já escolhido continua na lista). */
+  const servicosDaLinha = (i: LinhaItem) => {
+    const f = profissionalPorId(i.idFuncionario);
+    return servicos.filter((s) => atende(f, s) || String(s.id) === i.idServico);
+  };
+
+  /** Profissionais que atendem o serviço da linha (o já escolhido continua na lista). */
+  const profissionaisDaLinha = (i: LinhaItem) => {
+    const s = servicoPorId(i.idServico);
+    return funcionarios.filter((f) => atende(f, s) || String(f.id) === i.idFuncionario);
+  };
+
+  /** Texto do problema de área da linha (ou null se está tudo certo). */
+  const avisoDaLinha = (i: LinhaItem): string | null => {
+    const f = profissionalPorId(i.idFuncionario);
+    const s = servicoPorId(i.idServico);
+    if (f && s && !atende(f, s)) {
+      return `${nome(f) || "Este profissional"} não atende serviços de ${s.nomeArea || "outra área"}. Troque o serviço ou o profissional.`;
+    }
+    if (f && servicos.length > 0 && !servicos.some((x) => atende(f, x))) {
+      return `Nenhum serviço cadastrado nas áreas de ${nome(f) || "este profissional"}.`;
+    }
+    return null;
+  };
+
   const mudarItem = (chave: number, campo: keyof LinhaItem, valor: string) =>
     setItens((lista) =>
       lista.map((i) => {
         if (i.chave !== chave) return i;
         const novo = { ...i, [campo]: valor };
         if (campo === "idServico") {
-          const s = servicos.find((x) => String(x.id) === valor);
+          const s = servicoPorId(valor);
           novo.valor = s?.preco != null ? paraCampo(Number(s.preco)) : "";
+        }
+        // Trocou o profissional e o serviço escolhido não é da área dele: limpa o serviço.
+        if (campo === "idFuncionario" && i.idServico) {
+          if (!atende(profissionalPorId(valor), servicoPorId(i.idServico))) {
+            novo.idServico = "";
+            novo.valor = "";
+          }
         }
         return novo;
       }),
@@ -142,6 +195,11 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
     if (!agendamento) return;
     if (itens.some((i) => !i.idServico || !i.idFuncionario)) {
       setErro("Escolha o serviço e o profissional de cada linha.");
+      return;
+    }
+    const foraDaArea = itens.map(avisoDaLinha).find(Boolean);
+    if (foraDaArea) {
+      setErro(foraDaArea);
       return;
     }
     if (itens.some((i) => lerValor(i.valor) === null || (lerValor(i.valor) ?? 0) < 0)) {
@@ -241,56 +299,76 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
 
           <fieldset className="comanda__grupo">
             <legend>Serviços</legend>
-            {itens.map((i, n) => (
-              <div key={i.chave} className="comanda__linha" data-cy={`comanda-item-${n}`}>
-                <select
-                  className="campo"
-                  aria-label={`Serviço ${n + 1}`}
-                  value={i.idServico}
-                  onChange={(e) => mudarItem(i.chave, "idServico", e.target.value)}
-                  data-cy="comanda-servico"
-                >
-                  <option value="">Serviço...</option>
-                  {servicos.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.nome}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="campo"
-                  aria-label={`Profissional do serviço ${n + 1}`}
-                  value={i.idFuncionario}
-                  onChange={(e) => mudarItem(i.chave, "idFuncionario", e.target.value)}
-                  data-cy="comanda-profissional"
-                >
-                  <option value="">Profissional...</option>
-                  {funcionarios.map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {nome(f)}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  className="campo comanda__valor"
-                  inputMode="decimal"
-                  aria-label={`Valor do serviço ${n + 1}`}
-                  value={i.valor}
-                  onChange={(e) => mudarItem(i.chave, "valor", e.target.value)}
-                  data-cy="comanda-valor"
-                />
-                {itens.length > 1 && (
-                  <button
-                    type="button"
-                    className="btn btn-fantasma btn-icone"
-                    aria-label={`Remover serviço ${n + 1}`}
-                    onClick={() => setItens((l) => l.filter((x) => x.chave !== i.chave))}
-                  >
-                    <Trash2 size={16} aria-hidden="true" />
-                  </button>
-                )}
-              </div>
-            ))}
+            {itens.map((i, n) => {
+              const aviso = avisoDaLinha(i);
+              const idAviso = `comanda-aviso-${i.chave}`;
+              return (
+                <React.Fragment key={i.chave}>
+                  <div className="comanda__linha" data-cy={`comanda-item-${n}`}>
+                    <select
+                      className="campo"
+                      aria-label={`Serviço ${n + 1}`}
+                      aria-invalid={aviso ? true : undefined}
+                      aria-describedby={aviso ? idAviso : undefined}
+                      value={i.idServico}
+                      onChange={(e) => mudarItem(i.chave, "idServico", e.target.value)}
+                      data-cy="comanda-servico"
+                    >
+                      <option value="">Serviço…</option>
+                      {servicosDaLinha(i).map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.nome}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="campo"
+                      aria-label={`Profissional do serviço ${n + 1}`}
+                      aria-invalid={aviso ? true : undefined}
+                      aria-describedby={aviso ? idAviso : undefined}
+                      value={i.idFuncionario}
+                      onChange={(e) => mudarItem(i.chave, "idFuncionario", e.target.value)}
+                      data-cy="comanda-profissional"
+                    >
+                      <option value="">Profissional…</option>
+                      {profissionaisDaLinha(i).map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {nome(f)}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      className="campo comanda__valor"
+                      inputMode="decimal"
+                      aria-label={`Valor do serviço ${n + 1}`}
+                      value={i.valor}
+                      onChange={(e) => mudarItem(i.chave, "valor", e.target.value)}
+                      data-cy="comanda-valor"
+                    />
+                    {itens.length > 1 && (
+                      <button
+                        type="button"
+                        className="btn btn-fantasma btn-icone"
+                        aria-label={`Remover serviço ${n + 1}`}
+                        onClick={() => setItens((l) => l.filter((x) => x.chave !== i.chave))}
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                      </button>
+                    )}
+                  </div>
+                  {aviso && (
+                    <p
+                      id={idAviso}
+                      className="campo-erro"
+                      role="alert"
+                      data-cy="comanda-aviso-area"
+                    >
+                      {aviso}
+                    </p>
+                  )}
+                </React.Fragment>
+              );
+            })}
             <button
               type="button"
               className="link comanda__adicionar"

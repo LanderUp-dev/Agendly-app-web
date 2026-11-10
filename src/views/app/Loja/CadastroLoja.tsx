@@ -1,6 +1,7 @@
-// @requisito RE-02 RO-17
+// @requisito RE-02 RO-17 RNR-20
 import React, { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { isAxiosError } from "axios";
 import { concluirCadastro } from "@/lib/fluxoCadastro";
 import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
@@ -46,12 +47,28 @@ const ESTADOS = [
   "TO",
 ];
 
+/** Mesmo texto do backend (LimiteLojasService.MENSAGEM). */
+const MENSAGEM_SEM_PLANO = "Para criar outra loja, assine um plano em uma das suas lojas.";
+
+/** (00) 0000-0000 para fixo e (00) 00000-0000 para celular, enquanto digita. */
+function mascaraTelefone(valor: string): string {
+  const d = valor.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d;
+  const meio = d.length === 11 ? 5 : 4;
+  const ddd = `(${d.slice(0, 2)}) `;
+  const resto = d.slice(2);
+  return resto.length > meio
+    ? `${ddd}${resto.slice(0, meio)}-${resto.slice(meio)}`
+    : `${ddd}${resto}`;
+}
+
 export default function CadastroLoja() {
   const [formData, setFormData] = useState({
     nome: "",
     cnpj: "",
     email: "",
     celular: "",
+    telefone: "",
     cep: "",
     logradouro: "",
     numero: "",
@@ -60,6 +77,7 @@ export default function CadastroLoja() {
     estado: "",
   });
   const [salvando, setSalvando] = useState(false);
+  const [semPlano, setSemPlano] = useState(false);
   const navigate = useNavigate();
   const { erros, falhar, limpar } = useErrosFormulario();
 
@@ -87,6 +105,8 @@ export default function CadastroLoja() {
         value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
         value = value.replace(/(\d{5})(\d)/, "$1-$2");
       }
+    } else if (name === "telefone") {
+      value = mascaraTelefone(value);
     } else if (name === "numero") {
       value = value.replace(/\D/g, "");
     }
@@ -112,6 +132,7 @@ export default function CadastroLoja() {
       cnpj: somenteDigitos(formData.cnpj),
       email: formData.email.trim(),
       celular: somenteDigitos(formData.celular),
+      telefone: somenteDigitos(formData.telefone) || undefined,
       cep: somenteDigitos(formData.cep),
       logradouro: formData.logradouro.trim(),
       numero: formData.numero.trim(),
@@ -126,12 +147,20 @@ export default function CadastroLoja() {
     if (!validarCelular(payload.celular) && !validarTelefoneFixo(payload.celular)) {
       return falhar("celular", "Informe um celular ou telefone válido com DDD.");
     }
+    if (
+      payload.telefone &&
+      !validarCelular(payload.telefone) &&
+      !validarTelefoneFixo(payload.telefone)
+    ) {
+      return falhar("telefone", "Telefone inválido. Informe o DDD e o número (fixo ou celular).");
+    }
     if (payload.cep.length !== 8) return falhar("cep", "O CEP deve conter 8 dígitos.");
     for (const campo of ["logradouro", "numero", "bairro", "cidade", "estado"] as const) {
       if (!payload[campo]) return falhar(campo, "Preencha o endereço completo.");
     }
 
     setSalvando(true);
+    setSemPlano(false);
     try {
       const criado = await lojasService.criar(payload);
       toast.success("Loja cadastrada com sucesso!");
@@ -144,8 +173,14 @@ export default function CadastroLoja() {
         // Sem contexto, a navegação leva para a escolha da loja.
       }
       concluirCadastro({ navigate, listagem: "/listagem-lojas", criado, etapa: "loja" });
-    } catch {
+    } catch (err) {
       // Mensagem do backend exibida pelo interceptor do axios.
+      // RNR-20: sem plano não cria a segunda loja; mostra o caminho para assinar.
+      const dados = isAxiosError(err) ? err.response?.data : undefined;
+      if (typeof dados === "string" && dados.includes("assine um plano")) {
+        setSemPlano(true);
+        requestAnimationFrame(() => document.getElementById("aviso-sem-plano")?.focus());
+      }
     } finally {
       setSalvando(false);
     }
@@ -160,6 +195,20 @@ export default function CadastroLoja() {
       />
       <Card como="section" className="form-card">
         <form onSubmit={handleSalvar} noValidate data-cy="form-loja">
+          {semPlano && (
+            <div
+              id="aviso-sem-plano"
+              className="alerta alerta-aviso"
+              role="alert"
+              tabIndex={-1}
+              data-cy="aviso-sem-plano"
+            >
+              <span>{MENSAGEM_SEM_PLANO}</span>
+              <ButtonLink to="/plano" variante="secundario" data-cy="ir-para-plano">
+                Ver planos
+              </ButtonLink>
+            </div>
+          )}
           <h2 className="card__secao-titulo">Identificação</h2>
           <div className="form-grade">
             <FormField
@@ -215,6 +264,24 @@ export default function CadastroLoja() {
                 value={formData.celular}
                 onChange={handleChange}
                 data-cy="form-celular"
+              />
+            </FormField>
+            <FormField
+              id="campo-telefone"
+              label="Telefone (opcional)"
+              colunas={6}
+              erro={erros.telefone}
+            >
+              <input
+                type="tel"
+                name="telefone"
+                inputMode="numeric"
+                autoComplete="tel-national"
+                placeholder="(00) 0000-0000"
+                maxLength={15}
+                value={formData.telefone}
+                onChange={handleChange}
+                data-cy="form-telefone"
               />
             </FormField>
           </div>

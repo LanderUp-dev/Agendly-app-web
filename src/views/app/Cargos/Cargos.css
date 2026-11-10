@@ -1,0 +1,71 @@
+/* @requisito RO-29 */
+/* Cargos (tokens em src/styles/tokens.css; base em ../Financeiro/Financeiro.css) */
+
+.cargos-aviso {
+  margin: 0 0 var(--esp-4);
+  padding: var(--esp-3) var(--esp-4);
+  border-radius: var(--raio-md);
+  background-color: var(--info-fundo);
+  color: var(--texto-principal);
+  font-size: var(--texto-sm);
+}
+
+.cargos-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--esp-3);
+}
+
+.cargos-acoes button:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.cargos-grupos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--esp-4);
+}
+
+.cargos-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  min-width: 0;
+  margin: 0;
+  padding: var(--esp-3);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+}
+
+.cargos-grupo legend {
+  padding: 0 var(--esp-1);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+  color: var(--texto-principal);
+}
+
+.cargos-grupo__todas {
+  padding-bottom: var(--esp-2);
+  border-bottom: 1px solid var(--borda-sutil);
+  font-weight: var(--peso-medio);
+}
+
+.cargos-permissao {
+  align-items: flex-start;
+}
+
+.cargos-permissao--off {
+  color: var(--texto-secundario);
+  cursor: not-allowed;
+}
+
+.cargos-permissao__motivo {
+  font-size: var(--texto-xs);
+}
+
+.cargos-grupo input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 2px;
+}

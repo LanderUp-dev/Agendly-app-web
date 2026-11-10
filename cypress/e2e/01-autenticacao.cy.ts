@@ -9,7 +9,11 @@ function loginPelaTela(ajustarEquipes: (equipes: Array<{ id: string }>) => Array
       res.body.equipes = ajustarEquipes(res.body.equipes ?? []);
     });
   }).as("login");
+  // O usuário do E2E pode ser admin da plataforma (ADMIN_EMAILS no lab); admin sem loja vai
+  // para /admin. Aqui testamos o caminho de quem NÃO é admin.
+  cy.intercept("GET", "/api/v1/admin/eu", { body: { admin: false } });
   cy.visit("/login");
+  cy.window().then((w) => w.sessionStorage.removeItem("agendly_admin"));
   cy.get("[data-cy=login-form][data-hidratado=true]");
   cy.get("[data-cy=login-email]").type(email);
   cy.get("[data-cy=login-senha]").type(senha, { log: false });
