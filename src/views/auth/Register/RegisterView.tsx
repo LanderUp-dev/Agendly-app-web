@@ -4,13 +4,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Check, Circle, Eye, EyeOff } from "lucide-react";
 import { authService } from "@/services/authService";
-import {
-  idadeValida,
-  somenteDigitos,
-  validarCPF,
-  validarCelular,
-  validarEmail,
-} from "@/lib/validators";
+import { idadeValida, somenteDigitos, validarCelular, validarEmail } from "@/lib/validators";
 import type { UsuarioCadastroPayload } from "@/types/auth";
 import { Button, FormField, Logo } from "@/components/ds";
 import { useHidratado } from "@/hooks/useHidratado";
@@ -22,7 +16,6 @@ type Campo =
   | "sobrenome"
   | "email"
   | "celular"
-  | "cpf"
   | "dtaNascimento"
   | "senha"
   | "confirmarSenha"
@@ -44,7 +37,6 @@ const RegisterView = () => {
     email: "",
     celular: "",
     dtaNascimento: "",
-    cpf: "",
     senha: "",
     confirmarSenha: "",
   });
@@ -60,13 +52,6 @@ const RegisterView = () => {
       if (value.length <= 11) {
         value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
         value = value.replace(/(\d{5})(\d)/, "$1-$2");
-      }
-    } else if (name === "cpf") {
-      value = value.replace(/\D/g, "");
-      if (value.length <= 11) {
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
       }
     }
 
@@ -105,7 +90,6 @@ const RegisterView = () => {
       sobrenome: formData.sobrenome.trim(),
       email: formData.email.trim(),
       celular: somenteDigitos(formData.celular),
-      cpf: somenteDigitos(formData.cpf),
       dtaNascimento: formData.dtaNascimento,
       senha: formData.senha,
     };
@@ -118,7 +102,6 @@ const RegisterView = () => {
     }
     if (!validarCelular(payload.celular))
       return falhar("celular", "Informe um celular válido com DDD.");
-    if (!validarCPF(payload.cpf)) return falhar("cpf", "CPF inválido.");
     if (!idadeValida(payload.dtaNascimento)) {
       return falhar("dtaNascimento", "Você precisa ter entre 18 e 99 anos para criar uma conta.");
     }
@@ -213,18 +196,6 @@ const RegisterView = () => {
                   value={formData.dtaNascimento}
                   onChange={handleChange}
                   data-cy="cadastro-nascimento"
-                />
-              </FormField>
-              <FormField id="campo-cpf" label="CPF" obrigatorio colunas={6} erro={erros.cpf}>
-                <input
-                  type="text"
-                  name="cpf"
-                  inputMode="numeric"
-                  maxLength={14}
-                  placeholder="000.000.000-00"
-                  value={formData.cpf}
-                  onChange={handleChange}
-                  data-cy="cadastro-cpf"
                 />
               </FormField>
             </div>

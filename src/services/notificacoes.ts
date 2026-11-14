@@ -5,7 +5,11 @@ import { getToken, tokenExpirado } from "@/lib/auth";
 
 /** Chaves iguais a com.agendly.app.notificacao.model.entity.TipoNotificacao. */
 export type TipoNotificacao =
-  "AGENDAMENTO_CRIADO" | "AGENDAMENTO_CANCELADO" | "FIDELIDADE_MARCO" | "CAIXA_ABERTO_DIA_ANTERIOR";
+  | "AGENDAMENTO_CRIADO"
+  | "AGENDAMENTO_CANCELADO"
+  | "AGENDAMENTO_CONFIRMADO"
+  | "FIDELIDADE_MARCO"
+  | "CAIXA_ABERTO_DIA_ANTERIOR";
 
 export interface Notificacao {
   id: number;

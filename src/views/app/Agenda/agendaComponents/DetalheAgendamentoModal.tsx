@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Badge, Button, FormField, Modal } from "@/components/ds";
 import { obterLojaAtiva } from "@/lib/auth";
 import { temPermissao } from "@/lib/permissoes";
-import { linkWhatsApp, mensagemConfirmacao } from "@/lib/whatsapp";
+import { linkConfirmacao, linkWhatsApp, mensagemConfirmacao } from "@/lib/whatsapp";
 import { ROTULO_STATUS } from "@/lib/statusAgendamento";
 import { agendamentosService, type AgendamentoAgenda } from "@/services/endpoints";
 import { brParaIso, ehPassado, mudouDestino, podeMover } from "./arrastarAgenda";
@@ -106,6 +106,8 @@ export default function DetalheAgendamentoModal({
           data: a.data,
           horaInicio: a.horaInicio,
           nomeLoja: a.nomeLoja || obterLojaAtiva()?.nomeLoja,
+          // "Sim" clicável: o cliente toca no link e o horário vira Confirmado sozinho.
+          linkConfirmacao: linkConfirmacao(a.tokenConfirmacao),
         }),
       )
     : null;
@@ -304,8 +306,9 @@ export default function DetalheAgendamentoModal({
             )}
           </div>
           <p className="texto-ajuda">
-            O WhatsApp abre no número em que você está logado (o da loja). Quando o cliente
-            responder, clique em “Cliente confirmou”.
+            O WhatsApp abre no número em que você está logado (o da loja). A mensagem leva um link:
+            o cliente toca em “Sim, confirmo” e o horário fica confirmado sozinho, com aviso no
+            sininho. Se ele responder por texto, clique em “Cliente confirmou”.
           </p>
         </div>
       )}

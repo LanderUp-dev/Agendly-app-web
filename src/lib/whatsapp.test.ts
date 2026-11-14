@@ -1,6 +1,6 @@
 // @requisito RO-37
 import { describe, expect, it } from "vitest";
-import { linkWhatsApp, mensagemConfirmacao, telefoneWhatsApp } from "./whatsapp";
+import { linkConfirmacao, linkWhatsApp, mensagemConfirmacao, telefoneWhatsApp } from "./whatsapp";
 
 describe("whatsapp (Fase 0)", () => {
   it("normaliza celular brasileiro com DDI 55", () => {
@@ -24,6 +24,21 @@ describe("whatsapp (Fase 0)", () => {
     expect(texto).toContain("de Corte com Ana sábado, 14/11 às 10:00.");
     expect(texto).toContain("Responda *SIM*");
     expect(texto.endsWith("\n\nSalão X")).toBe(true);
+  });
+
+  it("com o link de confirmação, a mensagem pede um toque em vez de digitar SIM", () => {
+    const link = linkConfirmacao("abc_DEF-123", "https://agendly.exemplo/");
+    expect(link).toBe("https://agendly.exemplo/confirmar/abc_DEF-123");
+    const texto = mensagemConfirmacao({
+      cliente: "Maria",
+      data: "14/11/2026",
+      horaInicio: "10:00",
+      nomeLoja: "Salão X",
+      linkConfirmacao: link,
+    });
+    expect(texto).toContain("Toque no link para confirmar com um clique:\n" + link);
+    expect(texto).not.toContain("Responda *SIM*");
+    expect(linkConfirmacao(undefined, "https://agendly.exemplo")).toBeNull();
   });
 
   it("gera link wa.me com o texto codificado, ou null sem celular válido", () => {

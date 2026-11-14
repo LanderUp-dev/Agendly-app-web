@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { concluirCadastro } from "@/lib/fluxoCadastro";
 import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
-import { funcionariosService } from "@/services/endpoints";
+import { funcionariosService, tornarMeProfissional } from "@/services/endpoints";
 import { somenteDigitos, validarCPF, validarCelular, validarEmail } from "@/lib/validators";
 import { Button, ButtonLink, Card, FormField, PageHeader, LojaDoCadastro } from "@/components/ds";
 import { useErrosFormulario } from "@/hooks/useErrosFormulario";
@@ -19,8 +19,29 @@ export default function CadastroFuncionario() {
     celular: "",
   });
   const [salvando, setSalvando] = useState(false);
+  const [entrando, setEntrando] = useState(false);
   const navigate = useNavigate();
   const { erros, falhar, limpar } = useErrosFormulario();
+
+  /** O dono (ou quem está logado) também atende: entra na agenda com os dados da própria conta. */
+  const souEu = async () => {
+    if (entrando || salvando) return;
+    setEntrando(true);
+    try {
+      const criado = await tornarMeProfissional();
+      toast.success("Pronto! Você agora aparece na agenda como profissional.");
+      concluirCadastro({
+        navigate,
+        listagem: "/listagem-funcionarios",
+        criado,
+        etapa: "funcionario",
+      });
+    } catch {
+      // Mensagem do backend exibida pelo interceptor do axios.
+    } finally {
+      setEntrando(false);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -58,14 +79,15 @@ export default function CadastroFuncionario() {
     const payload = {
       nome: formData.nome.trim(),
       sobrenome: formData.sobrenome.trim(),
-      cpf: somenteDigitos(formData.cpf),
+      // CPF opcional (RO-19): vazio não é enviado.
+      cpf: somenteDigitos(formData.cpf) || undefined,
       dtaNascimento: formData.dtaNascimento,
       email: formData.email.trim(),
       celular: somenteDigitos(formData.celular),
     };
 
     if (!payload.nome) return falhar("nome", "Informe o nome do funcionário.");
-    if (!validarCPF(payload.cpf)) return falhar("cpf", "CPF inválido.");
+    if (payload.cpf && !validarCPF(payload.cpf)) return falhar("cpf", "CPF inválido.");
     if (!payload.dtaNascimento) return falhar("dtaNascimento", "Informe a data de nascimento.");
     if (!validarEmail(payload.email)) return falhar("email", "Informe um e-mail válido.");
     if (!validarCelular(payload.celular))
@@ -96,6 +118,18 @@ export default function CadastroFuncionario() {
         voltar={{ to: "/listagem-funcionarios", rotulo: "Funcionários" }}
       />
       <Card como="section" className="form-card">
+        <div className="alerta alerta-info alerta-com-acao" data-cy="sou-eu">
+          <span>Você também atende clientes? Entre na agenda com os dados da sua conta.</span>
+          <Button
+            type="button"
+            variante="secundario"
+            carregando={entrando}
+            onClick={souEu}
+            data-cy="sou-eu-botao"
+          >
+            Eu também atendo
+          </Button>
+        </div>
         <form onSubmit={handleSalvar} noValidate data-cy="form-funcionario">
           <div className="form-grade">
             <FormField id="campo-nome" label="Nome" obrigatorio colunas={6} erro={erros.nome}>
@@ -124,7 +158,7 @@ export default function CadastroFuncionario() {
                 data-cy="form-sobrenome"
               />
             </FormField>
-            <FormField id="campo-cpf" label="CPF" obrigatorio colunas={6} erro={erros.cpf}>
+            <FormField id="campo-cpf" label="CPF (opcional)" colunas={6} erro={erros.cpf}>
               <input
                 type="text"
                 name="cpf"

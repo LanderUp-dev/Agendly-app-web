@@ -194,7 +194,7 @@ export default function CargosView() {
       )}
       {!carregando && !erroCarga && lista.dados.length > 0 && (
         <div className="tabela-container">
-          <table className="tabela-SaaS" data-cy="cargo-lista">
+          <table className="tabela-SaaS tabela-cartoes" data-cy="cargo-lista">
             <thead>
               <tr>
                 <th scope="col">Cargo</th>
@@ -212,19 +212,23 @@ export default function CargosView() {
             <tbody>
               {lista.dados.map((c) => (
                 <tr key={c.id} data-cy="cargo-linha" data-cargo={c.nome}>
-                  <td>
+                  <td data-rotulo="Cargo">
                     <strong data-cy="cargo-nome-linha">{c.nome}</strong>{" "}
                     {c.doSistema && <Badge tom="marca">Padrão</Badge>}
                     {c.descricao && <div className="texto-ajuda">{c.descricao}</div>}
                   </td>
-                  <td className="tabela__num" data-cy="cargo-qtd-permissoes">
+                  <td
+                    data-rotulo="Permissões"
+                    className="tabela__num"
+                    data-cy="cargo-qtd-permissoes"
+                  >
                     {c.permissoes.length}
                     {totalPermissoes > 0 && ` de ${totalPermissoes}`}
                   </td>
-                  <td className="tabela__num" data-cy="cargo-pessoas">
+                  <td data-rotulo="Pessoas" className="tabela__num" data-cy="cargo-pessoas">
                     {c.pessoas}
                   </td>
-                  <td>
+                  <td data-rotulo="">
                     <div className="cargos-acoes">
                       <button
                         type="button"

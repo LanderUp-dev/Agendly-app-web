@@ -129,7 +129,7 @@ export default function HistoricoClienteView({ id }: { id: number }) {
             ) : (
               <>
                 <div className="tabela-container">
-                  <table className="tabela-SaaS" data-cy="historico-comandas">
+                  <table className="tabela-SaaS tabela-cartoes" data-cy="historico-comandas">
                     <thead>
                       <tr>
                         <th scope="col">Data</th>
@@ -144,11 +144,15 @@ export default function HistoricoClienteView({ id }: { id: number }) {
                     <tbody>
                       {h.comandas.itens.map((c) => (
                         <tr key={c.id}>
-                          <td>{data(c.data)}</td>
-                          <td>{c.servicos.join(", ")}</td>
-                          <td>{c.profissionais.join(", ")}</td>
-                          <td>{c.formasPagamento.map(descricaoForma).join(" + ")}</td>
-                          <td className="tabela__num">{reais(c.total)}</td>
+                          <td data-rotulo="Data">{data(c.data)}</td>
+                          <td data-rotulo="Serviços">{c.servicos.join(", ")}</td>
+                          <td data-rotulo="Profissional">{c.profissionais.join(", ")}</td>
+                          <td data-rotulo="Pagamento">
+                            {c.formasPagamento.map(descricaoForma).join(" + ")}
+                          </td>
+                          <td data-rotulo="Total" className="tabela__num">
+                            {reais(c.total)}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

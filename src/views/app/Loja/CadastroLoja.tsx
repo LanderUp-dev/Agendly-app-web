@@ -1,14 +1,16 @@
 // @requisito RE-02 RO-17 RNR-20
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { concluirCadastro } from "@/lib/fluxoCadastro";
 import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
-import { lojasService } from "@/services/endpoints";
+import { lojasService, usuariosService } from "@/services/endpoints";
+import { obterUsuario } from "@/lib/auth";
 import { entrarNaLojaCriada } from "@/lib/contexto";
 import {
   somenteDigitos,
+  validarCPF,
   validarCNPJ,
   validarCelular,
   validarEmail,
@@ -75,11 +77,29 @@ export default function CadastroLoja() {
     bairro: "",
     cidade: "",
     estado: "",
+    cpfResponsavel: "",
   });
+  const [donoAtende, setDonoAtende] = useState(false);
+  // O CPF só é pedido de quem cria a loja, e só uma vez: fica na conta.
+  // null = ainda não sabemos (ou a consulta falhou); o backend decide nesse caso.
+  const [contaTemCpf, setContaTemCpf] = useState<boolean | null>(null);
   const [salvando, setSalvando] = useState(false);
   const [semPlano, setSemPlano] = useState(false);
   const navigate = useNavigate();
   const { erros, falhar, limpar } = useErrosFormulario();
+
+  useEffect(() => {
+    const id = obterUsuario()?.id;
+    if (id == null) return;
+    let ativo = true;
+    usuariosService
+      .buscar(id)
+      .then((u) => ativo && setContaTemCpf(!!somenteDigitos(u?.cpf)))
+      .catch(() => undefined);
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -97,6 +117,13 @@ export default function CadastroLoja() {
       value = value
         .replace(/\D/g, "")
         .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+    } else if (name === "cpfResponsavel") {
+      value = value
+        .replace(/\D/g, "")
+        .slice(0, 11)
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     } else if (name === "cep") {
       value = value.replace(/\D/g, "").replace(/^(\d{5})(\d{3})/, "$1-$2");
     } else if (name === "celular") {
@@ -139,10 +166,21 @@ export default function CadastroLoja() {
       bairro: formData.bairro.trim(),
       cidade: formData.cidade.trim(),
       estado: formData.estado,
+      // Só vai quando a conta ainda não tem CPF; o backend grava na conta, não na loja.
+      cpfResponsavel: contaTemCpf
+        ? undefined
+        : somenteDigitos(formData.cpfResponsavel) || undefined,
+      donoAtende,
     };
 
     if (!payload.nome) return falhar("nome", "Informe o nome da loja.");
     if (!validarCNPJ(payload.cnpj)) return falhar("cnpj", "CNPJ inválido.");
+    if (contaTemCpf === false && !payload.cpfResponsavel) {
+      return falhar("cpfResponsavel", "Informe o seu CPF (responsável pela loja).");
+    }
+    if (payload.cpfResponsavel && !validarCPF(payload.cpfResponsavel)) {
+      return falhar("cpfResponsavel", "CPF inválido.");
+    }
     if (!validarEmail(payload.email)) return falhar("email", "Informe um e-mail válido.");
     if (!validarCelular(payload.celular) && !validarTelefoneFixo(payload.celular)) {
       return falhar("celular", "Informe um celular ou telefone válido com DDD.");
@@ -198,7 +236,7 @@ export default function CadastroLoja() {
           {semPlano && (
             <div
               id="aviso-sem-plano"
-              className="alerta alerta-aviso"
+              className="alerta alerta-aviso alerta-com-acao"
               role="alert"
               tabIndex={-1}
               data-cy="aviso-sem-plano"
@@ -380,6 +418,45 @@ export default function CadastroLoja() {
                   ))}
                 </select>
               </FormField>
+            </div>
+          </div>
+
+          <div className="card__secao">
+            <h2 className="card__secao-titulo">Responsável</h2>
+            <div className="form-grade">
+              {!contaTemCpf && (
+                <FormField
+                  id="campo-cpfResponsavel"
+                  label="Seu CPF"
+                  obrigatorio={contaTemCpf === false}
+                  colunas={4}
+                  erro={erros.cpfResponsavel}
+                  ajuda="Pedido só de quem cria a loja e assina o plano."
+                >
+                  <input
+                    type="text"
+                    name="cpfResponsavel"
+                    inputMode="numeric"
+                    placeholder="000.000.000-00"
+                    maxLength={14}
+                    value={formData.cpfResponsavel}
+                    onChange={handleChange}
+                    data-cy="form-cpf-responsavel"
+                  />
+                </FormField>
+              )}
+              <div className="opcao-inline-linha">
+                <label className="opcao-inline">
+                  <input
+                    id="campo-donoAtende"
+                    type="checkbox"
+                    checked={donoAtende}
+                    onChange={(e) => setDonoAtende(e.target.checked)}
+                    data-cy="form-dono-atende"
+                  />
+                  Eu também atendo clientes nesta loja (entro na agenda como profissional)
+                </label>
+              </div>
             </div>
           </div>
 

@@ -249,7 +249,7 @@ export default function CaixaView() {
               </p>
             ) : (
               <div className="tabela-container">
-                <table className="tabela-SaaS" data-cy="caixa-comandas">
+                <table className="tabela-SaaS tabela-cartoes" data-cy="caixa-comandas">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -271,16 +271,20 @@ export default function CaixaView() {
                         key={c.id}
                         className={c.status === "CANCELADA" ? "financeiro-cancelada" : ""}
                       >
-                        <td>{c.id}</td>
-                        <td>{dataHora(c.criadaEm).slice(-5)}</td>
-                        <td>{c.cliente || "—"}</td>
-                        <td>{c.itens.map((i) => `${i.servico} (${i.funcionario})`).join(", ")}</td>
-                        <td>
+                        <td data-rotulo="#">{c.id}</td>
+                        <td data-rotulo="Hora">{dataHora(c.criadaEm).slice(-5)}</td>
+                        <td data-rotulo="Cliente">{c.cliente || "—"}</td>
+                        <td data-rotulo="Serviços">
+                          {c.itens.map((i) => `${i.servico} (${i.funcionario})`).join(", ")}
+                        </td>
+                        <td data-rotulo="Pagamento">
                           {c.pagamentos.map((p) => descricaoForma(p.forma)).join(" + ")}
                           {c.troco > 0 && ` · troco ${reais(c.troco)}`}
                         </td>
-                        <td className="tabela__num">{reais(c.total)}</td>
-                        <td>
+                        <td data-rotulo="Total" className="tabela__num">
+                          {reais(c.total)}
+                        </td>
+                        <td data-rotulo="">
                           {c.status === "CANCELADA" ? (
                             <Badge tom="erro">Cancelada</Badge>
                           ) : (
@@ -333,7 +337,7 @@ export default function CaixaView() {
           <p className="texto-ajuda">Nenhum caixa fechado no período.</p>
         ) : (
           <div className="tabela-container">
-            <table className="tabela-SaaS" data-cy="caixa-historico">
+            <table className="tabela-SaaS tabela-cartoes" data-cy="caixa-historico">
               <thead>
                 <tr>
                   <th scope="col">Abertura</th>
@@ -357,14 +361,19 @@ export default function CaixaView() {
                   .filter((c) => c.status === "FECHADO")
                   .map((c) => (
                     <tr key={c.id}>
-                      <td>{dataHora(c.abertoEm)}</td>
-                      <td>{dataHora(c.fechadoEm)}</td>
-                      <td className="tabela__num">{reais(c.vendas)}</td>
-                      <td className="tabela__num">{reais(c.saldoDinheiro)}</td>
-                      <td className="tabela__num">
+                      <td data-rotulo="Abertura">{dataHora(c.abertoEm)}</td>
+                      <td data-rotulo="Fechamento">{dataHora(c.fechadoEm)}</td>
+                      <td data-rotulo="Vendas" className="tabela__num">
+                        {reais(c.vendas)}
+                      </td>
+                      <td data-rotulo="Dinheiro esperado" className="tabela__num">
+                        {reais(c.saldoDinheiro)}
+                      </td>
+                      <td data-rotulo="Contado" className="tabela__num">
                         {c.valorContado == null ? "—" : reais(c.valorContado)}
                       </td>
                       <td
+                        data-rotulo="Diferença"
                         className={`tabela__num ${c.diferenca && c.diferenca < 0 ? "financeiro-saida" : ""}`}
                       >
                         {c.diferenca == null ? "—" : reais(c.diferenca)}

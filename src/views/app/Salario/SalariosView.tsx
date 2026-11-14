@@ -179,7 +179,7 @@ export default function SalariosView() {
             Total a receber: <strong data-cy="salarios-total">{reais(totalAReceber)}</strong>
           </p>
           <div className="tabela-container">
-            <table className="tabela-SaaS" data-cy="salarios-lista">
+            <table className="tabela-SaaS tabela-cartoes" data-cy="salarios-lista">
               <thead>
                 <tr>
                   <th scope="col">Profissional</th>
@@ -201,14 +201,20 @@ export default function SalariosView() {
               <tbody>
                 {lista.dados.map((s) => (
                   <tr key={s.idFuncionario} data-cy="salario-linha">
-                    <td>{s.nome}</td>
-                    <td className="tabela__num">{reais(s.comissao)}</td>
-                    <td className="tabela__num">{reais(s.adiantamentosPendentes)}</td>
-                    <td className="tabela__num" data-cy="salario-a-receber">
+                    <td data-rotulo="Profissional">{s.nome}</td>
+                    <td data-rotulo="Comissão no período" className="tabela__num">
+                      {reais(s.comissao)}
+                    </td>
+                    <td data-rotulo="Adiantamentos" className="tabela__num">
+                      {reais(s.adiantamentosPendentes)}
+                    </td>
+                    <td data-rotulo="A receber" className="tabela__num" data-cy="salario-a-receber">
                       <strong>{reais(s.aReceber)}</strong>
                     </td>
-                    <td>{s.ultimoPagamento ? data(s.ultimoPagamento) : "Nunca"}</td>
-                    <td>
+                    <td data-rotulo="Último pagamento">
+                      {s.ultimoPagamento ? data(s.ultimoPagamento) : "Nunca"}
+                    </td>
+                    <td data-rotulo="">
                       <div className="salario-acoes">
                         <Button
                           variante="fantasma"

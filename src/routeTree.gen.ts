@@ -47,6 +47,7 @@ import { Route as AuthenticatedPlanoRouteImport } from './routes/_authenticated.
 import { Route as AuthenticatedRecebimentosRouteImport } from './routes/_authenticated.recebimentos'
 import { Route as AuthenticatedSalariosRouteImport } from './routes/_authenticated.salarios'
 import { Route as AuthenticatedSelecionarLojaRouteImport } from './routes/_authenticated.selecionar-loja'
+import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -258,6 +259,11 @@ const AuthenticatedSelecionarLojaRoute =
     path: '/selecionar-loja',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ConfirmarTokenRoute = ConfirmarTokenRouteImport.update({
+  id: '/confirmar/$token',
+  path: '/confirmar/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -297,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -336,6 +343,7 @@ export interface FileRoutesByTo {
   '/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -377,6 +385,7 @@ export interface FileRoutesById {
   '/_authenticated/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/_authenticated/salarios': typeof AuthenticatedSalariosRoute
   '/_authenticated/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -418,6 +427,7 @@ export interface FileRouteTypes {
     | '/recebimentos'
     | '/salarios'
     | '/selecionar-loja'
+    | '/confirmar/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -457,6 +467,7 @@ export interface FileRouteTypes {
     | '/recebimentos'
     | '/salarios'
     | '/selecionar-loja'
+    | '/confirmar/$token'
   id:
     | '__root__'
     | '/'
@@ -497,6 +508,7 @@ export interface FileRouteTypes {
     | '/_authenticated/recebimentos'
     | '/_authenticated/salarios'
     | '/_authenticated/selecionar-loja'
+    | '/confirmar/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -508,6 +520,7 @@ export interface RootRouteChildren {
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   RegisterRoute: typeof RegisterRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
+  ConfirmarTokenRoute: typeof ConfirmarTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -778,6 +791,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSelecionarLojaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/confirmar/$token': {
+      id: '/confirmar/$token'
+      path: '/confirmar/$token'
+      fullPath: '/confirmar/$token'
+      preLoaderRoute: typeof ConfirmarTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -865,6 +885,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   RegisterRoute: RegisterRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
+  ConfirmarTokenRoute: ConfirmarTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

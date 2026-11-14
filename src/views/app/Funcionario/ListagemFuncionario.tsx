@@ -2,6 +2,7 @@
 import React from "react";
 import { Badge, PaginaListagem } from "@/components/ds";
 import { funcionariosService } from "@/services/endpoints";
+import { obterUsuario } from "@/lib/auth";
 import { formatarCPF, formatarTelefone, nomeCompleto } from "@/lib/formatadores";
 
 export default function ListagemFuncionario() {
@@ -28,7 +29,15 @@ export default function ListagemFuncionario() {
           chave: "nome",
           titulo: "Nome",
           principal: true,
-          render: (f) => nomeCompleto(f.nome, f.sobrenome),
+          render: (f) =>
+            f.idUsuario != null && String(f.idUsuario) === String(obterUsuario()?.id ?? "") ? (
+              <span className="celula-badges">
+                {nomeCompleto(f.nome, f.sobrenome)}
+                <Badge>Você</Badge>
+              </span>
+            ) : (
+              nomeCompleto(f.nome, f.sobrenome)
+            ),
         },
         { chave: "cpf", titulo: "CPF", mono: true, render: (f) => formatarCPF(f.cpf) },
         {

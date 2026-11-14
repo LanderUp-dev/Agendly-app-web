@@ -36,6 +36,8 @@ export const clientesService = crud("clientes");
 export const lojasService = crud("lojas");
 export const servicosService = crud("servicos");
 export const funcionariosService = crud("funcionarios");
+/** "Eu também atendo": o usuário logado vira profissional da loja ativa (não duplica). */
+export const tornarMeProfissional = () => api.post("/funcionarios/eu").then((r) => r.data);
 export const cobrancistasService = crud("cobrancistas");
 export const usuariosService = crud("usuarios");
 /** O controller do backend está mapeado em /api/v1/AreasAtuacoes. */
@@ -96,6 +98,8 @@ export interface AgendamentoAgenda {
   idLoja?: number;
   /** Para o link de confirmação pelo WhatsApp. */
   celularCliente?: string;
+  /** Código da página "Sim, confirmo" (só leitura; gerado pelo backend). */
+  tokenConfirmacao?: string;
   nomeLoja?: string;
 }
 
@@ -122,6 +126,7 @@ export const agendamentoParaAgenda = (a: any): AgendamentoAgenda => ({
   idServico: a?.idServico,
   idLoja: a?.idLoja,
   celularCliente: a?.celularCliente ?? undefined,
+  tokenConfirmacao: a?.tokenConfirmacao ?? undefined,
   nomeLoja: a?.nomeLoja ?? undefined,
 });
 

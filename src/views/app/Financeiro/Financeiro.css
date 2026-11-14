@@ -275,3 +275,37 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Celular: o resumo cabe em duas colunas para a lista aparecer sem rolar tanto ---- */
+@media (max-width: 767px) {
+  .financeiro-indicadores {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--esp-2);
+  }
+
+  .financeiro-indicadores > .card {
+    padding: var(--esp-3);
+  }
+
+  /* Número ímpar de cartões: o último ocupa a linha inteira em vez de sobrar um buraco. */
+  .financeiro-indicadores > .card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .financeiro-indicador__valor {
+    font-size: var(--texto-lg);
+    overflow-wrap: anywhere;
+  }
+
+  .financeiro-indicadores .texto-ajuda {
+    font-size: var(--texto-xs);
+  }
+
+  /* Ações em texto (Pagar, Editar, Excluir...) viram alvos de toque de verdade. */
+  .tabela-cartoes .financeiro-link-botao {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 var(--esp-3) 0 0;
+  }
+}

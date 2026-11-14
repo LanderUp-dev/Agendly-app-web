@@ -6,7 +6,6 @@ export interface UsuarioCadastroPayload {
   celular: string;
   /** yyyy-MM-dd (LocalDate serializado pelo Jackson). */
   dtaNascimento: string;
-  cpf: string;
   senha: string;
 }
 
@@ -45,6 +44,7 @@ export interface UsuarioResponse {
   sobrenome: string;
   email: string;
   celular: string;
-  cpf: string;
+  /** Só existe em quem já criou uma loja (o CPF é pedido na criação da loja). */
+  cpf?: string | null;
   dtaNascimento: string;
 }

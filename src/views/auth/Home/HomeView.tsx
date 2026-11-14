@@ -3,6 +3,14 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/ds";
+import { planosPublicos } from "@/services/confirmacaoPublica";
+import {
+  PLANOS_PADRAO,
+  limiteDoPlano,
+  normalizarPlanos,
+  precoSemSimbolo,
+  type PlanoHome,
+} from "@/lib/planosHome";
 import "./HomeView.css";
 
 /**
@@ -28,7 +36,7 @@ const FAQ_ITEMS = [
   {
     pergunta: "Como funciona a confirmação pelo WhatsApp?",
     resposta:
-      "No agendamento, um clique abre o WhatsApp da sua loja com a mensagem de confirmação pronta. Você envia do seu próprio número e marca o horário como confirmado ou cancelado. Os lembretes automáticos, sem você precisar enviar, estão em desenvolvimento.",
+      "No agendamento, um clique abre o WhatsApp da sua loja com a mensagem de confirmação pronta. Você envia do seu próprio número; o cliente toca no link, confirma com um toque e o horário aparece como confirmado na agenda. Os lembretes automáticos, sem você precisar enviar, estão em desenvolvimento.",
   },
   {
     pergunta: "O Agendly controla o caixa e as comissões?",
@@ -133,6 +141,20 @@ function EmBreve() {
 export default function HomeView() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [faqAberto, setFaqAberto] = useState<number | null>(null);
+  // Preços e limites vêm do banco (tabela plano). Sem resposta da API, ficam os de partida.
+  const [planos, setPlanos] = useState<PlanoHome[]>(PLANOS_PADRAO);
+  useEffect(() => {
+    let ativo = true;
+    planosPublicos()
+      .then((dados) => {
+        const lista = normalizarPlanos(dados);
+        if (ativo && lista.length > 0) setPlanos(lista);
+      })
+      .catch(() => undefined);
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   // Esc fecha o menu mobile
   useEffect(() => {
@@ -341,7 +363,7 @@ export default function HomeView() {
           <div className="hv-container">
             <div className="hv-recursos-cabeca">
               <h2>Da agenda ao caixa, tudo no mesmo lugar.</h2>
-              <p>Todos os recursos abaixo já estão disponíveis nos dois planos.</p>
+              <p>Todos os recursos abaixo já estão disponíveis em todos os planos.</p>
             </div>
 
             <div className="hv-recursos-palco">
@@ -448,32 +470,28 @@ export default function HomeView() {
           <div className="hv-container">
             <h2>Planos simples, sem fidelidade.</h2>
             <div className="hv-planos">
-              <article className="hv-plano">
-                <h3>Solo</h3>
-                <p className="hv-plano-desc">Para profissionais autônomos</p>
-                <p className="hv-preco">
-                  R$ 59<span>/mês</span>
-                </p>
-                <p className="hv-plano-limite">1 profissional</p>
-                <Link to="/register" className="hv-btn hv-btn--secundario">
-                  Começar agora
-                </Link>
-              </article>
-              <article className="hv-plano">
-                <h3>Equipe</h3>
-                <p className="hv-plano-desc">Para salões e barbearias</p>
-                <p className="hv-preco">
-                  R$ 149<span>/mês</span>
-                </p>
-                <p className="hv-plano-limite">
-                  Até 6 profissionais, com comissão e salário por profissional
-                </p>
-                <Link to="/register" className="hv-btn hv-btn--primario">
-                  Começar agora
-                </Link>
-              </article>
+              {planos.map((plano, i) => (
+                <article className="hv-plano" key={plano.codigo} data-cy={"plano-" + plano.codigo}>
+                  <h3>{plano.nome}</h3>
+                  <p className="hv-plano-desc">{plano.descricao}</p>
+                  <p className="hv-preco" data-cy="plano-preco">
+                    R$ {precoSemSimbolo(plano.valorMensal)}
+                    <span>/mês</span>
+                  </p>
+                  <p className="hv-plano-limite">{limiteDoPlano(plano.limiteProfissionais)}</p>
+                  <Link
+                    to="/register"
+                    className={
+                      "hv-btn " +
+                      (i === planos.length - 1 ? "hv-btn--primario" : "hv-btn--secundario")
+                    }
+                  >
+                    Começar agora
+                  </Link>
+                </article>
+              ))}
               <div className="hv-planos-inclui">
-                <h3>Nos dois planos</h3>
+                <h3>{planos.length === 2 ? "Nos dois planos" : "Em todos os planos"}</h3>
                 <ul>
                   {RECURSOS_PLANO.map((r) => (
                     <li key={r}>{r}</li>

@@ -110,7 +110,9 @@ describe("Agenda", () => {
         expect(url.pathname, "celular com DDI 55").to.match(/^\/55\d{10,11}$/);
         const texto = url.searchParams.get("text") ?? "";
         expect(texto).to.contain("Corte Agenda").and.contain(nomeFunc).and.contain("09:00");
-        expect(texto).to.contain("Responda *SIM*");
+        // "Sim" clicável: a mensagem leva o link da página de confirmação.
+        expect(texto).to.contain("Toque no link para confirmar com um clique");
+        expect(texto).to.match(/\/confirmar\/[A-Za-z0-9_-]{32,64}/);
       });
   });
 

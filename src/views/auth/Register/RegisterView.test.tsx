@@ -40,14 +40,11 @@ vi.mock("@/services/authService", () => ({
   },
 }));
 
-const CPF_VALIDO = "52998224725";
-
 type Campos = {
   nome: string;
   sobrenome: string;
   email: string;
   celular: string;
-  cpf: string;
   dtaNascimento: string;
   senha: string;
   confirmarSenha: string;
@@ -58,7 +55,6 @@ const camposValidos: Campos = {
   sobrenome: "Silva",
   email: "maria@email.com",
   celular: "11999998888",
-  cpf: CPF_VALIDO,
   dtaNascimento: "2000-01-01",
   senha: "Agendly2026",
   confirmarSenha: "Agendly2026",
@@ -75,7 +71,6 @@ async function preencherFormulario(
   await user.type(screen.getByLabelText(/^Sobrenome/), c.sobrenome);
   await user.type(screen.getByLabelText(/^E-mail/), c.email);
   await user.type(screen.getByLabelText(/^Celular/), c.celular);
-  await user.type(screen.getByLabelText(/^CPF/), c.cpf);
   await user.type(screen.getByLabelText(/^Senha/), c.senha);
   await user.type(screen.getByLabelText(/^Confirmar senha/), c.confirmarSenha);
 
@@ -103,7 +98,8 @@ describe("RegisterView Component", () => {
     expect(screen.getByLabelText(/^Sobrenome/)).toBeInTheDocument();
     expect(screen.getByLabelText(/^E-mail/)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Celular/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^CPF/)).toBeInTheDocument();
+    // O CPF não é pedido na conta: só de quem cria uma loja.
+    expect(screen.queryByLabelText(/^CPF/)).not.toBeInTheDocument();
     expect(screen.getByLabelText(/^Senha/)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Confirmar senha/)).toBeInTheDocument();
     expect(botaoCadastrar()).toBeInTheDocument();
@@ -139,17 +135,6 @@ describe("RegisterView Component", () => {
     await user.click(botaoCadastrar());
 
     expect(toast.warning).toHaveBeenCalledWith("O celular deve conter 11 dígitos (DDD + número).");
-    expect(authService.cadastrar).not.toHaveBeenCalled();
-  });
-
-  it("deve exibir aviso se o CPF for inválido", async () => {
-    const user = userEvent.setup();
-    render(<RegisterView />);
-
-    await preencherFormulario(user, { cpf: "12345678901" });
-    await user.click(botaoCadastrar());
-
-    expect(toast.warning).toHaveBeenCalledWith("CPF inválido.");
     expect(authService.cadastrar).not.toHaveBeenCalled();
   });
 
@@ -200,7 +185,6 @@ describe("RegisterView Component", () => {
       sobrenome: "Silva",
       email: "maria@email.com",
       celular: "11999998888",
-      cpf: CPF_VALIDO,
       dtaNascimento: "2000-01-01",
     });
 
@@ -215,7 +199,6 @@ describe("RegisterView Component", () => {
         sobrenome: "Silva",
         email: "maria@email.com",
         celular: "11999998888",
-        cpf: CPF_VALIDO,
         dtaNascimento: "2000-01-01",
         senha: "Agendly2026",
       });

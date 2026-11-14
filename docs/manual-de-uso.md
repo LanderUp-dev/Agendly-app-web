@@ -8,7 +8,7 @@ e atendimento).
 
 ### Criar a conta
 1. Na tela de entrada, clique em **Criar conta**.
-2. Preencha nome, e-mail, celular, CPF, data de nascimento e uma senha com **pelo menos 8
+2. Preencha nome, e-mail, celular, data de nascimento e uma senha com **pelo menos 8
    caracteres, com letras e números**.
 3. Entre com o e-mail e a senha.
 
@@ -19,6 +19,13 @@ chega por e-mail. Ele vale por 15 minutos e aceita até 5 tentativas.
 Sem nenhuma loja, o sistema abre o cadastro da loja: nome, CNPJ, e-mail, telefone ou celular e
 endereço. Quem cria a loja vira **GERENTE** e pode tudo nela. Toda loja nova começa com **14 dias
 de teste grátis**.
+
+O **CPF** é pedido só aqui, uma vez, de quem cria a loja (o responsável, que assina o plano).
+Funcionários e clientes podem ser cadastrados sem CPF.
+
+Você também atende clientes? Marque **Eu também atendo clientes nesta loja**: você entra na agenda
+como profissional, com os dados da sua conta. Se a loja já existe, o mesmo botão (**Eu também
+atendo**) fica em Funcionários > Novo funcionário.
 
 Para criar uma **segunda loja**, é preciso ter um plano ativo (assinatura ou cortesia) em uma
 loja da qual você é gerente.
@@ -67,7 +74,9 @@ Faça nesta ordem, porque um cadastro depende do anterior:
 - O sistema recusa conflito de horário, horário fora do funcionamento e serviço de uma área que
   o profissional não atende. A mensagem diz o motivo.
 - **Confirmar com o cliente:** no detalhe do agendamento, o botão do WhatsApp abre a conversa com
-  a mensagem pronta. Depois, marque como Confirmado ou Cancelado.
+  a mensagem pronta. A mensagem leva um link: o cliente toca em **Sim, confirmo** e o horário
+  fica Confirmado sozinho, com um aviso no sininho. Se ele responder por texto, marque você
+  mesmo como Confirmado ou Cancelado.
 
 ## 4. Caixa e atendimento
 

@@ -1,0 +1,66 @@
+/* Página do link de confirmação (aberta no celular do cliente, vinda do WhatsApp). */
+.confirmar-card {
+  max-width: 440px;
+}
+
+.confirmar-logo {
+  margin-bottom: var(--esp-6);
+}
+
+.confirmar-resumo {
+  display: grid;
+  gap: var(--esp-3);
+  margin: var(--esp-5) 0;
+  padding: var(--esp-4);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-pagina);
+}
+
+.confirmar-resumo > div {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--esp-3);
+  align-items: baseline;
+}
+
+.confirmar-resumo dt {
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+}
+
+.confirmar-resumo dd {
+  margin: 0;
+  color: var(--texto-principal);
+  font-weight: var(--peso-titulo);
+  overflow-wrap: anywhere;
+}
+
+.confirmar-resumo dd::first-letter {
+  text-transform: uppercase;
+}
+
+/* Botão grande: é o único gesto da página, feito com o polegar. */
+.confirmar-botao {
+  width: 100%;
+  min-height: 3.25rem;
+  font-size: var(--texto-md, 1rem);
+}
+
+.confirmar-ok {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin: 0 0 var(--esp-4);
+  color: var(--marca);
+  font-weight: var(--peso-titulo);
+}
+
+.confirmar-rodape {
+  margin-top: var(--esp-5);
+  text-align: center;
+}
+
+.confirmar-card .login-titulo:focus {
+  outline: none;
+}

@@ -335,6 +335,24 @@ select:-webkit-autofill {
   color: var(--texto-principal);
 }
 
+/* Alerta com um botão ao lado (ex.: "Eu também atendo", "Ver planos"). No celular o botão
+   desce para a linha de baixo em vez de espremer o texto. */
+.alerta-com-acao {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--esp-5);
+}
+
+.alerta-com-acao > span {
+  flex: 1 1 14rem;
+}
+
+.alerta-com-acao > .btn {
+  flex: none;
+  white-space: nowrap;
+}
+
 /* ------------------------------------------------------------- Links -- */
 .link {
   color: var(--marca-texto);

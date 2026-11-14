@@ -359,7 +359,7 @@ export default function RecebimentosView() {
       {!lista.carregando && !lista.erro && itens.length > 0 && (
         <Card semPadding>
           <div className="tabela-container">
-            <table className="tabela-SaaS" data-cy="recebimento-lista">
+            <table className="tabela-SaaS tabela-cartoes" data-cy="recebimento-lista">
               <thead>
                 <tr>
                   <th scope="col">Vencimento</th>
@@ -378,15 +378,19 @@ export default function RecebimentosView() {
               <tbody>
                 {itensDaPagina.map((r) => (
                   <tr key={r.id} data-cy="recebimento-linha">
-                    <td>{dataBR(r.vencimento)}</td>
-                    <td>{r.nomeCliente}</td>
-                    <td>
+                    <td data-rotulo="Vencimento">{dataBR(r.vencimento)}</td>
+                    <td data-rotulo="Cliente">{r.nomeCliente}</td>
+                    <td data-rotulo="Nome">
                       {r.nome}
                       {r.descricao && <div className="texto-ajuda">{r.descricao}</div>}
                     </td>
-                    <td>{r.totalParcelas > 1 ? `${r.parcela}/${r.totalParcelas}` : "—"}</td>
-                    <td className="tabela__num">{reais(r.valor)}</td>
-                    <td>
+                    <td data-rotulo="Parcela">
+                      {r.totalParcelas > 1 ? `${r.parcela}/${r.totalParcelas}` : "—"}
+                    </td>
+                    <td data-rotulo="Valor" className="tabela__num">
+                      {reais(r.valor)}
+                    </td>
+                    <td data-rotulo="Situação">
                       {r.status === "RECEBIDO" ? (
                         <>
                           <Badge tom="marca">Recebido</Badge>
@@ -401,7 +405,7 @@ export default function RecebimentosView() {
                         <Badge tom="aviso">Em aberto</Badge>
                       )}
                     </td>
-                    <td>
+                    <td data-rotulo="">
                       {podeEditar && (
                         <div className="recebimento-acoes">
                           {r.status === "ABERTO" ? (

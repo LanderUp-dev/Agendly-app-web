@@ -24,6 +24,20 @@ export interface DadosConfirmacao {
   /** HH:mm */
   horaInicio: string;
   nomeLoja?: string;
+  /**
+   * Endereço da página "Sim, confirmo" deste agendamento (linkConfirmacao). Com ele, o cliente
+   * confirma com um toque em vez de digitar SIM.
+   */
+  linkConfirmacao?: string | null;
+}
+
+/** Página pública de confirmação: https://<site>/confirmar/<código do agendamento>. */
+export function linkConfirmacao(
+  token: string | null | undefined,
+  origem: string | undefined = typeof window === "undefined" ? undefined : window.location.origin,
+): string | null {
+  if (!token || !origem) return null;
+  return `${origem.replace(/\/+$/, "")}/confirmar/${encodeURIComponent(token)}`;
 }
 
 export function mensagemConfirmacao(d: DadosConfirmacao): string {
@@ -36,7 +50,10 @@ export function mensagemConfirmacao(d: DadosConfirmacao): string {
     d.servico ? ` de ${d.servico}` : "",
     d.profissional ? ` com ${d.profissional}` : "",
     ` ${diaSemana}${d.data.slice(0, 5)} às ${d.horaInicio}.`,
-    "\n\nResponda *SIM* para confirmar ou nos avise se precisar remarcar.",
+    // O WhatsApp transforma o endereço em link: fica sozinho na linha para o toque ser fácil.
+    d.linkConfirmacao
+      ? `\n\nToque no link para confirmar com um clique:\n${d.linkConfirmacao}\n\nSe precisar remarcar, é só responder esta mensagem.`
+      : "\n\nResponda *SIM* para confirmar ou nos avise se precisar remarcar.",
     // Assinatura no fim: "no/na <loja>" depende do nome, então evitamos a preposição.
     d.nomeLoja ? `\n\n${d.nomeLoja}` : "",
   ];

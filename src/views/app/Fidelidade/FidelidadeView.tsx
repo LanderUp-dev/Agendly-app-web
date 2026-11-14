@@ -229,7 +229,7 @@ export default function FidelidadeView() {
         )}
         {!marcos.carregando && !marcos.erro && marcos.dados.length > 0 && (
           <div className="tabela-container">
-            <table className="tabela-SaaS" data-cy="fidelidade-marcos">
+            <table className="tabela-SaaS tabela-cartoes" data-cy="fidelidade-marcos">
               <thead>
                 <tr>
                   <th scope="col">Data</th>
@@ -244,8 +244,8 @@ export default function FidelidadeView() {
               <tbody>
                 {marcos.dados.map((m) => (
                   <tr key={m.id} data-cy={`marco-${m.clienteId}`}>
-                    <td>{dataHora(m.criadoEm)}</td>
-                    <td>
+                    <td data-rotulo="Data">{dataHora(m.criadoEm)}</td>
+                    <td data-rotulo="Cliente">
                       <Link
                         to="/cliente-historico"
                         search={{ id: m.clienteId }}
@@ -255,9 +255,11 @@ export default function FidelidadeView() {
                         {m.cliente}
                       </Link>
                     </td>
-                    <td className="tabela__num">{m.visitas}</td>
-                    <td>{m.recompensa || "—"}</td>
-                    <td>
+                    <td data-rotulo="Visitas" className="tabela__num">
+                      {m.visitas}
+                    </td>
+                    <td data-rotulo="Recompensa">{m.recompensa || "—"}</td>
+                    <td data-rotulo="E-mail">
                       {m.emailEnviado ? (
                         <Badge tom="marca">Enviado</Badge>
                       ) : (

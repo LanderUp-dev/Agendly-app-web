@@ -58,14 +58,15 @@ export default function CadastroCliente() {
     const payload = {
       nome: formData.nome.trim(),
       sobreNome: formData.sobreNome.trim(),
-      cpf: somenteDigitos(formData.cpf),
+      // CPF opcional: vazio não é enviado.
+      cpf: somenteDigitos(formData.cpf) || undefined,
       email: formData.email.trim(),
       celular: somenteDigitos(formData.celular),
       dtaNascimento: formData.dtaNascimento || null,
     };
 
     if (!payload.nome) return falhar("nome", "Informe o nome do cliente.");
-    if (!validarCPF(payload.cpf)) return falhar("cpf", "CPF inválido.");
+    if (payload.cpf && !validarCPF(payload.cpf)) return falhar("cpf", "CPF inválido.");
     if (!validarEmail(payload.email)) return falhar("email", "Informe um e-mail válido.");
     if (!validarCelular(payload.celular))
       return falhar("celular", "Informe um celular válido com DDD.");
@@ -118,7 +119,7 @@ export default function CadastroCliente() {
                 data-cy="form-sobrenome"
               />
             </FormField>
-            <FormField id="campo-cpf" label="CPF" obrigatorio colunas={6} erro={erros.cpf}>
+            <FormField id="campo-cpf" label="CPF (opcional)" colunas={6} erro={erros.cpf}>
               <input
                 type="text"
                 name="cpf"

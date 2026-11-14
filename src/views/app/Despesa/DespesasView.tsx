@@ -338,7 +338,7 @@ export default function DespesasView() {
       )}
       {!lista.carregando && !lista.erro && despesas.length > 0 && (
         <div className="tabela-container">
-          <table className="tabela-SaaS" data-cy="despesa-lista">
+          <table className="tabela-SaaS tabela-cartoes" data-cy="despesa-lista">
             <thead>
               <tr>
                 <th scope="col">Vencimento</th>
@@ -356,14 +356,16 @@ export default function DespesasView() {
             <tbody>
               {despesasDaPagina.map((d) => (
                 <tr key={d.id} data-cy="despesa-linha">
-                  <td>{dataBR(d.vencimento)}</td>
-                  <td>
+                  <td data-rotulo="Vencimento">{dataBR(d.vencimento)}</td>
+                  <td data-rotulo="Despesa">
                     <strong>{d.nome}</strong>
                     {rotuloParcela(d)}
                     {d.descricao && <div className="texto-ajuda">{d.descricao}</div>}
                   </td>
-                  <td>{d.cobrancistas.map((c) => c.nome).join(", ") || "—"}</td>
-                  <td>
+                  <td data-rotulo="Cobrancista">
+                    {d.cobrancistas.map((c) => c.nome).join(", ") || "—"}
+                  </td>
+                  <td data-rotulo="Situação">
                     {d.status === "PAGA" ? (
                       <>
                         <Badge tom="marca">Paga</Badge>
@@ -378,8 +380,10 @@ export default function DespesasView() {
                       <Badge>Em aberto</Badge>
                     )}
                   </td>
-                  <td className="tabela__num">{reais(d.valor)}</td>
-                  <td>
+                  <td data-rotulo="Valor" className="tabela__num">
+                    {reais(d.valor)}
+                  </td>
+                  <td data-rotulo="">
                     {podeEditar && (
                       <div className="despesa-acoes">
                         {d.status === "ABERTA" ? (

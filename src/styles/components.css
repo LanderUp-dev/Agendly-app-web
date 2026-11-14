@@ -651,6 +651,93 @@
   }
 }
 
+/* Tabelas escritas à mão (financeiro, cargos, fidelidade): no celular cada linha vira um cartão
+   com "rótulo ........ valor", em vez de rolar para o lado. O rótulo vem de data-rotulo no <td>;
+   célula sem rótulo (a de ações) ocupa a linha inteira com os botões. */
+@media (max-width: 767px) {
+  .tabela-container:has(> .tabela-cartoes) {
+    overflow-x: visible;
+  }
+
+  .tabela-cartoes thead {
+    display: none;
+  }
+
+  .tabela-cartoes,
+  .tabela-cartoes tbody,
+  .tabela-cartoes tr,
+  .tabela-cartoes td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tabela-cartoes tbody tr {
+    padding: var(--esp-3) var(--esp-4);
+    border-bottom: 1px solid var(--borda-sutil);
+  }
+
+  .tabela-cartoes tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .tabela-cartoes td,
+  .tabela-cartoes td.tabela__num {
+    padding: var(--esp-1) 0;
+    border: none;
+    white-space: normal;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  .tabela-cartoes td::before {
+    content: attr(data-rotulo);
+    float: left;
+    margin-right: var(--esp-4);
+    color: var(--texto-secundario);
+    font-size: var(--texto-xs);
+    font-weight: var(--peso-medio);
+    line-height: 1.6;
+  }
+
+  .tabela-cartoes td::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  .tabela-cartoes td[data-rotulo=""] {
+    padding-top: var(--esp-2);
+    text-align: left;
+  }
+
+  .tabela-cartoes td[data-rotulo=""]::before {
+    content: none;
+  }
+
+  /* Botões de ação: lado a lado quando cabem, cada um com altura de toque. */
+  .tabela-cartoes td[data-rotulo=""] > div,
+  .tabela-cartoes td[data-rotulo=""] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+    justify-content: flex-start;
+  }
+
+  .tabela-cartoes td[data-rotulo=""]:empty {
+    display: none;
+  }
+
+  .tabela-cartoes td[data-rotulo=""] .btn {
+    flex: 1 1 auto;
+    min-height: 2.75rem;
+  }
+
+  .tabela-cartoes tbody tr:hover td {
+    background-color: transparent;
+  }
+}
+
 .td-mono {
   font-variant-numeric: tabular-nums;
 }
@@ -1258,4 +1345,12 @@
   max-width: 60ch;
   color: var(--texto-secundario);
   font-size: var(--texto-sm);
+}
+
+/* Detalhe do agendamento no celular: um botão por linha, todos da mesma largura. */
+@media (max-width: 479px) {
+  .detalhe-agendamento__acoes .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
 }
