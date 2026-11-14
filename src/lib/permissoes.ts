@@ -58,6 +58,7 @@ export const PERMISSAO_DA_ROTA: Record<string, Permissao> = {
   "/recebimentos": "RECEBIMENTO_VER",
   "/salarios": "SALARIO_GERENCIAR",
   "/fidelidade": "LOJA_EDITAR",
+  "/agendamento-online": "LOJA_EDITAR",
   "/cargos": "CARGO_GERENCIAR",
   "/cliente-historico": "CLIENTE_VER",
 };

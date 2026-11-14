@@ -1,6 +1,7 @@
 // @requisito RO-28 RR-45 RO-29
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { Button, Modal, PaginaListagem } from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
@@ -13,6 +14,7 @@ import {
 } from "@/services/cargos";
 import { podeDarCargo, rotuloCargo } from "./cargoEquipe";
 import "../Financeiro/Financeiro.css";
+import "../Ajuda/Ajuda.css";
 
 const mensagemDaApi = (err: unknown) => {
   const dados = isAxiosError(err) ? err.response?.data : undefined;
@@ -67,6 +69,17 @@ export default function ListagemEquipe() {
         titulo="Equipes"
         descricao="Contas de usuário com acesso à loja atual."
         novo={{ to: "/cadastro-equipe", rotulo: "Adicionar pessoa" }}
+        aviso={
+          <p className="alerta alerta-info ajuda-dica" data-cy="dica-equipe">
+            <span>
+              Equipe é quem <strong>entra no sistema</strong>, com conta e cargo. Quem atende e
+              aparece na agenda fica em Funcionários.{" "}
+              <Link to="/ajuda" hash="acesso" className="link">
+                Entenda a diferença
+              </Link>
+            </span>
+          </p>
+        }
         buscar={() => equipeCargoService.listarMembros()}
         chaveItem={(e) => e.id}
         buscaPlaceholder="Buscar por usuário ou cargo"

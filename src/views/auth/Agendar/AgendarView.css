@@ -1,0 +1,207 @@
+/* Página pública de agendamento: pensada para o celular do cliente (uma mão, polegar). */
+.agendar-pagina {
+  align-items: flex-start;
+}
+
+.agendar-card {
+  max-width: 520px;
+}
+
+.agendar-logo {
+  margin-bottom: var(--esp-6);
+}
+
+.agendar-passo {
+  margin-top: var(--esp-6);
+  scroll-margin-top: var(--esp-4);
+}
+
+.agendar-passo__titulo {
+  margin: 0 0 var(--esp-3);
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-forte);
+}
+
+/* ---- Serviço: uma opção por linha ---- */
+.agendar-lista {
+  display: grid;
+  gap: var(--esp-2);
+}
+
+.agendar-opcao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-1) var(--esp-3);
+  width: 100%;
+  min-height: 3.25rem;
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-painel);
+  color: var(--texto-principal);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.agendar-opcao__nome {
+  font-weight: var(--peso-forte);
+  overflow-wrap: anywhere;
+}
+
+.agendar-opcao__detalhe {
+  color: var(--texto-secundario);
+  font-size: var(--texto-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Profissional: fichas que quebram linha ---- */
+.agendar-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.agendar-chip,
+.agendar-hora,
+.agendar-dia {
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--raio-md);
+  background-color: var(--fundo-painel);
+  color: var(--texto-principal);
+  font: inherit;
+  cursor: pointer;
+}
+
+.agendar-chip {
+  min-height: 2.75rem;
+  padding: 0 var(--esp-4);
+}
+
+/* ---- Dia: uma fileira que rola para o lado ---- */
+.agendar-dias {
+  display: flex;
+  gap: var(--esp-2);
+  margin-inline: calc(var(--esp-2) * -1);
+  padding: var(--esp-1) var(--esp-2) var(--esp-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.agendar-dia {
+  display: grid;
+  flex: none;
+  gap: 2px;
+  min-width: 4.25rem;
+  min-height: 3.5rem;
+  padding: var(--esp-2);
+  text-align: center;
+  scroll-snap-align: start;
+}
+
+.agendar-dia__semana {
+  color: var(--texto-secundario);
+  font-size: var(--texto-xs);
+}
+
+.agendar-dia__data {
+  font-weight: var(--peso-forte);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Horário: grade de botões ---- */
+.agendar-horas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+  gap: var(--esp-2);
+}
+
+.agendar-hora {
+  min-height: 2.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.agendar-periodo + .agendar-periodo {
+  margin-top: var(--esp-4);
+}
+
+.agendar-periodo__nome {
+  margin: 0 0 var(--esp-2);
+  color: var(--texto-secundario);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+}
+
+/* ---- Escolhido ---- */
+.agendar-opcao--ativa,
+.agendar-chip--ativo,
+.agendar-dia--ativo,
+.agendar-hora--ativa {
+  border-color: var(--marca);
+  background-color: var(--marca);
+  color: var(--texto-sobre-marca, #fff);
+}
+
+.agendar-opcao--ativa .agendar-opcao__detalhe,
+.agendar-dia--ativo .agendar-dia__semana {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.agendar-opcao:focus-visible,
+.agendar-chip:focus-visible,
+.agendar-dia:focus-visible,
+.agendar-hora:focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 2px;
+}
+
+.agendar-aviso {
+  align-items: center;
+  margin-top: var(--esp-4);
+}
+
+.agendar-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.agendar-resumo {
+  margin: var(--esp-4) 0 var(--esp-3);
+  color: var(--texto-principal);
+  font-weight: var(--peso-forte);
+}
+
+.agendar-botao {
+  width: 100%;
+  min-height: 3.25rem;
+}
+
+.agendar-ok {
+  display: flex;
+  gap: var(--esp-2);
+  margin: var(--esp-4) 0 var(--esp-5);
+  color: var(--texto-principal);
+}
+
+.agendar-ok svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--marca);
+}
+
+.agendar-rodape {
+  margin-top: var(--esp-4);
+  text-align: center;
+}
+
+.agendar-card .login-titulo:focus {
+  outline: none;
+}

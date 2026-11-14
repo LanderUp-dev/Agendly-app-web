@@ -19,6 +19,8 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated.agenda'
+import { Route as AuthenticatedAgendamentoOnlineRouteImport } from './routes/_authenticated.agendamento-online'
+import { Route as AuthenticatedAjudaRouteImport } from './routes/_authenticated.ajuda'
 import { Route as AuthenticatedCadastroAreaAtuacaoRouteImport } from './routes/_authenticated.cadastro-area-atuacao'
 import { Route as AuthenticatedCadastroAreaFuncionarioRouteImport } from './routes/_authenticated.cadastro-area-funcionario'
 import { Route as AuthenticatedCadastroClienteRouteImport } from './routes/_authenticated.cadastro-cliente'
@@ -30,6 +32,7 @@ import { Route as AuthenticatedCadastroServicoRouteImport } from './routes/_auth
 import { Route as AuthenticatedCaixaRouteImport } from './routes/_authenticated.caixa'
 import { Route as AuthenticatedCargosRouteImport } from './routes/_authenticated.cargos'
 import { Route as AuthenticatedClienteHistoricoRouteImport } from './routes/_authenticated.cliente-historico'
+import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated.conta'
 import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated.despesas'
 import { Route as AuthenticatedFidelidadeRouteImport } from './routes/_authenticated.fidelidade'
 import { Route as AuthenticatedHorariosLojaRouteImport } from './routes/_authenticated.horarios-loja'
@@ -47,6 +50,7 @@ import { Route as AuthenticatedPlanoRouteImport } from './routes/_authenticated.
 import { Route as AuthenticatedRecebimentosRouteImport } from './routes/_authenticated.recebimentos'
 import { Route as AuthenticatedSalariosRouteImport } from './routes/_authenticated.salarios'
 import { Route as AuthenticatedSelecionarLojaRouteImport } from './routes/_authenticated.selecionar-loja'
+import { Route as AgendarSlugRouteImport } from './routes/agendar.$slug'
 import { Route as ConfirmarTokenRouteImport } from './routes/confirmar.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -96,6 +100,17 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   id: '/agenda',
   path: '/agenda',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAgendamentoOnlineRoute =
+  AuthenticatedAgendamentoOnlineRouteImport.update({
+    id: '/agendamento-online',
+    path: '/agendamento-online',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAjudaRoute = AuthenticatedAjudaRouteImport.update({
+  id: '/ajuda',
+  path: '/ajuda',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedCadastroAreaAtuacaoRoute =
@@ -162,6 +177,11 @@ const AuthenticatedClienteHistoricoRoute =
     path: '/cliente-historico',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
   id: '/despesas',
   path: '/despesas',
@@ -259,6 +279,11 @@ const AuthenticatedSelecionarLojaRoute =
     path: '/selecionar-loja',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AgendarSlugRoute = AgendarSlugRouteImport.update({
+  id: '/agendar/$slug',
+  path: '/agendar/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfirmarTokenRoute = ConfirmarTokenRouteImport.update({
   id: '/confirmar/$token',
   path: '/confirmar/$token',
@@ -275,6 +300,8 @@ export interface FileRoutesByFullPath {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/agendamento-online': typeof AuthenticatedAgendamentoOnlineRoute
+  '/ajuda': typeof AuthenticatedAjudaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -286,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/caixa': typeof AuthenticatedCaixaRoute
   '/cargos': typeof AuthenticatedCargosRoute
   '/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/despesas': typeof AuthenticatedDespesasRoute
   '/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/horarios-loja': typeof AuthenticatedHorariosLojaRoute
@@ -303,6 +331,7 @@ export interface FileRoutesByFullPath {
   '/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/agendar/$slug': typeof AgendarSlugRoute
   '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRoutesByTo {
@@ -315,6 +344,8 @@ export interface FileRoutesByTo {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/agendamento-online': typeof AuthenticatedAgendamentoOnlineRoute
+  '/ajuda': typeof AuthenticatedAjudaRoute
   '/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -326,6 +357,7 @@ export interface FileRoutesByTo {
   '/caixa': typeof AuthenticatedCaixaRoute
   '/cargos': typeof AuthenticatedCargosRoute
   '/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/despesas': typeof AuthenticatedDespesasRoute
   '/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/horarios-loja': typeof AuthenticatedHorariosLojaRoute
@@ -343,6 +375,7 @@ export interface FileRoutesByTo {
   '/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/salarios': typeof AuthenticatedSalariosRoute
   '/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/agendar/$slug': typeof AgendarSlugRoute
   '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRoutesById {
@@ -357,6 +390,8 @@ export interface FileRoutesById {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/agendamento-online': typeof AuthenticatedAgendamentoOnlineRoute
+  '/_authenticated/ajuda': typeof AuthenticatedAjudaRoute
   '/_authenticated/cadastro-area-atuacao': typeof AuthenticatedCadastroAreaAtuacaoRoute
   '/_authenticated/cadastro-area-funcionario': typeof AuthenticatedCadastroAreaFuncionarioRoute
   '/_authenticated/cadastro-cliente': typeof AuthenticatedCadastroClienteRoute
@@ -368,6 +403,7 @@ export interface FileRoutesById {
   '/_authenticated/caixa': typeof AuthenticatedCaixaRoute
   '/_authenticated/cargos': typeof AuthenticatedCargosRoute
   '/_authenticated/cliente-historico': typeof AuthenticatedClienteHistoricoRoute
+  '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
   '/_authenticated/fidelidade': typeof AuthenticatedFidelidadeRoute
   '/_authenticated/horarios-loja': typeof AuthenticatedHorariosLojaRoute
@@ -385,6 +421,7 @@ export interface FileRoutesById {
   '/_authenticated/recebimentos': typeof AuthenticatedRecebimentosRoute
   '/_authenticated/salarios': typeof AuthenticatedSalariosRoute
   '/_authenticated/selecionar-loja': typeof AuthenticatedSelecionarLojaRoute
+  '/agendar/$slug': typeof AgendarSlugRoute
   '/confirmar/$token': typeof ConfirmarTokenRoute
 }
 export interface FileRouteTypes {
@@ -399,6 +436,8 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/admin'
     | '/agenda'
+    | '/agendamento-online'
+    | '/ajuda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cliente'
@@ -410,6 +449,7 @@ export interface FileRouteTypes {
     | '/caixa'
     | '/cargos'
     | '/cliente-historico'
+    | '/conta'
     | '/despesas'
     | '/fidelidade'
     | '/horarios-loja'
@@ -427,6 +467,7 @@ export interface FileRouteTypes {
     | '/recebimentos'
     | '/salarios'
     | '/selecionar-loja'
+    | '/agendar/$slug'
     | '/confirmar/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -439,6 +480,8 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/admin'
     | '/agenda'
+    | '/agendamento-online'
+    | '/ajuda'
     | '/cadastro-area-atuacao'
     | '/cadastro-area-funcionario'
     | '/cadastro-cliente'
@@ -450,6 +493,7 @@ export interface FileRouteTypes {
     | '/caixa'
     | '/cargos'
     | '/cliente-historico'
+    | '/conta'
     | '/despesas'
     | '/fidelidade'
     | '/horarios-loja'
@@ -467,6 +511,7 @@ export interface FileRouteTypes {
     | '/recebimentos'
     | '/salarios'
     | '/selecionar-loja'
+    | '/agendar/$slug'
     | '/confirmar/$token'
   id:
     | '__root__'
@@ -480,6 +525,8 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/_authenticated/admin'
     | '/_authenticated/agenda'
+    | '/_authenticated/agendamento-online'
+    | '/_authenticated/ajuda'
     | '/_authenticated/cadastro-area-atuacao'
     | '/_authenticated/cadastro-area-funcionario'
     | '/_authenticated/cadastro-cliente'
@@ -491,6 +538,7 @@ export interface FileRouteTypes {
     | '/_authenticated/caixa'
     | '/_authenticated/cargos'
     | '/_authenticated/cliente-historico'
+    | '/_authenticated/conta'
     | '/_authenticated/despesas'
     | '/_authenticated/fidelidade'
     | '/_authenticated/horarios-loja'
@@ -508,6 +556,7 @@ export interface FileRouteTypes {
     | '/_authenticated/recebimentos'
     | '/_authenticated/salarios'
     | '/_authenticated/selecionar-loja'
+    | '/agendar/$slug'
     | '/confirmar/$token'
   fileRoutesById: FileRoutesById
 }
@@ -520,6 +569,7 @@ export interface RootRouteChildren {
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   RegisterRoute: typeof RegisterRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
+  AgendarSlugRoute: typeof AgendarSlugRoute
   ConfirmarTokenRoute: typeof ConfirmarTokenRoute
 }
 
@@ -593,6 +643,20 @@ declare module '@tanstack/react-router' {
       path: '/agenda'
       fullPath: '/agenda'
       preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/agendamento-online': {
+      id: '/_authenticated/agendamento-online'
+      path: '/agendamento-online'
+      fullPath: '/agendamento-online'
+      preLoaderRoute: typeof AuthenticatedAgendamentoOnlineRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/ajuda': {
+      id: '/_authenticated/ajuda'
+      path: '/ajuda'
+      fullPath: '/ajuda'
+      preLoaderRoute: typeof AuthenticatedAjudaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/cadastro-area-atuacao': {
@@ -670,6 +734,13 @@ declare module '@tanstack/react-router' {
       path: '/cliente-historico'
       fullPath: '/cliente-historico'
       preLoaderRoute: typeof AuthenticatedClienteHistoricoRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/despesas': {
@@ -791,6 +862,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSelecionarLojaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/agendar/$slug': {
+      id: '/agendar/$slug'
+      path: '/agendar/$slug'
+      fullPath: '/agendar/$slug'
+      preLoaderRoute: typeof AgendarSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/confirmar/$token': {
       id: '/confirmar/$token'
       path: '/confirmar/$token'
@@ -804,6 +882,8 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedAgendamentoOnlineRoute: typeof AuthenticatedAgendamentoOnlineRoute
+  AuthenticatedAjudaRoute: typeof AuthenticatedAjudaRoute
   AuthenticatedCadastroAreaAtuacaoRoute: typeof AuthenticatedCadastroAreaAtuacaoRoute
   AuthenticatedCadastroAreaFuncionarioRoute: typeof AuthenticatedCadastroAreaFuncionarioRoute
   AuthenticatedCadastroClienteRoute: typeof AuthenticatedCadastroClienteRoute
@@ -815,6 +895,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCaixaRoute: typeof AuthenticatedCaixaRoute
   AuthenticatedCargosRoute: typeof AuthenticatedCargosRoute
   AuthenticatedClienteHistoricoRoute: typeof AuthenticatedClienteHistoricoRoute
+  AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
   AuthenticatedFidelidadeRoute: typeof AuthenticatedFidelidadeRoute
   AuthenticatedHorariosLojaRoute: typeof AuthenticatedHorariosLojaRoute
@@ -837,6 +918,8 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedAgendamentoOnlineRoute: AuthenticatedAgendamentoOnlineRoute,
+  AuthenticatedAjudaRoute: AuthenticatedAjudaRoute,
   AuthenticatedCadastroAreaAtuacaoRoute: AuthenticatedCadastroAreaAtuacaoRoute,
   AuthenticatedCadastroAreaFuncionarioRoute:
     AuthenticatedCadastroAreaFuncionarioRoute,
@@ -849,6 +932,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCaixaRoute: AuthenticatedCaixaRoute,
   AuthenticatedCargosRoute: AuthenticatedCargosRoute,
   AuthenticatedClienteHistoricoRoute: AuthenticatedClienteHistoricoRoute,
+  AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
   AuthenticatedFidelidadeRoute: AuthenticatedFidelidadeRoute,
   AuthenticatedHorariosLojaRoute: AuthenticatedHorariosLojaRoute,
@@ -885,6 +969,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   RegisterRoute: RegisterRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
+  AgendarSlugRoute: AgendarSlugRoute,
   ConfirmarTokenRoute: ConfirmarTokenRoute,
 }
 export const routeTree = rootRouteImport

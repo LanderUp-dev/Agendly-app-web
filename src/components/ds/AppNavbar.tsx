@@ -149,6 +149,17 @@ export function AppNavbar({ contido = true }: AppNavbarProps) {
                   )}
                   {loja && (
                     <Link
+                      to="/agendamento-online"
+                      role="menuitem"
+                      className="menu__item"
+                      onClick={() => setMenuAberto(false)}
+                      data-cy="menu-agendamento-online"
+                    >
+                      Agendamento online
+                    </Link>
+                  )}
+                  {loja && (
+                    <Link
                       to="/plano"
                       role="menuitem"
                       className="menu__item"
@@ -158,6 +169,35 @@ export function AppNavbar({ contido = true }: AppNavbarProps) {
                       Plano e assinatura
                     </Link>
                   )}
+                </div>
+
+                <div
+                  className="menu__secao menu__secao--config"
+                  role="group"
+                  aria-label="Sua conta e ajuda"
+                >
+                  <p className="menu__grupo" aria-hidden="true">
+                    Sua conta e ajuda
+                  </p>
+                  <Link
+                    to="/conta"
+                    role="menuitem"
+                    className="menu__item"
+                    onClick={() => setMenuAberto(false)}
+                    data-cy="menu-conta"
+                  >
+                    Minha conta
+                    {usuario?.email && <span className="menu__item-detalhe">{usuario.email}</span>}
+                  </Link>
+                  <Link
+                    to="/ajuda"
+                    role="menuitem"
+                    className="menu__item"
+                    onClick={() => setMenuAberto(false)}
+                    data-cy="menu-ajuda"
+                  >
+                    Ajuda e tutoriais
+                  </Link>
                 </div>
 
                 {ehAdmin && (

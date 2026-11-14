@@ -52,11 +52,11 @@ export default function ConfirmarHorarioView({ token }: { token: string }) {
     };
   }, [token]);
 
-  const confirmar = async () => {
+  const agir = async (acao: "confirmar" | "cancelar") => {
     if (enviando || estado.fase !== "pronto") return;
     setEnviando(true);
     try {
-      const resumo = await confirmacaoPublicaService.confirmar(token);
+      const resumo = await confirmacaoPublicaService[acao](token);
       setEstado({ fase: "pronto", resumo });
       // Leva o leitor de tela (e o olho) para o resultado.
       requestAnimationFrame(() => titulo.current?.focus());
@@ -68,7 +68,9 @@ export default function ConfirmarHorarioView({ token }: { token: string }) {
         const texto =
           typeof resposta?.data === "string" && resposta.status === 400
             ? resposta.data
-            : "Não deu para confirmar agora. Tente de novo em instantes.";
+            : acao === "cancelar"
+              ? "Não deu para cancelar agora. Tente de novo em instantes."
+              : "Não deu para confirmar agora. Tente de novo em instantes.";
         setEstado({ ...estado, aviso: texto });
       }
     } finally {
@@ -112,7 +114,8 @@ export default function ConfirmarHorarioView({ token }: { token: string }) {
             resumo={estado.resumo}
             aviso={estado.aviso}
             enviando={enviando}
-            onConfirmar={confirmar}
+            onConfirmar={() => agir("confirmar")}
+            onCancelar={() => agir("cancelar")}
             tituloRef={titulo}
           />
         )}
@@ -126,17 +129,21 @@ function Conteudo({
   aviso,
   enviando,
   onConfirmar,
+  onCancelar,
   tituloRef,
 }: {
   resumo: ResumoConfirmacao;
   aviso?: string;
   enviando: boolean;
   onConfirmar: () => void;
+  onCancelar: () => void;
   tituloRef: React.RefObject<HTMLHeadingElement | null>;
 }) {
   const confirmado = resumo.status === "CONFIRMADO";
   const cancelado = resumo.status === "CANCELADO";
   const hora = (resumo.horaInicio ?? "").slice(0, 5);
+  // Cancelar pede um segundo toque: é o único gesto da página que tira o horário do cliente.
+  const [pedindoCancelar, setPedindoCancelar] = useState(false);
 
   const tituloTexto = confirmado
     ? "Horário confirmado"
@@ -206,9 +213,53 @@ function Conteudo({
         </Button>
       )}
 
+      {cancelado && (
+        <p className="texto-ajuda" role="status" data-cy="confirmar-cancelado">
+          O horário foi liberado e a loja já foi avisada.
+        </p>
+      )}
+
+      {resumo.podeCancelar && !pedindoCancelar && (
+        <Button
+          type="button"
+          variante="secundario"
+          className="confirmar-botao confirmar-botao--secundario"
+          disabled={enviando}
+          onClick={() => setPedindoCancelar(true)}
+          data-cy="confirmar-nao-vou"
+        >
+          Não vou poder ir
+        </Button>
+      )}
+
+      {resumo.podeCancelar && pedindoCancelar && (
+        <div className="confirmar-cancelar" role="group" aria-label="Cancelar o horário">
+          <p>Cancelar este horário? Ele fica livre para outra pessoa.</p>
+          <Button
+            type="button"
+            variante="perigo"
+            className="confirmar-botao"
+            carregando={enviando}
+            onClick={onCancelar}
+            data-cy="confirmar-cancelar"
+          >
+            Sim, cancelar
+          </Button>
+          <Button
+            type="button"
+            variante="fantasma"
+            className="confirmar-botao"
+            disabled={enviando}
+            onClick={() => setPedindoCancelar(false)}
+          >
+            Voltar
+          </Button>
+        </div>
+      )}
+
       <p className="texto-ajuda confirmar-rodape">
-        {resumo.podeConfirmar || confirmado
-          ? "Precisa remarcar ou cancelar? Responda a mensagem da loja no WhatsApp."
+        {resumo.podeCancelar
+          ? "Quer trocar de horário? Responda a mensagem da loja no WhatsApp."
           : "Fale com a loja pelo WhatsApp para marcar outro horário."}
       </p>
     </>

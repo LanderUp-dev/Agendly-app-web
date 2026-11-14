@@ -1354,3 +1354,39 @@
     justify-content: center;
   }
 }
+
+/* ---- Agendamento online (configuração da loja) ---- */
+.fieldset-limpo {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-card + .form-card,
+.form-card + .texto-ajuda {
+  margin-top: var(--esp-4);
+}
+
+.form-card .opcao-inline-linha {
+  margin-bottom: var(--esp-3);
+}
+
+.online-link {
+  margin: 0 0 var(--esp-3);
+  font-weight: var(--peso-forte);
+  overflow-wrap: anywhere;
+}
+
+.online-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-bottom: var(--esp-3);
+}
+
+@media (max-width: 479px) {
+  .online-acoes .btn {
+    flex: 1 1 100%;
+  }
+}

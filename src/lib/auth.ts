@@ -78,6 +78,13 @@ export function salvarSessao(dados: DadosSessao | null | undefined): boolean {
   return true;
 }
 
+/** Depois de editar a conta: o nome mostrado na barra acompanha, sem precisar entrar de novo. */
+export function atualizarNomeDaSessao(nome: string): void {
+  const usuario = obterUsuario();
+  if (!temStorage() || !usuario) return;
+  window.localStorage.setItem(USER_KEY, JSON.stringify({ ...usuario, nome }));
+}
+
 export function obterUsuario(): UsuarioSessao | null {
   if (!temStorage()) return null;
   try {

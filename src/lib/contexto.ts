@@ -17,7 +17,15 @@ export const ROTA_SELECIONAR_LOJA = "/selecionar-loja";
 
 /** Rotas autenticadas que funcionam sem loja selecionada. */
 // /admin: o administrador da plataforma não precisa estar numa loja.
-export const ROTAS_SEM_LOJA = [ROTA_SELECIONAR_LOJA, "/cadastro-loja", "/listagem-lojas", "/admin"];
+// /conta e /ajuda são da pessoa, não da loja.
+export const ROTAS_SEM_LOJA = [
+  ROTA_SELECIONAR_LOJA,
+  "/cadastro-loja",
+  "/listagem-lojas",
+  "/admin",
+  "/conta",
+  "/ajuda",
+];
 
 export const rotaPrecisaDeLoja = (caminho: string) =>
   !ROTAS_SEM_LOJA.some((r) => caminho === r || caminho.startsWith(`${r}/`));

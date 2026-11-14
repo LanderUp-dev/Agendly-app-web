@@ -77,6 +77,14 @@ Faça nesta ordem, porque um cadastro depende do anterior:
   a mensagem pronta. A mensagem leva um link: o cliente toca em **Sim, confirmo** e o horário
   fica Confirmado sozinho, com um aviso no sininho. Se ele responder por texto, marque você
   mesmo como Confirmado ou Cancelado.
+- **Cliente não pode ir:** pelo mesmo link ele toca em **Não vou poder ir**. O horário é
+  cancelado, fica livre de novo e a loja é avisada no sininho.
+- **Agendamento online:** em Menu > Agendamento online, ligue **Aceitar agendamentos pelo link**
+  e divulgue o link da loja. O cliente escolhe serviço, profissional, dia e um horário livre e
+  informa nome e celular; o agendamento entra na agenda. Você define a antecedência mínima e
+  até quantos dias à frente a agenda abre. Cada celular pode ter até 3 horários futuros.
+- **Ajuda e conta:** no menu, **Ajuda e tutoriais** traz guias rápidos (inclusive a diferença
+  entre Funcionário e Equipe) e **Minha conta** troca nome, celular e senha.
 
 ## 4. Caixa e atendimento
 
