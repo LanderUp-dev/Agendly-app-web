@@ -132,8 +132,8 @@
 }
 
 .comanda__valor {
-  flex: 0 0 96px;
-  width: 96px;
+  flex: 0 0 7.5rem;
+  width: 7.5rem;
   text-align: right;
 }
 

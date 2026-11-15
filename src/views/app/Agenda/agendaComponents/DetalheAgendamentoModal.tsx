@@ -239,8 +239,11 @@ export default function DetalheAgendamentoModal({
               status !== "CANCELADO" &&
               status !== "CONCLUIDO" &&
               status !== "NAO_COMPARECEU" && (
-                <Button onClick={() => onFecharAtendimento?.(a)} data-cy="fechar-atendimento">
-                  <Receipt size={18} strokeWidth={1.75} aria-hidden="true" />
+                <Button
+                  onClick={() => onFecharAtendimento?.(a)}
+                  icone={<Receipt size={18} strokeWidth={1.75} aria-hidden="true" />}
+                  data-cy="fechar-atendimento"
+                >
                   Fechar atendimento e receber
                 </Button>
               )}

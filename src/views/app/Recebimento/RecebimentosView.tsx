@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout/Layout";
 import {
   Badge,
   Button,
+  CampoDinheiro,
   Card,
   Carregando,
   EmptyState,
@@ -530,12 +531,10 @@ export default function RecebimentosView() {
           <div className="recebimento-linha-dupla">
             <div className="campo-wrapper">
               <label htmlFor="rec-valor">{editando ? "Valor *" : "Valor total *"}</label>
-              <input
+              <CampoDinheiro
                 id="rec-valor"
-                inputMode="decimal"
-                placeholder="0,00"
                 value={form.valor}
-                onChange={campo("valor")}
+                onValor={(v) => setForm((f) => ({ ...f, valor: v }))}
                 required
                 data-cy="recebimento-valor"
               />

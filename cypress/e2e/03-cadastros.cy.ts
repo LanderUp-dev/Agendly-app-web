@@ -187,6 +187,26 @@ describe("Cadastros", () => {
       cy.get("#campo-email-erro").should("contain", "e-mail válido");
     });
 
+    it("só o nome é obrigatório e o cadastro é completado depois em Editar", () => {
+      const nome = `Depois${sufixo().replace(/\d/g, "")}`;
+      cy.intercept("POST", "/api/v1/clientes").as("criar");
+      cy.visit("/cadastro-cliente");
+      cy.get("[data-cy=form-nome]").type(nome);
+      cy.get("[data-cy=form-salvar]").click();
+      cy.wait("@criar").then(({ response }) => {
+        expect(response?.statusCode).to.eq(201);
+        const id = response?.body.id;
+        cy.visit(`/listagem-clientes`);
+        cy.get(`[data-cy=cliente-editar-${id}]`).click();
+        cy.location("search").should("contain", `id=${id}`);
+        cy.get("[data-cy=form-nome]").should("have.value", nome);
+        cy.intercept("PUT", `/api/v1/clientes/${id}`).as("editar");
+        cy.get("[data-cy=form-celular]").type(gerarCelular());
+        cy.get("[data-cy=form-salvar]").click();
+        cy.wait("@editar").its("response.statusCode").should("eq", 200);
+      });
+    });
+
     it("envia sobreNome (DTO) e o sobrenome aparece na listagem", () => {
       const sobrenome = `Souza${sufixo().replace(/\d/g, "")}`;
       const cpf = gerarCPF();

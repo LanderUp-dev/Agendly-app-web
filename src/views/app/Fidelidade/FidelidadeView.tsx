@@ -109,6 +109,11 @@ export default function FidelidadeView() {
       <PageHeader
         titulo="Fidelidade"
         descricao="A cada N visitas (atendimentos fechados) o cliente ganha uma recompensa."
+        acoes={
+          <Link to="/ajuda" hash="fidelidade" className="link" data-cy="fidelidade-ajuda">
+            Como funciona?
+          </Link>
+        }
       />
 
       {config.carregando && <Carregando ativo contexto="Carregando a fidelidade..." />}

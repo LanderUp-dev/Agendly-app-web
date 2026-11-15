@@ -8,12 +8,14 @@ import { areasAtuacaoService, servicosService } from "@/services/endpoints";
 import {
   Button,
   ButtonLink,
+  CampoDinheiro,
   Card,
   FormField,
   PageHeader,
   SelectCarregado,
   LojaDoCadastro,
 } from "@/components/ds";
+import { lerValor } from "@/lib/dinheiro";
 import { useCarregar } from "@/hooks/useCarregar";
 import { useErrosFormulario } from "@/hooks/useErrosFormulario";
 
@@ -59,7 +61,7 @@ export default function CadastroServico() {
     e.preventDefault();
     if (salvando) return;
 
-    const preco = Number(formData.preco);
+    const preco = lerValor(formData.preco) ?? NaN;
     const comissaoLoja = Number(formData.comissaoLoja);
     const payload = {
       nome: formData.nome.trim(),
@@ -122,15 +124,15 @@ export default function CadastroServico() {
               obrigatorio
               colunas={6}
               erro={erros.preco}
-              ajuda="Use ponto ou vírgula para os centavos."
+              ajuda="Ex.: 40 ou 40,50"
             >
-              <input
-                type="text"
+              <CampoDinheiro
                 name="preco"
-                inputMode="decimal"
-                placeholder="0,00"
                 value={formData.preco}
-                onChange={handleChange}
+                onValor={(v) => {
+                  setFormData((prev) => ({ ...prev, preco: v }));
+                  limpar("preco");
+                }}
                 data-cy="form-preco"
               />
             </FormField>

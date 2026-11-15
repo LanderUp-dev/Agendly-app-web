@@ -1390,3 +1390,35 @@
     flex: 1 1 100%;
   }
 }
+
+/* ---- Agenda: cliente novo cadastrado na hora, dentro do agendamento ---- */
+.form-grade > .novo-cliente__abrir {
+  grid-column: span 12;
+  margin-top: calc(-1 * var(--esp-3));
+}
+.novo-cliente__abrir .link-botao {
+  min-height: 44px;
+}
+.form-grade > .novo-cliente {
+  grid-column: span 12;
+  min-width: 0;
+  margin: 0;
+  padding: var(--esp-4);
+  border: 1px solid var(--borda-forte);
+  border-radius: var(--raio-md);
+  background: var(--fundo-elevado);
+}
+.novo-cliente legend {
+  padding: 0 var(--esp-2);
+  font-weight: 600;
+}
+.novo-cliente > .texto-ajuda {
+  margin: 0 0 var(--esp-4);
+}
+.novo-cliente__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--esp-3);
+  margin-top: var(--esp-4);
+}

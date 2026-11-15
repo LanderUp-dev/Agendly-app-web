@@ -2,6 +2,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Button, FormField, Modal, SelectCarregado } from "@/components/ds";
+import { temPermissao } from "@/lib/permissoes";
+import { somenteDigitos, validarCelular } from "@/lib/validators";
 import api from "@/config/axios";
 import { useCarregar } from "@/hooks/useCarregar";
 import {
@@ -31,6 +33,7 @@ interface Pessoa {
   id: number;
   nome?: string;
   sobrenome?: string;
+  sobreNome?: string | null;
 }
 
 interface AgendamentoModalProps {
@@ -42,7 +45,8 @@ interface AgendamentoModalProps {
   onCriado?: () => void;
 }
 
-const nomeCompleto = (p: Pessoa) => [p.nome, p.sobrenome].filter(Boolean).join(" ");
+// Funcionário vem com `sobrenome`; cliente, com `sobreNome` (ClienteDTO).
+const nomeCompleto = (p: Pessoa) => [p.nome, p.sobrenome ?? p.sobreNome].filter(Boolean).join(" ");
 
 const AgendamentoModal = ({
   aberto,
@@ -75,6 +79,15 @@ const AgendamentoModal = ({
   const [carregandoHorarios, setCarregandoHorarios] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erros, setErros] = useState<Record<string, string>>({});
+  // Cliente cadastrado na hora (só nome e celular); o resto se completa depois em Clientes.
+  const [rapido, setRapido] = useState<{ nome: string; celular: string } | null>(null);
+  const [criados, setCriados] = useState<Pessoa[]>([]);
+  const [criandoCliente, setCriandoCliente] = useState(false);
+  const podeCadastrarCliente = temPermissao("CLIENTE_EDITAR");
+  const listaClientes = useMemo(
+    () => [...criados.filter((c) => !clientes.dados.some((d) => d.id === c.id)), ...clientes.dados],
+    [criados, clientes.dados],
+  );
 
   // Ao abrir: data e hora clicadas; listas recarregadas.
   useEffect(() => {
@@ -88,6 +101,8 @@ const AgendamentoModal = ({
     });
     setDisp(null);
     setErros({});
+    setRapido(null);
+    setCriados([]);
     clientes.recarregar();
     profissionais.recarregar();
     servicos.recarregar();
@@ -141,10 +156,49 @@ const AgendamentoModal = ({
     setErros((x) => ({ ...x, [e.target.name]: "" }));
   };
 
+  const celularMascara = (v: string) => {
+    const d = v.replace(/\D/g, "").slice(0, 11);
+    if (d.length <= 2) return d;
+    if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+    return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  };
+
+  const criarCliente = async () => {
+    if (!rapido || criandoCliente) return;
+    const [nome, ...resto] = rapido.nome.trim().split(/\s+/);
+    const celular = somenteDigitos(rapido.celular);
+    if (!nome) return setErros((x) => ({ ...x, rapidoNome: "Informe o nome do cliente." }));
+    if (celular && !validarCelular(celular))
+      return setErros((x) => ({ ...x, rapidoCelular: "Celular inválido: use o DDD e o número." }));
+    setCriandoCliente(true);
+    try {
+      const criado = await clientesService.criar({
+        nome,
+        sobreNome: resto.join(" ") || null,
+        celular: celular || null,
+      });
+      setCriados((l) => [criado, ...l]);
+      setForm((f) => ({ ...f, cliente: String(criado.id) }));
+      setErros((x) => ({ ...x, cliente: "", rapidoNome: "", rapidoCelular: "" }));
+      setRapido(null);
+      toast.success("Cliente cadastrado. Complete os dados depois em Clientes.");
+    } catch {
+      // Mensagem do backend (ex.: celular já cadastrado) pelo interceptor.
+    } finally {
+      setCriandoCliente(false);
+    }
+  };
+
   const salvar = async (e?: React.FormEvent) => {
     e?.preventDefault();
     const novos: Record<string, string> = {};
-    if (!form.cliente) novos.cliente = "Escolha o cliente.";
+    if (rapido) {
+      novos.rapidoNome = "Toque em Adicionar cliente para terminar o cadastro rápido.";
+    } else if (!form.cliente) {
+      novos.cliente = podeCadastrarCliente
+        ? "Escolha o cliente ou cadastre um novo."
+        : "Escolha o cliente.";
+    }
     if (!form.servico) novos.servico = "Escolha o serviço.";
     if (!form.profissional) novos.profissional = "Escolha o profissional.";
     if (!form.data) novos.data = "Escolha a data.";
@@ -211,7 +265,7 @@ const AgendamentoModal = ({
           obrigatorio
           value={form.cliente}
           onChange={mudar}
-          itens={clientes.dados}
+          itens={listaClientes}
           carregando={clientes.carregando}
           erroCarregamento={clientes.erro}
           onTentarNovamente={clientes.recarregar}
@@ -219,11 +273,97 @@ const AgendamentoModal = ({
           rotuloItem={nomeCompleto}
           nomePlural="clientes"
           vazioTexto="Nenhum cliente cadastrado."
-          cadastrarEm="/cadastro-cliente"
           selecionarUnico={false}
           erro={erros.cliente}
           data-cy="ag-cliente"
         />
+        {podeCadastrarCliente && !rapido && (
+          <div className="novo-cliente__abrir">
+            <button
+              type="button"
+              className="link-botao"
+              onClick={() => setRapido({ nome: "", celular: "" })}
+              data-cy="ag-novo-cliente"
+            >
+              + Cliente novo? Cadastre aqui
+            </button>
+          </div>
+        )}
+        {rapido && (
+          <fieldset className="novo-cliente" data-cy="ag-cliente-rapido">
+            <legend>Cliente novo</legend>
+            <p className="texto-ajuda">
+              Só o nome já basta. O celular serve para confirmar pelo WhatsApp. O resto você
+              completa depois em Clientes.
+            </p>
+            <div className="form-grade">
+              <FormField
+                id="ag-rapido-nome"
+                label="Nome"
+                obrigatorio
+                colunas={6}
+                erro={erros.rapidoNome}
+              >
+                <input
+                  type="text"
+                  autoComplete="off"
+                  maxLength={120}
+                  value={rapido.nome}
+                  onChange={(e) => {
+                    setRapido({ ...rapido, nome: e.target.value });
+                    setErros((x) => ({ ...x, rapidoNome: "" }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      criarCliente();
+                    }
+                  }}
+                  data-cy="ag-rapido-nome"
+                />
+              </FormField>
+              <FormField
+                id="ag-rapido-celular"
+                label="Celular"
+                colunas={6}
+                erro={erros.rapidoCelular}
+              >
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  placeholder="(00) 00000-0000"
+                  maxLength={15}
+                  value={rapido.celular}
+                  onChange={(e) => {
+                    setRapido({ ...rapido, celular: celularMascara(e.target.value) });
+                    setErros((x) => ({ ...x, rapidoCelular: "" }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      criarCliente();
+                    }
+                  }}
+                  data-cy="ag-rapido-celular"
+                />
+              </FormField>
+            </div>
+            <div className="novo-cliente__acoes">
+              <Button
+                variante="secundario"
+                onClick={() => {
+                  setRapido(null);
+                  setErros((x) => ({ ...x, rapidoNome: "", rapidoCelular: "" }));
+                }}
+              >
+                Voltar para a lista
+              </Button>
+              <Button onClick={criarCliente} carregando={criandoCliente} data-cy="ag-rapido-salvar">
+                Adicionar cliente
+              </Button>
+            </div>
+          </fieldset>
+        )}
         <SelectCarregado
           id="ag-servico"
           name="servico"

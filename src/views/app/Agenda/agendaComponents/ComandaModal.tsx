@@ -5,7 +5,7 @@ import { Link } from "@tanstack/react-router";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
-import { Button, Modal } from "@/components/ds";
+import { Button, CampoDinheiro, Modal } from "@/components/ds";
 import { temPermissao } from "@/lib/permissoes";
 import { lerValor, paraCampo, reais, somar } from "@/lib/dinheiro";
 import { funcionariosService, servicosService, type AgendamentoAgenda } from "@/services/endpoints";
@@ -337,12 +337,11 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
                         </option>
                       ))}
                     </select>
-                    <input
+                    <CampoDinheiro
                       className="campo comanda__valor"
-                      inputMode="decimal"
                       aria-label={`Valor do serviço ${n + 1}`}
                       value={i.valor}
-                      onChange={(e) => mudarItem(i.chave, "valor", e.target.value)}
+                      onValor={(v) => mudarItem(i.chave, "valor", v)}
                       data-cy="comanda-valor"
                     />
                     {itens.length > 1 && (
@@ -392,23 +391,11 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
           <div className="comanda__ajustes">
             <label className="campo-wrapper">
               <span className="campo-label">Desconto (R$)</span>
-              <input
-                inputMode="decimal"
-                value={desconto}
-                onChange={(e) => setDesconto(e.target.value)}
-                placeholder="0,00"
-                data-cy="comanda-desconto"
-              />
+              <CampoDinheiro value={desconto} onValor={setDesconto} data-cy="comanda-desconto" />
             </label>
             <label className="campo-wrapper">
               <span className="campo-label">Acréscimo (R$)</span>
-              <input
-                inputMode="decimal"
-                value={acrescimo}
-                onChange={(e) => setAcrescimo(e.target.value)}
-                placeholder="0,00"
-                data-cy="comanda-acrescimo"
-              />
+              <CampoDinheiro value={acrescimo} onValor={setAcrescimo} data-cy="comanda-acrescimo" />
             </label>
           </div>
 
@@ -433,12 +420,11 @@ export default function ComandaModal({ agendamento, onFechar, onFechado }: Props
                     </option>
                   ))}
                 </select>
-                <input
+                <CampoDinheiro
                   className="campo comanda__valor"
-                  inputMode="decimal"
                   aria-label={`Valor pago na forma ${n + 1}`}
                   value={p.valor}
-                  onChange={(e) => mudarPagamento(p.chave, "valor", e.target.value)}
+                  onValor={(v) => mudarPagamento(p.chave, "valor", v)}
                   data-cy="comanda-pago"
                 />
                 <button

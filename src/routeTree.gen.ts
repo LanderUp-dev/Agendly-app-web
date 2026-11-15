@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PoliticasDePrivacidadeRouteImport } from './routes/politicas-de-privacidade'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as TelasRouteImport } from './routes/telas'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated.agenda'
@@ -85,6 +86,11 @@ const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TelasRoute = TelasRouteImport.update({
+  id: '/telas',
+  path: '/telas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
@@ -297,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
+  '/telas': typeof TelasRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda': typeof AuthenticatedAgendaRoute
@@ -341,6 +348,7 @@ export interface FileRoutesByTo {
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
+  '/telas': typeof TelasRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda': typeof AuthenticatedAgendaRoute
@@ -387,6 +395,7 @@ export interface FileRoutesById {
   '/politicas-de-privacidade': typeof PoliticasDePrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/register': typeof RegisterRoute
+  '/telas': typeof TelasRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
@@ -433,6 +442,7 @@ export interface FileRouteTypes {
     | '/politicas-de-privacidade'
     | '/recuperar-senha'
     | '/register'
+    | '/telas'
     | '/termos-de-uso'
     | '/admin'
     | '/agenda'
@@ -477,6 +487,7 @@ export interface FileRouteTypes {
     | '/politicas-de-privacidade'
     | '/recuperar-senha'
     | '/register'
+    | '/telas'
     | '/termos-de-uso'
     | '/admin'
     | '/agenda'
@@ -522,6 +533,7 @@ export interface FileRouteTypes {
     | '/politicas-de-privacidade'
     | '/recuperar-senha'
     | '/register'
+    | '/telas'
     | '/termos-de-uso'
     | '/_authenticated/admin'
     | '/_authenticated/agenda'
@@ -568,6 +580,7 @@ export interface RootRouteChildren {
   PoliticasDePrivacidadeRoute: typeof PoliticasDePrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   RegisterRoute: typeof RegisterRoute
+  TelasRoute: typeof TelasRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
   AgendarSlugRoute: typeof AgendarSlugRoute
   ConfirmarTokenRoute: typeof ConfirmarTokenRoute
@@ -622,6 +635,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/telas': {
+      id: '/telas'
+      path: '/telas'
+      fullPath: '/telas'
+      preLoaderRoute: typeof TelasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/termos-de-uso': {
@@ -968,6 +988,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliticasDePrivacidadeRoute: PoliticasDePrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   RegisterRoute: RegisterRoute,
+  TelasRoute: TelasRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
   AgendarSlugRoute: AgendarSlugRoute,
   ConfirmarTokenRoute: ConfirmarTokenRoute,

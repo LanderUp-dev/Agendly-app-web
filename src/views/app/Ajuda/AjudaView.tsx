@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { Layout } from "@/components/layout/Layout";
 import { Card, PageHeader } from "@/components/ds";
@@ -195,6 +195,59 @@ const GUIAS: Guia[] = [
     ),
   },
   {
+    id: "fidelidade",
+    titulo: "Fidelidade: recompensa para quem volta",
+    resumo: "A cada tantas visitas o cliente ganha um prêmio que você escolhe.",
+    conteudo: (
+      <>
+        <p>
+          É o cartão fidelidade do salão, sem papel e sem carimbo. Exemplo: a cada{" "}
+          <strong>10 visitas</strong>, <strong>um corte grátis</strong>.
+        </p>
+        <h3>Como ligar</h3>
+        <ol>
+          <Passo>
+            Abra <Link to="/fidelidade">Fidelidade</Link> e marque o programa como ativo.
+          </Passo>
+          <Passo>
+            Escolha quantas visitas valem a recompensa (de 2 a 100) e escreva a recompensa, como
+            &quot;Corte grátis&quot; ou &quot;20% de desconto&quot;.
+          </Passo>
+          <Passo>
+            Se quiser, marque o envio de e-mail: o cliente que tem e-mail no cadastro recebe os
+            parabéns quando ganhar.
+          </Passo>
+        </ol>
+        <h3>O que conta como visita</h3>
+        <p>
+          Cada atendimento <strong>fechado no caixa</strong> (Fechar atendimento e receber, na
+          Agenda). Horário marcado, cancelado ou em que o cliente faltou não conta. Por isso o
+          cliente precisa estar escolhido no agendamento.
+        </p>
+        <h3>Quando o cliente ganha</h3>
+        <ul>
+          <li>
+            Na 10ª, 20ª, 30ª visita (no exemplo de 10), o sistema registra o prêmio e avisa no
+            sininho.
+          </li>
+          <li>
+            Os prêmios do mês aparecem na tela <Link to="/fidelidade">Fidelidade</Link>. As visitas
+            de cada um ficam no histórico, em <Link to="/listagem-clientes">Clientes</Link> &gt;
+            Histórico.
+          </li>
+          <li>
+            A recompensa é dada por você, no próximo atendimento. O sistema avisa, mas não dá
+            desconto sozinho: lance o desconto na comanda.
+          </li>
+        </ul>
+        <p className="texto-ajuda">
+          Só quem pode editar a loja muda as regras. Visitas fechadas antes de ligar o programa
+          também contam.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "caixa",
     titulo: "Caixa e recebimento",
     resumo: "Abrir o caixa, receber em Pix, dinheiro ou cartão e fechar no fim do dia.",
@@ -264,7 +317,25 @@ const GUIAS: Guia[] = [
   },
 ];
 
+/** Abre (e rola até) o guia do endereço: /ajuda#fidelidade vem aberto, não fechado. */
+function useGuiaDoEndereco() {
+  useEffect(() => {
+    const abrir = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const guia = id ? document.getElementById(id) : null;
+      if (guia instanceof HTMLDetailsElement) {
+        guia.open = true;
+        guia.scrollIntoView({ block: "start" });
+      }
+    };
+    abrir();
+    window.addEventListener("hashchange", abrir);
+    return () => window.removeEventListener("hashchange", abrir);
+  }, []);
+}
+
 export default function AjudaView() {
+  useGuiaDoEndereco();
   return (
     <Layout>
       <PageHeader

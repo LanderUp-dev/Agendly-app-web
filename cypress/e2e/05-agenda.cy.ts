@@ -190,4 +190,22 @@ describe("Agenda", () => {
     });
     cy.contains("[data-cy=agendamento]", nomeCliente).should("exist");
   });
+  it("cliente novo cadastrado na hora, dentro do agendamento (só nome e celular)", () => {
+    const nome = `Rapido${sufixo().replace(/\d/g, "")}`;
+    cy.get("[data-cy=agenda-proximo]").click();
+    cy.get(`[aria-label^="16:00 com ${nomeFunc}"]`).click({ scrollBehavior: "center" });
+    cy.get("[data-cy=ag-novo-cliente]").click();
+    cy.get("[data-cy=ag-rapido-nome]").type(`${nome} Silva`);
+    cy.intercept("POST", "/api/v1/clientes").as("cliente");
+    cy.get("[data-cy=ag-rapido-salvar]").click();
+    cy.wait("@cliente").then(({ request, response }) => {
+      expect(request.body.nome).to.eq(nome);
+      expect(request.body.sobreNome).to.eq("Silva");
+      expect(request.body.celular).to.eq(null);
+      expect(response?.statusCode).to.eq(201);
+      // O cliente novo já fica escolhido no agendamento
+      cy.get("#ag-cliente").should("have.value", String(response?.body.id));
+    });
+    cy.get("[data-cy=ag-cliente-rapido]").should("not.exist");
+  });
 });

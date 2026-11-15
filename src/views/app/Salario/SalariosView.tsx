@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout/Layout";
 import {
   Badge,
   Button,
+  CampoDinheiro,
   Card,
   Carregando,
   EmptyState,
@@ -459,12 +460,10 @@ export default function SalariosView() {
                 </p>
                 <div className="campo-wrapper">
                   <label htmlFor="salario-valor">Valor</label>
-                  <input
+                  <CampoDinheiro
                     id="salario-valor"
-                    inputMode="decimal"
-                    placeholder="0,00"
                     value={valor}
-                    onChange={(e) => setValor(e.target.value)}
+                    onValor={setValor}
                     required
                     data-cy="salario-valor"
                   />

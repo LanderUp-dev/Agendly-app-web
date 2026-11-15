@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout/Layout";
 import {
   Badge,
   Button,
+  CampoDinheiro,
   Card,
   Carregando,
   EmptyState,
@@ -487,13 +488,11 @@ export default function DespesasView() {
           <div className="despesa-linha-campos">
             <div className="campo-wrapper">
               <label htmlFor="despesa-valor">{editando ? "Valor *" : "Valor total *"}</label>
-              <input
+              <CampoDinheiro
                 id="despesa-valor"
-                inputMode="decimal"
-                placeholder="0,00"
                 value={form.valor}
                 required
-                onChange={(e) => setForm({ ...form, valor: e.target.value })}
+                onValor={(v) => setForm((f) => ({ ...f, valor: v }))}
                 data-cy="despesa-valor"
               />
             </div>

@@ -224,6 +224,12 @@ select:-webkit-autofill {
     color var(--transicao-rapida);
 }
 
+/* Botão com ícone que quebra em duas linhas: o texto fica colado ao ícone (como nos links
+   .btn, ex.: WhatsApp), em vez de centralizado longe dele. */
+.btn > svg + span {
+  text-align: start;
+}
+
 .btn:active:not(:disabled) {
   transform: translateY(1px);
 }

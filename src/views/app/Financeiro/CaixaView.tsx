@@ -3,7 +3,16 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { Layout } from "@/components/layout/Layout";
-import { Badge, Button, Card, Carregando, ErrorState, Modal, PageHeader } from "@/components/ds";
+import {
+  Badge,
+  Button,
+  CampoDinheiro,
+  Card,
+  Carregando,
+  ErrorState,
+  Modal,
+  PageHeader,
+} from "@/components/ds";
 import { useCarregar } from "@/hooks/useCarregar";
 import { lerValor, reais } from "@/lib/dinheiro";
 import {
@@ -432,12 +441,10 @@ export default function CaixaView() {
                   ? "Dinheiro contado"
                   : "Valor"}
             </label>
-            <input
+            <CampoDinheiro
               id="caixa-valor"
-              inputMode="decimal"
-              placeholder="0,00"
               value={valor}
-              onChange={(e) => setValor(e.target.value)}
+              onValor={setValor}
               required={acao !== "fechar"}
               data-cy="caixa-valor"
             />

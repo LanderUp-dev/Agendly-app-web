@@ -57,12 +57,12 @@
   position: sticky;
   left: 0;
   z-index: 2;
-  padding: 0 var(--esp-2) 0 0;
+  padding: 0 var(--esp-1);
   background-color: var(--fundo-painel);
   color: var(--texto-terciario);
   font-size: var(--texto-xs);
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  text-align: center;
   transform: translateY(-0.5em); /* rótulo alinhado à linha da hora */
 }
 

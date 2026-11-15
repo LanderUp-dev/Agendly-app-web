@@ -1,12 +1,14 @@
 // @requisito RE-12 RO-25
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { PaginaListagem } from "@/components/ds";
+import { Badge, PaginaListagem } from "@/components/ds";
+import { temPermissao } from "@/lib/permissoes";
 import { clientesService } from "@/services/endpoints";
 import { formatarCPF, formatarData, formatarTelefone, nomeCompleto } from "@/lib/formatadores";
 import { somenteDigitos } from "@/lib/validators";
 
 export default function ListagemCliente() {
+  const podeEditar = temPermissao("CLIENTE_EDITAR");
   return (
     <PaginaListagem
       titulo="Clientes"
@@ -29,7 +31,12 @@ export default function ListagemCliente() {
           chave: "nome",
           titulo: "Nome",
           principal: true,
-          render: (c) => nomeCompleto(c.nome, c.sobreNome),
+          render: (c) => (
+            <>
+              {nomeCompleto(c.nome, c.sobreNome)}{" "}
+              {!c.celular && <Badge tom="aviso">Completar cadastro</Badge>}
+            </>
+          ),
         },
         { chave: "cpf", titulo: "CPF", mono: true, render: (c) => formatarCPF(c.cpf) },
         {
@@ -52,16 +59,28 @@ export default function ListagemCliente() {
         {
           // @requisito RO-04
           chave: "historico",
-          titulo: "Histórico",
+          titulo: "Ações",
           render: (c) => (
-            <Link
-              to="/cliente-historico"
-              search={{ id: Number(c.id) }}
-              className="link"
-              data-cy={`cliente-historico-${c.id}`}
-            >
-              Histórico
-            </Link>
+            <span className="celula-acoes">
+              {podeEditar && (
+                <Link
+                  to="/cadastro-cliente"
+                  search={{ id: Number(c.id) }}
+                  className="link"
+                  data-cy={`cliente-editar-${c.id}`}
+                >
+                  Editar
+                </Link>
+              )}
+              <Link
+                to="/cliente-historico"
+                search={{ id: Number(c.id) }}
+                className="link"
+                data-cy={`cliente-historico-${c.id}`}
+              >
+                Histórico
+              </Link>
+            </span>
           ),
         },
       ]}

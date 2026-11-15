@@ -198,6 +198,28 @@ export function AppNavbar({ contido = true }: AppNavbarProps) {
                   >
                     Ajuda e tutoriais
                   </Link>
+                  <Link
+                    to="/ajuda"
+                    hash="fidelidade"
+                    role="menuitem"
+                    className="menu__item"
+                    onClick={() => setMenuAberto(false)}
+                    data-cy="menu-ajuda-fidelidade"
+                  >
+                    Como funciona a fidelidade
+                  </Link>
+                  {import.meta.env.DEV && (
+                    <Link
+                      to="/telas"
+                      role="menuitem"
+                      className="menu__item"
+                      onClick={() => setMenuAberto(false)}
+                      data-cy="menu-telas"
+                    >
+                      Todas as telas
+                      <span className="menu__item-detalhe">Só em desenvolvimento</span>
+                    </Link>
+                  )}
                 </div>
 
                 {ehAdmin && (

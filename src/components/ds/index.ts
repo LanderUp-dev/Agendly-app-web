@@ -3,6 +3,7 @@ export { Logo } from "./Logo";
 export { Button, ButtonLink } from "./Button";
 export type { ButtonProps, VarianteBotao } from "./Button";
 export { FormField } from "./FormField";
+export { CampoDinheiro } from "./CampoDinheiro";
 export { Spinner } from "./Spinner";
 export { Skeleton, EmptyState, ErrorState, Carregando } from "./Feedback";
 export { PageHeader, Card, Badge } from "./Layout";
