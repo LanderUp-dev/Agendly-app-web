@@ -193,13 +193,13 @@ const AgendaGrid = ({
         </div>
       ))}
 
-      {linhas.map((hora) => {
+      {linhas.map((hora, i) => {
         const cheia = hora.endsWith(":00");
         const inicioLinha = emMinutos(hora);
         return (
           <React.Fragment key={hora}>
             <div
-              className={`agenda-grade__hora ${cheia ? "agenda-grade__hora--cheia" : ""}`}
+              className={`agenda-grade__hora ${cheia ? "agenda-grade__hora--cheia" : ""} ${i === 0 ? "agenda-grade__hora--primeira" : ""}`}
               data-cy="agenda-hora"
             >
               {cheia || passo === 60 ? hora : ""}

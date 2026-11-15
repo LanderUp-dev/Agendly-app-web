@@ -70,6 +70,12 @@
   color: var(--texto-secundario);
 }
 
+/* 00:00: subir meia linha esconderia o rótulo sob o cabeçalho; fica logo abaixo da linha. */
+.agenda-grade__hora--primeira {
+  padding-top: var(--esp-1);
+  transform: none;
+}
+
 /* ----------------------------------------------------- Slots */
 .agenda-grade__slot {
   position: relative;
