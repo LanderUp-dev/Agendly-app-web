@@ -7,6 +7,9 @@ COPY . .
 # Front e API no mesmo domínio (Nginx), então o caminho relativo basta e não há CORS.
 ARG VITE_API_BASE_URL=/api/v1
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+# Lista interna de telas (/telas): desligada por padrão. Ligue só no build da branch dev.
+ARG VITE_LISTA_TELAS=false
+ENV VITE_LISTA_TELAS=$VITE_LISTA_TELAS
 RUN npx vite build
 
 FROM node:24-slim

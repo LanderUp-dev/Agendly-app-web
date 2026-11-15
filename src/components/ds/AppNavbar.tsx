@@ -8,6 +8,7 @@ import { obterUsuario, obterLojaAtiva, limparSessao } from "@/lib/auth";
 import { podeAcessar } from "@/lib/permissoes";
 import { adminService } from "@/services/acesso";
 import { ROTA_SELECIONAR_LOJA } from "@/lib/contexto";
+import { LISTA_TELAS_LIGADA } from "@/lib/listaTelas";
 import { useTheme } from "@/context/ThemeContext";
 
 interface AppNavbarProps {
@@ -208,7 +209,7 @@ export function AppNavbar({ contido = true }: AppNavbarProps) {
                   >
                     Como funciona a fidelidade
                   </Link>
-                  {import.meta.env.DEV && (
+                  {LISTA_TELAS_LIGADA && (
                     <Link
                       to="/telas"
                       role="menuitem"
