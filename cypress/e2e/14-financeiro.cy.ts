@@ -45,7 +45,7 @@ describe("Financeiro: caixa, comanda e painel", () => {
   beforeEach(() => cy.login());
 
   const abrirAtendimento = () => {
-    cy.intercept("GET", "/api/v1/agendamentos").as("agendamentos");
+    cy.intercept({ method: "GET", pathname: "/api/v1/agendamentos" }).as("agendamentos");
     cy.visit("/agenda");
     cy.wait("@agendamentos");
     cy.contains("[data-cy=agendamento]", nomeCliente).click({ scrollBehavior: "center" });

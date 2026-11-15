@@ -95,7 +95,7 @@ describe("Agenda: filtro por área e arrastar", () => {
         );
       });
     }).as("funcionarios");
-    cy.intercept("GET", "/api/v1/agendamentos").as("agendamentos");
+    cy.intercept({ method: "GET", pathname: "/api/v1/agendamentos" }).as("agendamentos");
     cy.visit("/agenda");
     cy.wait(["@funcionarios", "@agendamentos"]);
   });

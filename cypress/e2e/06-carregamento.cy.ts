@@ -57,7 +57,9 @@ describe("Carregamento", () => {
   });
 
   it('agenda: skeleton da grade e mensagem "Carregando agenda..."', () => {
-    cy.intercept("GET", "/api/v1/agendamentos", { delay: 4000, body: [] }).as("agendamentos");
+    cy.intercept({ method: "GET", pathname: "/api/v1/agendamentos" }, { delay: 4000, body: [] }).as(
+      "agendamentos",
+    );
     cy.visit("/agenda");
     cy.get(".agenda-grade--skeleton").should("exist");
     cy.get("[data-cy=carregando-mensagem]", { timeout: 3500 }).should(

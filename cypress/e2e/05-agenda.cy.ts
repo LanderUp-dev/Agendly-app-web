@@ -35,7 +35,7 @@ describe("Agenda", () => {
   beforeEach(() => {
     cy.login();
     cy.intercept("GET", "/api/v1/funcionarios").as("funcionarios");
-    cy.intercept("GET", "/api/v1/agendamentos").as("agendamentos");
+    cy.intercept({ method: "GET", pathname: "/api/v1/agendamentos" }).as("agendamentos");
     cy.visit("/agenda");
     cy.wait(["@funcionarios", "@agendamentos"]);
   });

@@ -68,7 +68,7 @@ describe("Fluxo de cadastros", () => {
     cy.intercept("GET", "/api/v1/funcionarios", { body: [] });
     cy.intercept("GET", "/api/v1/servicos", { body: [] });
     cy.intercept("GET", "/api/v1/clientes", { body: [] });
-    cy.intercept("GET", "/api/v1/agendamentos", { body: [] });
+    cy.intercept({ method: "GET", pathname: "/api/v1/agendamentos" }, { body: [] });
     cy.visit("/agenda");
     cy.get("[data-cy=primeiros-passos]").should("contain", "1 de 5 feitos");
     cy.get("[data-cy=passo-area]").should("have.attr", "href", "/cadastro-area-atuacao");

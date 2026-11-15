@@ -134,6 +134,11 @@ const agendamentosCrud = crud("agendamentos");
 export const agendamentosService = {
   ...agendamentosCrud,
   listar: () => agendamentosCrud.listar().then((lista) => lista.map(agendamentoParaAgenda)),
+  /** Só o período pedido (AAAA-MM-DD, inclusive), em vez do histórico inteiro da loja. */
+  listarPeriodo: (de: string, ate: string) =>
+    api
+      .get("/agendamentos", { params: { de, ate } })
+      .then((r) => normalizarLista(r.data).map(agendamentoParaAgenda)),
   /** CONFIRMADO, CANCELADO, AGENDADO… (PATCH /agendamentos/{id}/status). */
   alterarStatus: (id: number, status: string) =>
     api.patch(`/agendamentos/${id}/status`, { status }).then((r) => agendamentoParaAgenda(r.data)),

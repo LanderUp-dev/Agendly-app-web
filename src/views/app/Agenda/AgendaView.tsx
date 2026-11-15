@@ -21,6 +21,7 @@ import {
   profissionaisDaArea,
   type ProfissionalComArea,
 } from "./agendaComponents/arrastarAgenda";
+import { semanaDoDia } from "./agendaComponents/periodoAgenda";
 import "../Financeiro/Financeiro.css";
 import type { AgendamentoAgenda } from "@/services/endpoints";
 import PrimeirosPassos from "./agendaComponents/PrimeirosPassos";
@@ -76,7 +77,23 @@ const AgendaView = () => {
   const [areaSelecionada, setAreaSelecionadaEstado] = useState<number | null>(null);
 
   const funcionarios = useCarregar(() => funcionariosService.listar(), []);
-  const agendamentos = useCarregar(() => agendamentosService.listar(), []);
+  // Só a semana do dia mostrado (não o histórico inteiro da loja). Trocar de dia dentro
+  // da semana não busca de novo; trocar de semana busca.
+  const semana = semanaDoDia(dataSelecionada);
+  const agendamentos = useCarregar(
+    () => agendamentosService.listarPeriodo(semana.de, semana.ate),
+    [] as AgendamentoAgenda[],
+  );
+  const recarregarAgendamentos = agendamentos.recarregar;
+  const semanaCarregada = useRef(semana.de);
+  useEffect(() => {
+    if (semanaCarregada.current === semana.de) return;
+    semanaCarregada.current = semana.de;
+    recarregarAgendamentos();
+  }, [semana.de, recarregarAgendamentos]);
+  // Skeleton só na primeira carga; ao trocar de semana a grade fica e é atualizada.
+  const agendaJaCarregou = useRef(false);
+  if (!agendamentos.carregando && !agendamentos.erro) agendaJaCarregou.current = true;
   const podeArrastar = temPermissao("AGENDAMENTO_EDITAR");
 
   // sessionStorage só no navegador (depois de montar).
@@ -200,7 +217,8 @@ const AgendaView = () => {
     [nomes, dataIso],
   );
 
-  const carregando = funcionarios.carregando || agendamentos.carregando;
+  const carregando =
+    funcionarios.carregando || (agendamentos.carregando && !agendaJaCarregou.current);
   const erro = funcionarios.erro || agendamentos.erro;
   const recarregar = () => {
     funcionarios.recarregar();
