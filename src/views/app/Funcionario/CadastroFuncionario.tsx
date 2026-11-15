@@ -1,4 +1,4 @@
-// @requisito RE-04 RO-19
+// @requisito RE-04 RO-19 RNR-23
 import React, { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { concluirCadastro } from "@/lib/fluxoCadastro";
@@ -8,6 +8,8 @@ import { funcionariosService, tornarMeProfissional } from "@/services/endpoints"
 import { somenteDigitos, validarCPF, validarCelular, validarEmail } from "@/lib/validators";
 import { Button, ButtonLink, Card, FormField, PageHeader, LojaDoCadastro } from "@/components/ds";
 import { useErrosFormulario } from "@/hooks/useErrosFormulario";
+import { AvisoLimiteProfissionais } from "./LimiteProfissionais";
+import { useLimiteProfissionais } from "@/hooks/useLimiteProfissionais";
 
 export default function CadastroFuncionario() {
   const [formData, setFormData] = useState({
@@ -22,6 +24,9 @@ export default function CadastroFuncionario() {
   const [entrando, setEntrando] = useState(false);
   const navigate = useNavigate();
   const { erros, falhar, limpar } = useErrosFormulario();
+  // RNR-23: no limite do plano, avisa antes e não deixa tentar (o backend também confere).
+  const { situacao } = useLimiteProfissionais();
+  const cheio = situacao?.podeCadastrar === false;
 
   /** O dono (ou quem está logado) também atende: entra na agenda com os dados da própria conta. */
   const souEu = async () => {
@@ -118,12 +123,14 @@ export default function CadastroFuncionario() {
         voltar={{ to: "/listagem-funcionarios", rotulo: "Funcionários" }}
       />
       <Card como="section" className="form-card">
+        <AvisoLimiteProfissionais situacao={situacao} />
         <div className="alerta alerta-info alerta-com-acao" data-cy="sou-eu">
           <span>Você também atende clientes? Entre na agenda com os dados da sua conta.</span>
           <Button
             type="button"
             variante="secundario"
             carregando={entrando}
+            disabled={cheio}
             onClick={souEu}
             data-cy="sou-eu-botao"
           >
@@ -220,7 +227,7 @@ export default function CadastroFuncionario() {
             <ButtonLink to="/listagem-funcionarios" variante="secundario">
               Cancelar
             </ButtonLink>
-            <Button type="submit" carregando={salvando} data-cy="form-salvar">
+            <Button type="submit" carregando={salvando} disabled={cheio} data-cy="form-salvar">
               Salvar funcionário
             </Button>
           </div>

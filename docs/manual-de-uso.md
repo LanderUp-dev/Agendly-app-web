@@ -43,7 +43,9 @@ Faça nesta ordem, porque um cadastro depende do anterior:
    fechamento e intervalo. A agenda não aceita horário fora disso.
 2. **Áreas** (ex.: Cabelo, Unhas, Estética).
 3. **Funcionários**: os profissionais que atendem. Em **Especialidades**, ligue cada profissional
-   às áreas que ele atende.
+   às áreas que ele atende. O plano define quantos profissionais a loja pode ter (Solo: 1,
+   Equipe: 6; no teste grátis, o mesmo do maior plano). A tela mostra quantos faltam; no limite,
+   ninguém é removido, só não dá para cadastrar mais até trocar de plano.
 4. **Serviços**: nome, preço, duração, área e a comissão da loja (%). A duração define o tamanho
    do horário na agenda.
 5. **Clientes**: dá para cadastrar antes ou na hora de agendar.

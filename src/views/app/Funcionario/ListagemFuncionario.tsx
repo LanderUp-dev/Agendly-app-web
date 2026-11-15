@@ -1,28 +1,34 @@
-// @requisito RE-04 RO-19
+// @requisito RE-04 RO-19 RNR-23
 import React from "react";
 import { Badge, PaginaListagem } from "@/components/ds";
 import { funcionariosService } from "@/services/endpoints";
 import { obterUsuario } from "@/lib/auth";
 import { Link } from "@tanstack/react-router";
 import "../Ajuda/Ajuda.css";
+import { AvisoLimiteProfissionais } from "./LimiteProfissionais";
+import { useLimiteProfissionais } from "@/hooks/useLimiteProfissionais";
 import { formatarCPF, formatarTelefone, nomeCompleto } from "@/lib/formatadores";
 
 export default function ListagemFuncionario() {
+  const { situacao } = useLimiteProfissionais();
   return (
     <PaginaListagem
       titulo="Funcionários"
       descricao="Profissionais que aparecem como colunas na agenda."
       novo={{ to: "/cadastro-funcionario", rotulo: "Novo funcionário" }}
       aviso={
-        <p className="alerta alerta-info ajuda-dica" data-cy="dica-funcionarios">
-          <span>
-            Funcionário é quem <strong>atende e aparece na agenda</strong>. Este cadastro não dá
-            login: para alguém entrar no sistema, adicione a pessoa em Equipe.{" "}
-            <Link to="/ajuda" hash="acesso" className="link">
-              Entenda a diferença
-            </Link>
-          </span>
-        </p>
+        <>
+          <AvisoLimiteProfissionais situacao={situacao} />
+          <p className="alerta alerta-info ajuda-dica" data-cy="dica-funcionarios">
+            <span>
+              Funcionário é quem <strong>atende e aparece na agenda</strong>. Este cadastro não dá
+              login: para alguém entrar no sistema, adicione a pessoa em Equipe.{" "}
+              <Link to="/ajuda" hash="acesso" className="link">
+                Entenda a diferença
+              </Link>
+            </span>
+          </p>
+        </>
       }
       buscar={() => funcionariosService.listar()}
       chaveItem={(f) => f.id}

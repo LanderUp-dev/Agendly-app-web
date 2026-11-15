@@ -307,6 +307,11 @@ const GUIAS: Guia[] = [
           <Link to="/plano">Plano e assinatura</Link> você vê quanto falta e assina.
         </li>
         <li>
+          O plano define quantos profissionais a loja pode ter: <strong>Solo</strong> até 1,{" "}
+          <strong>Equipe</strong> até 6. No teste grátis vale o maior. Chegou no limite? Ninguém sai
+          da agenda; só não dá para cadastrar mais até trocar de plano.
+        </li>
+        <li>
           Em <Link to="/conta">Minha conta</Link> você muda seu nome, celular e senha.
         </li>
         <li>
