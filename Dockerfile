@@ -1,5 +1,5 @@
 # Front (TanStack Start + Nitro preset node-server). Gera .output/server/index.mjs.
-FROM node:24-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -12,7 +12,7 @@ ARG VITE_LISTA_TELAS=false
 ENV VITE_LISTA_TELAS=$VITE_LISTA_TELAS
 RUN npx vite build
 
-FROM node:24-slim
+FROM node:26-slim
 WORKDIR /app
 ENV NODE_ENV=production \
     PORT=3000 \
